@@ -31,6 +31,7 @@ This handy tool lets you choose your desired settings using a neat GUI and input
 
 - Only apply settings once per custom game
 - Do not press any keys after using the `Apply Settings` button until the program has finished applying settings
+- Have your in-game chat closed before applying settings or spawning items
 
 ## Contact
 
