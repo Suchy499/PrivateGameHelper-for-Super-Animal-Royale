@@ -3,8 +3,8 @@
 <p align="center"><img src="https://lookimg.com/images/2024/02/14/QmjqnK.gif" alt="Private Game Helper"></p>
 
 <p align="center">
-<img src="https://img.shields.io/github/v/release/Suchy499/PrivateGameHelper-for-Super-Animal-Royale" alt="GitHub Release">
-<img src="https://img.shields.io/github/downloads/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/total" alt="GitHub Downloads">
+<img src="https://img.shields.io/github/v/release/Suchy499/PrivateGameHelper-for-Super-Animal-Royale?style=for-the-badge" alt="GitHub Release">
+<img src="https://img.shields.io/github/downloads/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/total?style=for-the-badge" alt="GitHub Downloads">
 </p>
 
 Tired of typing out each setting by hand in your custom games?
