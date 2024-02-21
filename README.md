@@ -12,7 +12,7 @@ This handy tool lets you choose your desired settings using a neat GUI and input
 
 ## Download / How to use
 
-- Download the archive from [GitHub](https://github.com/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/download/1.0/Private_Game_Helper_v1.0.zip)
+- Download the archive from [GitHub](https://github.com/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/download/1.1/Private_Game_Helper_v1.1.zip)
 - Right-click on the downloaded zip file and extract
 - In the extracted folder, run the file named `Private Game Helper.exe`
 - Host your custom game
