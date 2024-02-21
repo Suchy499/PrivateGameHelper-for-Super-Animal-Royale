@@ -24,6 +24,7 @@ This handy tool lets you choose your desired settings using a neat GUI and input
 - Saving/Loading custom presets
 - Spawning in-game items
 - Copying map coordinates to clipboard
+- Instantly teleporting players
 - Copying match ID to clipboard
 - Starting the match
 
