@@ -10,13 +10,21 @@
 Tired of typing out each setting by hand in your custom games?
 This handy tool lets you choose your desired settings using a neat GUI and inputs them for you almost instantly!
 
-## Download / How to use
+## Download / Installation
 
-- Download the archive from [GitHub](https://github.com/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/download/1.0/Private_Game_Helper_v1.0.zip)
-- Right-click on the downloaded zip file and extract
-- In the extracted folder, run the file named `Private Game Helper.exe`
-- Host your custom game
-- Start using the program!
+### Method #1
+
+- Download the archive from [GitHub](https://github.com/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/download/1.2/Private_Game_Helper_v1.2.zip)
+- Extract the downloaded zip file
+- In the extracted folder, run the `Private Game Helper.exe` file
+
+### Method #2
+
+- Clone the repo:<br>
+  `git clone https://github.com/Suchy499/PrivateGameHelper-for-Super-Animal-Royale.git`
+- Install the requirements:<br>
+  `py -m pip install -r requirements.txt`
+- Run the `main.py` file
 
 ## Key Features
 
@@ -34,6 +42,36 @@ This handy tool lets you choose your desired settings using a neat GUI and input
 - Do not press any keys after using the `Apply Settings` button until the program has finished applying settings
 - Have your in-game chat closed before applying settings or spawning items
 
+## Changelog
+
+### v1.2
+
+- Added high ping mode setting
+- Added an option to start the match with or without bots
+- Added an option to randomize individual settings
+- Added an option to randomize all settings
+- Added commands:
+  - /flight
+  - /noboss
+  - /soccer
+  - /rain
+  - /rainoff
+  - /mystery
+  - /night
+  - /getplayers
+  - /gasstart
+  - /boss
+  - /getpid
+  - /saw
+  - /rebel
+  - /admin
+  - /kick
+  - /getpos
+  - /ghost
+  - /kill
+  - /god
+  - /infect
+
 ## Contact
 
-Suchy499 – [@Suchy4992](https://twitter.com/Suchy4992) – [Discord](https://discord.gg/vy6m8es752)
+Suchy499 – [@Suchy4992](https://twitter.com/Suchy4992) – [Discord](https://discord.com/users/484740625137139733)
