@@ -3,75 +3,64 @@
 <p align="center"><img src="https://lookimg.com/images/2024/02/14/QmjqnK.gif" alt="Private Game Helper"></p>
 
 <p align="center">
-<img src="https://img.shields.io/github/v/release/Suchy499/PrivateGameHelper-for-Super-Animal-Royale?style=for-the-badge" alt="GitHub Release">
-<img src="https://img.shields.io/github/downloads/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/total?style=for-the-badge" alt="GitHub Downloads">
+  <img src="https://img.shields.io/github/v/release/Suchy499/PrivateGameHelper-for-Super-Animal-Royale?style=for-the-badge" alt="GitHub Release">
+  <img src="https://img.shields.io/github/downloads/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/total?style=for-the-badge" alt="GitHub Downloads">
+  <a href="https://discord.com/users/484740625137139733">
+    <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white">
+  </a>
+  <a href="https://twitter.com/Suchy4992">
+    <img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white">
+  </a>
+  <a href="https://ko-fi.com/suchy499">
+    <img src="https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white">
+  </a>
 </p>
 
-Tired of typing out each setting by hand in your custom games?
-This handy tool lets you choose your desired settings using a neat GUI and inputs them for you almost instantly!
+Tired of typing out each command by hand in your custom games?
+This tool lets you input every in-game command with a click of a button!
 
 ## Download / Installation
 
 ### Method #1
 
-- Download the archive from [GitHub](https://github.com/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/download/1.2/Private_Game_Helper_v1.2.zip)
+- Download the archive from [GitHub](https://github.com/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/latest)
 - Extract the downloaded zip file
 - In the extracted folder, run the `Private Game Helper.exe` file
 
 ### Method #2
 
-- Clone the repo:<br>
+- Install Python and pip
+- Clone (or download) the repo:<br>
   `git clone https://github.com/Suchy499/PrivateGameHelper-for-Super-Animal-Royale.git`
+- Navigate to repo's directory:<br>
+  `cd PrivateGameHelper-for-Super-Animal-Royale`
 - Install the requirements:<br>
   `py -m pip install -r requirements.txt`
-- Run the `main.py` file
+- Run the `__main__.py` file
 
 ## Key Features
 
-- Applying in-game settings
-- Saving/Loading custom presets
+- Easy access to all in-game commands
+- Saving/loading custom presets
 - Spawning in-game items
 - Copying map coordinates to clipboard
 - Instantly teleporting players
-- Copying match ID to clipboard
-- Starting the match
+- Custom game modes
 
 ## Notes
 
-- Only apply settings once per custom game
-- Do not press any keys after using the `Apply Settings` button until the program has finished applying settings
-- Have your in-game chat closed before applying settings or spawning items
+- Currently only works on Windows
+- Apply settings only once per custom lobby
+- Do not press any keys after using a button that changes in-game setting until the program has finished doing so
+- Have your in-game chat closed before using the program
+- Setting up dodgeball ziplines might not work properly if your display isn't using the 16:9 aspect ratio,
+the solution to that is changing your in-game resolution to one that's 16:9 (e.g. 1920x1080, 1280x720) and running the game in windowed mode
 
 ## Changelog
 
-### v1.2
+### v1.3
 
-- Added high ping mode setting
-- Added an option to start the match with or without bots
-- Added an option to randomize individual settings
-- Added an option to randomize all settings
-- Added commands:
-  - /flight
-  - /noboss
-  - /soccer
-  - /rain
-  - /rainoff
-  - /mystery
-  - /night
-  - /getplayers
-  - /gasstart
-  - /boss
-  - /getpid
-  - /saw
-  - /rebel
-  - /admin
-  - /kick
-  - /getpos
-  - /ghost
-  - /kill
-  - /god
-  - /infect
-
-## Contact
-
-Suchy499 – [@Suchy4992](https://twitter.com/Suchy4992) – [Discord](https://discord.com/users/484740625137139733)
+- Added an option to check for updates
+- Added custom game modes:
+  - Duels
+  - Dodgeball

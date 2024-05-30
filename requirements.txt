@@ -1,7 +1,12 @@
-CTkMenuBar==0.6
-CTkToolTip==0.8
 customtkinter==5.2.2
+CTkMenuBar==0.8
+CTkToolTip==0.8
+CTkMessagebox==2.5
+darkdetect==0.8.0
 keyboard==0.13.5
-Pillow==10.3.0
+packaging==24.0
+PyAutoGUI==0.9.54
 pyperclip==1.8.2
-pyWinActivate==1.3.0
+PyWinCtl==0.3
+Requests==2.32.2
+typing_extensions==4.12.0
