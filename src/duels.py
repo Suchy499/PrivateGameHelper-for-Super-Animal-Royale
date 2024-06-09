@@ -126,22 +126,13 @@ class Duels(customtkinter.CTkToplevel):
             self.match_random_weapons_switch.configure(state="disabled")
             
     def validate_host(self, value: str) -> bool:
-        pattern = r"^[0-9]{1}[a-zA-Z ]{0}|^[0-9]{2}[a-zA-Z ]{0}"
-        if re.fullmatch(pattern, value) is None:
-            return False
-        return True
+        return re.fullmatch(r"\d{1,2}", value) is not None
     
     def validate_teams(self, value: str) -> bool:
-        pattern = r"^[0-9 ]+[a-zA-Z]{0}"
-        if re.fullmatch(pattern, value) is None:
-            return False
-        return True
+        return re.fullmatch(r"[\d\s]+", value) is not None
     
     def validate_hpm(self, value: str) -> bool:
-        pattern = r"^[0-9]+[a-zA-Z ]{0}"
-        if re.fullmatch(pattern, value) is None:
-            return False
-        return True
+        return value.isnumeric()
     
     def teleport_players(self, team: str, x: int, y: int) -> None:
         if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
@@ -164,7 +155,7 @@ class Duels(customtkinter.CTkToplevel):
         time.sleep(self.KEY_DELAY*16)
         keyboard.write(f"\n/tele {self.host_id_entry.get()} {x} {y}\n", delay=self.KEY_DELAY)
         time.sleep(self.KEY_DELAY*4)
-        for i in range(int(self.players_per_team_select.get())):
+        for _ in range(int(self.players_per_team_select.get())):
             keyboard.write("\n/armor3\n", delay=self.KEY_DELAY)
             time.sleep(self.KEY_DELAY*2)
                 
@@ -177,7 +168,7 @@ class Duels(customtkinter.CTkToplevel):
         time.sleep(self.KEY_DELAY*16)
         keyboard.write(f"\n/tele {self.host_id_entry.get()} {x} {y}\n", delay=self.KEY_DELAY)
         time.sleep(self.KEY_DELAY*4)
-        for i in range(int(self.players_per_team_select.get())):
+        for _ in range(int(self.players_per_team_select.get())):
             keyboard.write(f"\n/gun{id} 3\n", delay=self.KEY_DELAY)
             time.sleep(self.KEY_DELAY*2)
                 
@@ -190,13 +181,9 @@ class Duels(customtkinter.CTkToplevel):
         time.sleep(self.KEY_DELAY*16)
         keyboard.write(f"\n/tele {self.host_id_entry.get()} {x} {y}\n", delay=self.KEY_DELAY)
         time.sleep(self.KEY_DELAY*4)
-        for i in range(int(self.players_per_team_select.get())):
-            keyboard.write("\n/ammo0 500\n", delay=self.KEY_DELAY)
-            keyboard.write("\n/ammo1 500\n", delay=self.KEY_DELAY)
-            keyboard.write("\n/ammo2 500\n", delay=self.KEY_DELAY)
-            keyboard.write("\n/ammo3 500\n", delay=self.KEY_DELAY)
-            keyboard.write("\n/ammo4 500\n", delay=self.KEY_DELAY)
-            keyboard.write("\n/ammo5 500\n", delay=self.KEY_DELAY)
+        for _ in range(int(self.players_per_team_select.get())):
+            for i in range(6):
+                keyboard.write(f"\n/ammo{i} 500\n", delay=self.KEY_DELAY)
             keyboard.write("\n/juice 200\n", delay=self.KEY_DELAY)
             keyboard.write("\n/tape 5\n", delay=self.KEY_DELAY)
             time.sleep(self.KEY_DELAY*2)
@@ -210,7 +197,7 @@ class Duels(customtkinter.CTkToplevel):
         time.sleep(self.KEY_DELAY*16)
         keyboard.write(f"\n/tele {self.host_id_entry.get()} {x} {y}\n", delay=self.KEY_DELAY)
         time.sleep(self.KEY_DELAY*4)
-        for i in range(int(self.players_per_team_select.get())):
+        for _ in range(int(self.players_per_team_select.get())):
             keyboard.write("\n/util2\n", delay=self.KEY_DELAY)
             time.sleep(self.KEY_DELAY*2)
             keyboard.write("\n/util4\n", delay=self.KEY_DELAY)
@@ -225,13 +212,13 @@ class Duels(customtkinter.CTkToplevel):
         time.sleep(self.KEY_DELAY*16)
         keyboard.write(f"\n/tele {self.host_id_entry.get()} {x} {y}\n", delay=self.KEY_DELAY)
         time.sleep(self.KEY_DELAY*4)
-        for i in range(int(self.players_per_team_select.get())):
+        for _ in range(int(self.players_per_team_select.get())):
             keyboard.write("\n/banana 10\n", delay=self.KEY_DELAY)
             time.sleep(self.KEY_DELAY*2)
             keyboard.write("\n/nade 4\n", delay=self.KEY_DELAY)
             time.sleep(self.KEY_DELAY*2)
     
-    def start_match(self) -> None:
+    def start_match(self) -> None: # Sourcery, shut your mouth. Fuck you >:c my boyfriend is perfect
         # Guard clauses
         if self.validate_host(self.host_id_entry.get()) is False:
             CTkMessagebox(self, message="Invalid host ID")
@@ -334,7 +321,7 @@ class Duels(customtkinter.CTkToplevel):
                 if self.match_random_weapons_switch.get() == 1:
                     # Spawn random weapons for both teams
                     random_weapons_list: list[int] = []
-                    for i in range(4):
+                    for _ in range(4):
                         random_weapon_id: int = random.randint(0, 19)
                         while random_weapon_id in random_weapons_list:
                             random_weapon_id: int = random.randint(0, 19)
@@ -346,7 +333,7 @@ class Duels(customtkinter.CTkToplevel):
                 else:
                     # Spawn random weapons for team A
                     random_weapons_a_list: list[int] = []
-                    for i in range(4):
+                    for _ in range(4):
                         random_weapon_id: int = random.randint(0, 19)
                         while random_weapon_id in random_weapons_a_list:
                             random_weapon_id: int = random.randint(0, 19)
@@ -356,7 +343,7 @@ class Duels(customtkinter.CTkToplevel):
                     
                     # Spawn random weapons for team B
                     random_weapons_b_list: list[int] = []
-                    for i in range(4):
+                    for _ in range(4):
                         random_weapon_id: int = random.randint(0, 19)
                         while random_weapon_id in random_weapons_b_list:
                             random_weapon_id: int = random.randint(0, 19)
@@ -373,7 +360,7 @@ class Duels(customtkinter.CTkToplevel):
                     if i == 9:
                         x_a = 735
                         y_a -= 20
-                    if i == 6 or i == 13:
+                    if i in (6, 13):
                         x_b = 3875
                         y_b -= 20
         

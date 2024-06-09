@@ -478,6 +478,7 @@ class Pregame(customtkinter.CTk):
 
     def weight_slider(self, weapon: str, value: float) -> None:
         exec(f"value = round({str(value)}, 1)\nself.{weapon}_label.configure(text=value)\nself.{weapon}_slider.set(value)")
+        # me when the the me when uuuh the yes
     
     def randomize_gasspeed(self) -> None:
         value: float = round(random.uniform(0.4, 3.0), 1)
@@ -501,7 +502,11 @@ class Pregame(customtkinter.CTk):
     
     def randomize_weapon(self, weapon: str) -> None:
         exec(f"value = round(random.uniform(0.0, 5.0), 1)\nself.{weapon}_label.configure(text=value)\nself.{weapon}_slider.set(value)")
-    
+        # so basically i am monkey
+        # thanks copilot, very cool
+        # when the exec is sus, call the among us
+        # ඞ <--- this is the impostor
+        # (the second part of every one of those comments were written by me, not copilot (totally not a copilot simp) (i am a copilot simp))
     def randomize_all(self) -> None:
         self.randomize_gasspeed()
         self.randomize_gasdamage()
@@ -733,55 +738,55 @@ class Pregame(customtkinter.CTk):
                     self.hpm.delete(0, 99)
                     self.hpm.insert(0, settings[41])
         except TypeError:
-            pass    
+            pass
 
     def save_preset(self) -> None:
-        files: list[tuple] = [('Config Files', '*.cfg')] 
+        files: list[tuple] = [('Config Files', '*.cfg')]
         try:
-            with asksaveasfile(filetypes=files, defaultextension=files, initialdir="presets", initialfile="DefaultPreset.cfg") as file:
+            with asksaveasfile(filetypes=files, defaultextension=".cfg", initialdir="presets", initialfile="DefaultPreset.cfg") as file:
                 if file is not None:
-                    file.write(f"ALL_ITEMS={str(round(self.allitems_switch.get(), 1))}\n")
-                    file.write(f"GUNS={str(round(self.guns_switch.get(), 1))}\n")
-                    file.write(f"ARMORS={str(round(self.armors_switch.get(), 1))}\n")
-                    file.write(f"THROWABLES={str(round(self.throwables_switch.get(), 1))}\n")
-                    file.write(f"POWERUPS={str(round(self.powerups_switch.get(), 1))}\n")
-                    file.write(f"ONEHITS={str(round(self.onehits_switch.get(), 1))}\n")
-                    file.write(f"EMUS={str(round(self.emus_switch.get(), 1))}\n")
-                    file.write(f"HAMBALLS={str(round(self.hamballs_switch.get(), 1))}\n")
-                    file.write(f"MOLES={str(round(self.moles_switch.get(), 1))}\n")
-                    file.write(f"PETS={str(round(self.pets_switch.get(), 1))}\n")
-                    file.write(f"GAS={str(round(self.gas_switch.get(), 1))}\n")
-                    file.write(f"NOROLLS={str(round(self.norolls_switch.get(), 1))}\n")
-                    file.write(f"GAS_SPEED={str(round(self.gasspeed_slider.get(), 1))}\n")
-                    file.write(f"GAS_DAMAGE={str(round(self.gasdamage_slider.get(), 1))}\n")
-                    file.write(f"BULLET_SPEED={str(round(self.bulletspeed_slider.get(), 1))}\n")
-                    file.write(f"DAMAGE={str(round(self.damage_slider.get(), 1))}\n")
-                    file.write(f"PISTOL={str(round(self.pistol_slider.get(), 1))}\n")
-                    file.write(f"MAGNUM={str(round(self.magnum_slider.get(), 1))}\n")
-                    file.write(f"DEAGLE={str(round(self.deagle_slider.get(), 1))}\n")
-                    file.write(f"SILENCED_PISTOL={str(round(self.silencedpistol_slider.get(), 1))}\n")
-                    file.write(f"SHOTGUN={str(round(self.shotgun_slider.get(), 1))}\n")
-                    file.write(f"JAG-7={str(round(self.jag_slider.get(), 1))}\n")
-                    file.write(f"SMG={str(round(self.smg_slider.get(), 1))}\n")
-                    file.write(f"TOMMY_GUN={str(round(self.tommy_slider.get(), 1))}\n")
-                    file.write(f"AK={str(round(self.ak_slider.get(), 1))}\n")
-                    file.write(f"M16={str(round(self.m16_slider.get(), 1))}\n")
-                    file.write(f"DART={str(round(self.dart_slider.get(), 1))}\n")
-                    file.write(f"DARTFLY={str(round(self.dartfly_slider.get(), 1))}\n")
-                    file.write(f"HUNTING_RIFLE={str(round(self.huntingrifle_slider.get(), 1))}\n")
-                    file.write(f"SNIPER={str(round(self.sniper_slider.get(), 1))}\n")
-                    file.write(f"LASER={str(round(self.laser_slider.get(), 1))}\n")
-                    file.write(f"MINIGUN={str(round(self.minigun_slider.get(), 1))}\n")
-                    file.write(f"BOW={str(round(self.bow_slider.get(), 1))}\n")
-                    file.write(f"SPARROW_LAUNCHER={str(round(self.sparrowlauncher_slider.get(), 1))}\n")
-                    file.write(f"BCG={str(round(self.bcg_slider.get(), 1))}\n")
-                    file.write(f"GRENADE={str(round(self.grenadefrag_slider.get(), 1))}\n")
-                    file.write(f"BANANA={str(round(self.grenadebanana_slider.get(), 1))}\n")
-                    file.write(f"SKUNK={str(round(self.grenadeskunk_slider.get(), 1))}\n")
-                    file.write(f"MINE={str(round(self.grenademine_slider.get(), 1))}\n")
-                    file.write(f"ZIPLINE={str(round(self.grenadezip_slider.get(), 1))}\n")
-                    file.write(f"BOTS={str(round(self.bots_switch.get(), 1))}\n")
-                    file.write(f"HPM={str(self.hpm.get())}")
+                    file.write(f"ALL_ITEMS={round(self.allitems_switch.get(), 1)}\n")
+                    file.write(f"GUNS={round(self.guns_switch.get(), 1)}\n")
+                    file.write(f"ARMORS={round(self.armors_switch.get(), 1)}\n")
+                    file.write(f"THROWABLES={round(self.throwables_switch.get(), 1)}\n")
+                    file.write(f"POWERUPS={round(self.powerups_switch.get(), 1)}\n")
+                    file.write(f"ONEHITS={round(self.onehits_switch.get(), 1)}\n")
+                    file.write(f"EMUS={round(self.emus_switch.get(), 1)}\n")
+                    file.write(f"HAMBALLS={round(self.hamballs_switch.get(), 1)}\n")
+                    file.write(f"MOLES={round(self.moles_switch.get(), 1)}\n")
+                    file.write(f"PETS={round(self.pets_switch.get(), 1)}\n")
+                    file.write(f"GAS={round(self.gas_switch.get(), 1)}\n")
+                    file.write(f"NOROLLS={round(self.norolls_switch.get(), 1)}\n")
+                    file.write(f"GAS_SPEED={round(self.gasspeed_slider.get(), 1)}\n")
+                    file.write(f"GAS_DAMAGE={round(self.gasdamage_slider.get(), 1)}\n")
+                    file.write(f"BULLET_SPEED={round(self.bulletspeed_slider.get(), 1)}\n")
+                    file.write(f"DAMAGE={round(self.damage_slider.get(), 1)}\n")
+                    file.write(f"PISTOL={round(self.pistol_slider.get(), 1)}\n")
+                    file.write(f"MAGNUM={round(self.magnum_slider.get(), 1)}\n")
+                    file.write(f"DEAGLE={round(self.deagle_slider.get(), 1)}\n")
+                    file.write(f"SILENCED_PISTOL={round(self.silencedpistol_slider.get(), 1)}\n")
+                    file.write(f"SHOTGUN={round(self.shotgun_slider.get(), 1)}\n")
+                    file.write(f"JAG-7={round(self.jag_slider.get(), 1)}\n")
+                    file.write(f"SMG={round(self.smg_slider.get(), 1)}\n")
+                    file.write(f"TOMMY_GUN={round(self.tommy_slider.get(), 1)}\n")
+                    file.write(f"AK={round(self.ak_slider.get(), 1)}\n")
+                    file.write(f"M16={round(self.m16_slider.get(), 1)}\n")
+                    file.write(f"DART={round(self.dart_slider.get(), 1)}\n")
+                    file.write(f"DARTFLY={round(self.dartfly_slider.get(), 1)}\n")
+                    file.write(f"HUNTING_RIFLE={round(self.huntingrifle_slider.get(), 1)}\n")
+                    file.write(f"SNIPER={round(self.sniper_slider.get(), 1)}\n")
+                    file.write(f"LASER={round(self.laser_slider.get(), 1)}\n")
+                    file.write(f"MINIGUN={round(self.minigun_slider.get(), 1)}\n")
+                    file.write(f"BOW={round(self.bow_slider.get(), 1)}\n")
+                    file.write(f"SPARROW_LAUNCHER={round(self.sparrowlauncher_slider.get(), 1)}\n")
+                    file.write(f"BCG={round(self.bcg_slider.get(), 1)}\n")
+                    file.write(f"GRENADE={round(self.grenadefrag_slider.get(), 1)}\n")
+                    file.write(f"BANANA={round(self.grenadebanana_slider.get(), 1)}\n")
+                    file.write(f"SKUNK={round(self.grenadeskunk_slider.get(), 1)}\n")
+                    file.write(f"MINE={round(self.grenademine_slider.get(), 1)}\n")
+                    file.write(f"ZIPLINE={round(self.grenadezip_slider.get(), 1)}\n")
+                    file.write(f"BOTS={round(self.bots_switch.get(), 1)}\n")
+                    file.write(f"HPM={self.hpm.get()}")
         except TypeError:
             pass
 
@@ -866,5 +871,5 @@ class Pregame(customtkinter.CTk):
             if update_popup.get() == "Yes":
                 webbrowser.open("https://github.com/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/latest")
         else:
-            update_popup = CTkMessagebox(title="Private Game Helper", message="There are currently no updates available")
+            CTkMessagebox(title="Private Game Helper", message="There are currently no updates available")
             

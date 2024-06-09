@@ -1,2 +1,4 @@
 bin/
 src/__pycache__/
+
+.vscode/

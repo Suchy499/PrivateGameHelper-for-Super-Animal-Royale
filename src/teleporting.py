@@ -62,18 +62,17 @@ class TeleportMenu(customtkinter.CTkToplevel):
         if self.mode_var.get() == 0:
             pyperclip.copy(f"{x} {y}")
             self.coordinates.configure(text=f"Coordinates:\n({x}, {y})")
+        elif self.player_id_entry.get().isnumeric() and 1 <= int(self.player_id_entry.get()) <= 99 or (self.player_id_entry.get().lower() == "all"):
+            self.coordinates.configure(text=f"Coordinates:\n({x}, {y})")
+            if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
+                return
+            
+            sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
+            sar_window.activate()
+            time.sleep(self.KEY_DELAY*16)
+            keyboard.write(f"\n/tele {self.player_id_entry.get().lower()} {x} {y}\n", delay=self.KEY_DELAY)
         else:
-            if self.player_id_entry.get().isnumeric() and 1 <= int(self.player_id_entry.get()) <= 99 or (self.player_id_entry.get().lower() == "all"):
-                self.coordinates.configure(text=f"Coordinates:\n({x}, {y})")
-                if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-                    return
-                
-                sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-                sar_window.activate()
-                time.sleep(self.KEY_DELAY*16)
-                keyboard.write(f"\n/tele {self.player_id_entry.get().lower()} {x} {y}\n", delay=self.KEY_DELAY)
-            else:
-                CTkMessagebox(title="Private Game Helper", message="Player ID has to be either \"all\" or between 1-99")
+            CTkMessagebox(title="Private Game Helper", message="Player ID has to be either \"all\" or between 1-99")
     
     def change_mode(self) -> None:
         if self.mode_var.get() == 1:

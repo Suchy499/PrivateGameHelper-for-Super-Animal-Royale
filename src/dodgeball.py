@@ -102,18 +102,18 @@ class Dodgeball(customtkinter.CTkToplevel):
         self.spawn_grenades_from_left_label.place(x=20, y=480)
         self.spawn_grenades_from_left_desc = customtkinter.CTkLabel(self, text="Spawn [1-3] grenades\nstarting from the left", font=self.FONT_REGULAR)
         self.spawn_grenades_from_left_desc.place(x=300, y=480)
-        keyboard.add_hotkey("left+1", self.spawn_grenades_from_left_hotkey, args=[1])
-        keyboard.add_hotkey("left+2", self.spawn_grenades_from_left_hotkey, args=[2])
-        keyboard.add_hotkey("left+3", self.spawn_grenades_from_left_hotkey, args=[3])
+        keyboard.add_hotkey("left+1", self.spawn_grenades_from_left_hotkey, args=(1,))
+        keyboard.add_hotkey("left+2", self.spawn_grenades_from_left_hotkey, args=(2,))
+        keyboard.add_hotkey("left+3", self.spawn_grenades_from_left_hotkey, args=(3,))
         
         # Spawn grenades for teams starting from the right
         self.spawn_grenades_from_right_label = customtkinter.CTkLabel(self, text="(Right + [1-3])", font=self.FONT_ITALIC)
         self.spawn_grenades_from_right_label.place(x=20, y=530)
         self.spawn_grenades_from_right_desc = customtkinter.CTkLabel(self, text="Spawn [1-3] grenades\nstarting from the right", font=self.FONT_REGULAR)
         self.spawn_grenades_from_right_desc.place(x=300, y=530)
-        keyboard.add_hotkey("right+1", self.spawn_grenades_from_right_hotkey, args=[1])
-        keyboard.add_hotkey("right+2", self.spawn_grenades_from_right_hotkey, args=[2])
-        keyboard.add_hotkey("right+3", self.spawn_grenades_from_right_hotkey, args=[3])
+        keyboard.add_hotkey("right+1", self.spawn_grenades_from_right_hotkey, args=(1,))
+        keyboard.add_hotkey("right+2", self.spawn_grenades_from_right_hotkey, args=(2,))
+        keyboard.add_hotkey("right+3", self.spawn_grenades_from_right_hotkey, args=(3,))
         
         # In-game keybinds
         self.keybinds_title = customtkinter.CTkLabel(self, text="In-game Keybinds", font=self.FONT_TITLE)
@@ -143,7 +143,7 @@ class Dodgeball(customtkinter.CTkToplevel):
             self.team_a_entry.configure(state="normal")
             self.team_b_entry.configure(state="normal")
     
-    def get_teams(self) -> tuple[list[str], list[str]]:
+    def get_teams(self) -> tuple[list[str], list[str]] | None:
         if self.random_teams_switch.get() == 1:
             if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
                 return
@@ -174,8 +174,7 @@ class Dodgeball(customtkinter.CTkToplevel):
         return team_a, team_b
     
     def validate_use(self) -> bool:
-        pattern = r"^[0-9]{1}|[a-zA-Z]{1}|mouse[0-2]"
-        if re.fullmatch(pattern, self.use_bind.get(), re.IGNORECASE) is None:
+        if re.fullmatch(r"[A-Z\d]|mouse[0-2]", self.use_bind.get(), re.IGNORECASE) is None:
             CTkMessagebox(self, message="Invalid keybind")
             self.use_bind_entry.delete(0, 99)
             self.use_bind_entry.insert(0, "E")
@@ -184,8 +183,7 @@ class Dodgeball(customtkinter.CTkToplevel):
         return True
     
     def validate_melee(self) -> bool:
-        pattern = r"^[0-9]{1}|[a-zA-Z]{1}|mouse[0-2]"
-        if re.fullmatch(pattern, self.melee_bind.get(), re.IGNORECASE) is None:
+        if re.fullmatch(r"[A-Z\d]|mouse[0-2]", self.melee_bind.get(), re.IGNORECASE) is None:
             CTkMessagebox(self, message="Invalid keybind")
             self.melee_bind_entry.delete(0, 99)
             self.melee_bind_entry.insert(0, "3")
@@ -194,8 +192,7 @@ class Dodgeball(customtkinter.CTkToplevel):
         return True
     
     def validate_throwable(self) -> bool:
-        pattern = r"^[0-9]{1}|[a-zA-Z]{1}|mouse[0-2]"
-        if re.fullmatch(pattern, self.throwable_bind.get(), re.IGNORECASE) is None:
+        if re.fullmatch(r"[A-Z\d]|mouse[0-2]", self.throwable_bind.get(), re.IGNORECASE) is None:
             CTkMessagebox(self, message="Invalid keybind")
             self.throwable_bind_entry.delete(0, 99)
             self.throwable_bind_entry.insert(0, "4")
@@ -204,34 +201,37 @@ class Dodgeball(customtkinter.CTkToplevel):
         return True
     
     def use_bind_input(self) -> None:
-        if self.use_bind.get().lower() == "mouse0":
-            pyautogui.click(button="left")
-        elif self.use_bind.get().lower() == "mouse1":
-            pyautogui.click(button="right")
-        elif self.use_bind.get().lower() == "mouse2":
-            pyautogui.click(button="middle")
-        else:
-            keyboard.send(self.use_bind.get().lower())
+        match self.use_bind.get().lower():
+            case "mouse0":
+                pyautogui.click(button="left")
+            case "mouse1":
+                pyautogui.click(button="right")
+            case "mouse2":
+                pyautogui.click(button="middle")
+            case _:
+                keyboard.send(self.use_bind.get().lower())
     
     def melee_bind_input(self) -> None:
-        if self.melee_bind.get().lower() == "mouse0":
-            pyautogui.click(button="left")
-        elif self.melee_bind.get().lower() == "mouse1":
-            pyautogui.click(button="right")
-        elif self.melee_bind.get().lower() == "mouse2":
-            pyautogui.click(button="middle")
-        else:
-            keyboard.send(self.melee_bind.get().lower())
+        match self.melee_bind.get().lower():
+            case "mouse0":
+                pyautogui.click(button="left")
+            case "mouse1":
+                pyautogui.click(button="right")
+            case "mouse2":
+                pyautogui.click(button="middle")
+            case _:
+                keyboard.send(self.melee_bind.get().lower())
     
     def throwable_bind_input(self) -> None:
-        if self.throwable_bind.get().lower() == "mouse0":
-            pyautogui.click(button="left")
-        elif self.throwable_bind.get().lower() == "mouse1":
-            pyautogui.click(button="right")
-        elif self.throwable_bind.get().lower() == "mouse2":
-            pyautogui.click(button="middle")
-        else:
-            keyboard.send(self.throwable_bind.get().lower())
+        match self.throwable_bind.get().lower():
+            case "mouse0":
+                pyautogui.click(button="left")
+            case "mouse1":
+                pyautogui.click(button="right")
+            case "mouse2":
+                pyautogui.click(button="middle")
+            case _:
+                keyboard.send(self.throwable_bind.get().lower())
     
     def damage_slider_ctrl(self, value: float) -> None:
         value = round(value, 1)
@@ -706,24 +706,20 @@ class Dodgeball(customtkinter.CTkToplevel):
             keyboard.add_hotkey("ctrl+shift+s", self.hr_and_zip_hotkey)
             keyboard.add_hotkey("ctrl+shift+k", self.kill_host_hotkey)
             keyboard.add_hotkey("alt+y", self.spawn_grenade_hotkey)
-            keyboard.add_hotkey("left+1", self.spawn_grenades_from_left_hotkey, args=[1])
-            keyboard.add_hotkey("left+2", self.spawn_grenades_from_left_hotkey, args=[2])
-            keyboard.add_hotkey("left+3", self.spawn_grenades_from_left_hotkey, args=[3])
-            keyboard.add_hotkey("right+1", self.spawn_grenades_from_right_hotkey, args=[1])
-            keyboard.add_hotkey("right+2", self.spawn_grenades_from_right_hotkey, args=[2])
-            keyboard.add_hotkey("right+3", self.spawn_grenades_from_right_hotkey, args=[3])
+            keyboard.add_hotkey("left+1", self.spawn_grenades_from_left_hotkey, args=(1,))
+            keyboard.add_hotkey("left+2", self.spawn_grenades_from_left_hotkey, args=(2,))
+            keyboard.add_hotkey("left+3", self.spawn_grenades_from_left_hotkey, args=(3,))
+            keyboard.add_hotkey("right+1", self.spawn_grenades_from_right_hotkey, args=(1,))
+            keyboard.add_hotkey("right+2", self.spawn_grenades_from_right_hotkey, args=(2,))
+            keyboard.add_hotkey("right+3", self.spawn_grenades_from_right_hotkey, args=(3,))
     
     def validate_host(self, value: str) -> bool:
-        pattern = r"^[0-9]{1}[a-zA-Z ]{0}|^[0-9]{2}[a-zA-Z ]{0}"
-        if re.fullmatch(pattern, value) is None:
-            return False
-        return True
+        pattern = r"\d{1,2}"
+        return re.fullmatch(pattern, value) is not None
     
     def validate_teams(self, value: str) -> bool:
-        pattern = r"^[0-9 ]+[a-zA-Z]{0}"
-        if re.fullmatch(pattern, value) is None:
-            return False
-        return True
+        pattern = r"[\d\s]+"
+        return re.fullmatch(pattern, value) is not None
     
     def spawn_nade(self, x: int, y: int) -> None:
         if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
