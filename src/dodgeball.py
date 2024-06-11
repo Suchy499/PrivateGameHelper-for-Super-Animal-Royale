@@ -1,27 +1,22 @@
 import customtkinter
-import tkinter
 import keyboard
 import re
 import time
 import pywinctl
-import pyautogui
 import random
 import pyperclip
 from CTkMessagebox import CTkMessagebox
+from functions import *
 
 class Dodgeball(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self.geometry("600x760")
+        self.geometry("600x630")
         self.title("Private Game Helper - Dodgeball")
         self.resizable(False, False)
         self.FONT_TITLE = customtkinter.CTkFont(family="Roboto", size=24, weight="bold")
         self.FONT_REGULAR = customtkinter.CTkFont(family="Roboto", size=16, weight="bold")
         self.FONT_ITALIC = customtkinter.CTkFont(family="Roboto", weight="bold", slant="italic")
-        self.KEY_DELAY: float = 0.025
-        self.use_bind = tkinter.StringVar(self, "E")
-        self.melee_bind = tkinter.StringVar(self, "3")
-        self.throwable_bind = tkinter.StringVar(self, "4")
         
         # Title
         self.dodgeball_title = customtkinter.CTkLabel(self, text="Dodgeball", font=self.FONT_TITLE)
@@ -115,25 +110,11 @@ class Dodgeball(customtkinter.CTkToplevel):
         keyboard.add_hotkey("right+2", self.spawn_grenades_from_right_hotkey, args=(2,))
         keyboard.add_hotkey("right+3", self.spawn_grenades_from_right_hotkey, args=(3,))
         
-        # In-game keybinds
-        self.keybinds_title = customtkinter.CTkLabel(self, text="In-game Keybinds", font=self.FONT_TITLE)
-        self.keybinds_title.place(x=20, y=580)
-        self.use_bind_label = customtkinter.CTkLabel(self, text="Use:", font=self.FONT_REGULAR)
-        self.use_bind_label.place(x=20, y=630)
-        self.use_bind_entry = customtkinter.CTkEntry(self, textvariable=self.use_bind, placeholder_text="e.g. E", validate="focusout", validatecommand=self.validate_use)
-        self.use_bind_entry.place(x=20, y=660)
-        self.melee_bind_label = customtkinter.CTkLabel(self, text="Melee:", font=self.FONT_REGULAR)
-        self.melee_bind_label.place(x=220, y=630)
-        self.melee_bind_entry = customtkinter.CTkEntry(self, textvariable=self.melee_bind, placeholder_text="e.g. 3", validate="focusout", validatecommand=self.validate_melee)
-        self.melee_bind_entry.place(x=220, y=660)
-        self.throwable_bind_label = customtkinter.CTkLabel(self, text="Throwable:", font=self.FONT_REGULAR)
-        self.throwable_bind_label.place(x=420, y=630)
-        self.throwable_bind_entry = customtkinter.CTkEntry(self, textvariable=self.throwable_bind, placeholder_text="e.g. 4", validate="focusout", validatecommand=self.validate_throwable)
-        self.throwable_bind_entry.place(x=420, y=660)
-        
         # Start
         self.start_button = customtkinter.CTkButton(self, text="Start Match", command=self.start_match)
-        self.start_button.place(x=20, y=710)
+        self.start_button.place(x=20, y=585)
+        
+        Settings.update(self=Settings)
     
     def enable_random_teams(self) -> None:
         if self.random_teams_switch.get() == 1:
@@ -145,14 +126,11 @@ class Dodgeball(customtkinter.CTkToplevel):
     
     def get_teams(self) -> tuple[list[str], list[str]] | None:
         if self.random_teams_switch.get() == 1:
-            if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
+            if open_window("Super Animal Royale") is False:
                 return
-        
-            sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-            sar_window.activate()
-            time.sleep(self.KEY_DELAY*16)
-            keyboard.write("\n/getplayers\n", delay=self.KEY_DELAY)
-            time.sleep(self.KEY_DELAY*16)
+
+            send_commands("getplayers")
+            time.sleep(KEY_DELAY*16)
             clipboard: list[str] = pyperclip.paste().split("\n")
             clipboard.remove("")
             player_list: list[str] = []
@@ -160,7 +138,7 @@ class Dodgeball(customtkinter.CTkToplevel):
             team_b: list[str] = []
             for player in clipboard:
                 player_id = player.split("\t")[0]
-                if player_id != "pID" and player_id != self.host_id_entry.get():
+                if player_id not in("pID", self.host_id_entry.get()):
                     player_list.append(player_id)
             random.shuffle(player_list)
             for index, player in enumerate(player_list):
@@ -173,66 +151,6 @@ class Dodgeball(customtkinter.CTkToplevel):
             team_b: list[str] = self.team_b_entry.get().strip().split(sep=" ")
         return team_a, team_b
     
-    def validate_use(self) -> bool:
-        if re.fullmatch(r"[A-Z\d]|mouse[0-2]", self.use_bind.get(), re.IGNORECASE) is None:
-            CTkMessagebox(self, message="Invalid keybind")
-            self.use_bind_entry.delete(0, 99)
-            self.use_bind_entry.insert(0, "E")
-            self.use_bind.set("E")
-            return False
-        return True
-    
-    def validate_melee(self) -> bool:
-        if re.fullmatch(r"[A-Z\d]|mouse[0-2]", self.melee_bind.get(), re.IGNORECASE) is None:
-            CTkMessagebox(self, message="Invalid keybind")
-            self.melee_bind_entry.delete(0, 99)
-            self.melee_bind_entry.insert(0, "3")
-            self.melee_bind.set("3")
-            return False
-        return True
-    
-    def validate_throwable(self) -> bool:
-        if re.fullmatch(r"[A-Z\d]|mouse[0-2]", self.throwable_bind.get(), re.IGNORECASE) is None:
-            CTkMessagebox(self, message="Invalid keybind")
-            self.throwable_bind_entry.delete(0, 99)
-            self.throwable_bind_entry.insert(0, "4")
-            self.throwable_bind.set("4")
-            return False
-        return True
-    
-    def use_bind_input(self) -> None:
-        match self.use_bind.get().lower():
-            case "mouse0":
-                pyautogui.click(button="left")
-            case "mouse1":
-                pyautogui.click(button="right")
-            case "mouse2":
-                pyautogui.click(button="middle")
-            case _:
-                keyboard.send(self.use_bind.get().lower())
-    
-    def melee_bind_input(self) -> None:
-        match self.melee_bind.get().lower():
-            case "mouse0":
-                pyautogui.click(button="left")
-            case "mouse1":
-                pyautogui.click(button="right")
-            case "mouse2":
-                pyautogui.click(button="middle")
-            case _:
-                keyboard.send(self.melee_bind.get().lower())
-    
-    def throwable_bind_input(self) -> None:
-        match self.throwable_bind.get().lower():
-            case "mouse0":
-                pyautogui.click(button="left")
-            case "mouse1":
-                pyautogui.click(button="right")
-            case "mouse2":
-                pyautogui.click(button="middle")
-            case _:
-                keyboard.send(self.throwable_bind.get().lower())
-    
     def damage_slider_ctrl(self, value: float) -> None:
         value = round(value, 1)
         self.damage_label.configure(text=value)
@@ -240,464 +158,178 @@ class Dodgeball(customtkinter.CTkToplevel):
     
     # Hotkeys
     def hr_and_zip_hotkey(self) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write("\n/gun13 2\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/zip 4\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
+        if open_window("Super Animal Royale"):
+            send_commands("gun13 2", "zip 4")
     
     def kill_host_hotkey(self) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/kill {self.host_id_entry.get()}\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write(f"\n/ghost {self.host_id_entry.get()}\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
+        if open_window("Super Animal Royale"):
+            send_commands(f"kill {self.host_id_entry.get()}", f"ghost {self.host_id_entry.get()}")
     
     def spawn_grenade_hotkey(self) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write("\n/nade\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
+        if open_window("Super Animal Royale"):
+            send_commands("nade")
+    
+    def spawn_grenades_random(self, x_start: int, x_end: int, y_start: int, y_end: int, amount: int) -> None:
+        for _ in range(amount):
+            x: int = random.randint(x_start, x_end)
+            y: int = random.randint(y_start, y_end)
+            self.spawn_nade(x, y)
+    
+    def spawn_grenades_preset(self, x: int, y: int, offset: int, offset_direction: str, amount: int) -> None:
+        for _ in range(amount):
+            self.spawn_nade(x, y)
+            if offset_direction == "x":
+                x += offset
+            elif offset_direction == "y":
+                y += offset
+            else:
+                raise ValueError("Invalid offset_direction, use 'x' or 'y'")
     
     def spawn_grenades_from_left_hotkey(self, amount: int) -> None:
         match self.map_select.get():
             case "Bamboo Resort":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_a: int = random.randint(2519, 2560)
-                        y_a: int = random.randint(2126, 2207)
-                        self.spawn_nade(x_a, y_a)
-                    for i in range(amount):
-                        x_b: int = random.randint(2590, 2622)
-                        y_b: int = random.randint(2126, 2207)
-                        self.spawn_nade(x_b, y_b)
+                    self.spawn_grenades_random(2519, 2560, 2126, 2207, amount)
+                    self.spawn_grenades_random(2590, 2622, 2126, 2207, amount)
                 else:
-                    x_a: int = 2539
-                    y_a: int = 2147
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 20
-                    x_b: int = 2618
-                    y_b: int = 2147
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 20
+                    self.spawn_grenades_preset(2539, 2147, 20, "y", amount)
+                    self.spawn_grenades_preset(2618, 2147, 20, "y", amount)
             case "SAW Security Grass":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_a: int = random.randint(3358, 3397)
-                        y_a: int = random.randint(1872, 1951)
-                        self.spawn_nade(x_a, y_a)
-                    for i in range(amount):
-                        x_b: int = random.randint(3461, 3500)
-                        y_b: int = random.randint(1872, 1951)
-                        self.spawn_nade(x_b, y_b)
+                    self.spawn_grenades_random(3358, 3397, 1872, 1951, amount)
+                    self.spawn_grenades_random(3461, 3500, 1872, 1951, amount)
                 else:
-                    x_a: int = 3380
-                    y_a: int = 1893
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 20
-                    x_b: int = 3479
-                    y_b: int = 1893
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 20
+                    self.spawn_grenades_preset(3380, 1893, 20, "y", amount)
+                    self.spawn_grenades_preset(3479, 1893, 20, "y", amount)
             case "SAW Research Labs":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_a: int = random.randint(2697, 2752)
-                        y_a: int = random.randint(2944, 3028)
-                        self.spawn_nade(x_a, y_a)
-                    for i in range(amount):
-                        x_b: int = random.randint(2762, 2817)
-                        y_b: int = random.randint(2944, 3028)
-                        self.spawn_nade(x_b, y_b)
+                    self.spawn_grenades_random(2697, 2752, 2944, 3028, amount)
+                    self.spawn_grenades_random(2762, 2817, 2944, 3028, amount)
                 else:
-                    x_a: int = 2719
-                    y_a: int = 2965
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 25
-                    x_b: int = 2793
-                    y_b: int = 2965
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 25
+                    self.spawn_grenades_preset(2719, 2965, 25, "y", amount)
+                    self.spawn_grenades_preset(2793, 2965, 25, "y", amount)
             case "Super Welcome Center":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_a: int = random.randint(488, 548)
-                        y_a: int = random.randint(540, 630)
-                        self.spawn_nade(x_a, y_a)
-                    for i in range(amount):
-                        x_b: int = random.randint(563, 609)
-                        y_b: int = random.randint(540, 630)
-                        self.spawn_nade(x_b, y_b)
+                    self.spawn_grenades_random(488, 548, 540, 630, amount)
+                    self.spawn_grenades_random(563, 609, 540, 630, amount)
                 else:
-                    x_a: int = 523
-                    y_a: int = 549
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 40
-                    x_b: int = 592
-                    y_b: int = 549
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 40
+                    self.spawn_grenades_preset(523, 549, 40, "y", amount)
+                    self.spawn_grenades_preset(592, 549, 40, "y", amount)
             case "Penguin Palace":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_a: int = random.randint(2111, 2167)
-                        y_a: int = random.randint(3848, 3923)
-                        self.spawn_nade(x_a, y_a)
-                    for i in range(amount):
-                        x_b: int = random.randint(2179, 2239)
-                        y_b: int = random.randint(3848, 3923)
-                        self.spawn_nade(x_b, y_b)
+                    self.spawn_grenades_random(2111, 2167, 3848, 3923, amount)
+                    self.spawn_grenades_random(2179, 2239, 3848, 3923, amount)
                 else:
-                    x_a: int = 2133
-                    y_a: int = 3860
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 24
-                    x_b: int = 2216
-                    y_b: int = 3860
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 24
+                    self.spawn_grenades_preset(2133, 3860, 24, "y", amount)
+                    self.spawn_grenades_preset(2216, 3860, 24, "y", amount)
             case "Pyramid":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_a: int = random.randint(1339, 1396)
-                        y_a: int = random.randint(2792, 2828)
-                        self.spawn_nade(x_a, y_a)
-                    for i in range(amount):
-                        x_b: int = random.randint(1410, 1471)
-                        y_b: int = random.randint(2792, 2828)
-                        self.spawn_nade(x_b, y_b)
+                    self.spawn_grenades_random(1339, 1396, 2792, 2828, amount)
+                    self.spawn_grenades_random(1410, 1471, 2792, 2828, amount)
                 else:
-                    x_a: int = 1365
-                    y_a: int = 2796
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 18
-                    x_b: int = 1441
-                    y_b: int = 2796
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 18
+                    self.spawn_grenades_preset(1365, 2796, 18, "y", amount)
+                    self.spawn_grenades_preset(1441, 2796, 18, "y", amount)
             case "Emu Ranch":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_a: int = random.randint(1835, 1887)
-                        y_a: int = random.randint(2572, 2599)
-                        self.spawn_nade(x_a, y_a)
-                    for i in range(amount):
-                        x_b: int = random.randint(1898, 1953)
-                        y_b: int = random.randint(2572, 2599)
-                        self.spawn_nade(x_b, y_b)
+                    self.spawn_grenades_random(1835, 1887, 2572, 2599, amount)
+                    self.spawn_grenades_random(1898, 1953, 2572, 2599, amount)
                 else:
-                    x_a: int = 1862
-                    y_a: int = 2568
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 15
-                    x_b: int = 1930
-                    y_b: int = 2568
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 15
+                    self.spawn_grenades_preset(1862, 2568, 15, "y", amount)
+                    self.spawn_grenades_preset(1930, 2568, 15, "y", amount)
             case "Shooting Range":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_a: int = random.randint(862, 918)
-                        y_a: int = random.randint(1071, 1123)
-                        self.spawn_nade(x_a, y_a)
-                    for i in range(amount):
-                        x_b: int = random.randint(944, 999)
-                        y_b: int = random.randint(1071, 1123)
-                        self.spawn_nade(x_b, y_b)
+                    self.spawn_grenades_random(862, 918, 1071, 1123, amount)
+                    self.spawn_grenades_random(944, 999, 1071, 1123, amount)
                 else:
-                    x_a: int = 890
-                    y_a: int = 1080
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 12
-                    x_b: int = 972
-                    y_b: int = 1080
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 12
+                    self.spawn_grenades_preset(890, 1080, 12, "y", amount)
+                    self.spawn_grenades_preset(972, 1080, 12, "y", amount)
             case "Juice Factory":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_a: int = random.randint(3376, 3497)
-                        y_a: int = random.randint(2707, 2746)
-                        self.spawn_nade(x_a, y_a)
-                    for i in range(amount):
-                        x_b: int = random.randint(3376, 3497)
-                        y_b: int = random.randint(2762, 2800)
-                        self.spawn_nade(x_b, y_b)
+                    self.spawn_grenades_random(3376, 3497, 2707, 2746, amount)
+                    self.spawn_grenades_random(3376, 3497, 2762, 2800, amount)
                 else:
-                    x_a: int = 3411
-                    y_a: int = 2711
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        x_a += 22
-                    x_b: int = 3411
-                    y_b: int = 2797
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        x_b += 22
+                    self.spawn_grenades_preset(3411, 2711, 22, "x", amount)
+                    self.spawn_grenades_preset(3411, 2797, 22, "x", amount)
             case "Super Sea Land":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_a: int = random.randint(4100, 4136)
-                        y_a: int = random.randint(570, 636)
-                        self.spawn_nade(x_a, y_a)
-                    for i in range(amount):
-                        x_b: int = random.randint(4148, 4182)
-                        y_b: int = random.randint(570, 636)
-                        self.spawn_nade(x_b, y_b)
+                    self.spawn_grenades_random(4100, 4136, 570, 636, amount)
+                    self.spawn_grenades_random(4148, 4182, 570, 636, amount)
                 else:
-                    x_a: int = 4114
-                    y_a: int = 591
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 15
-                    x_b: int = 4161
-                    y_b: int = 591
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 15
+                    self.spawn_grenades_preset(4114, 591, 15, "y", amount)
+                    self.spawn_grenades_preset(4161, 591, 15, "y", amount)
         
     def spawn_grenades_from_right_hotkey(self, amount: int) -> None:
         match self.map_select.get():
             case "Bamboo Resort":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_b: int = random.randint(2590, 2622)
-                        y_b: int = random.randint(2126, 2207)
-                        self.spawn_nade(x_b, y_b)
-                    for i in range(amount):
-                        x_a: int = random.randint(2519, 2560)
-                        y_a: int = random.randint(2126, 2207)
-                        self.spawn_nade(x_a, y_a)
+                    self.spawn_grenades_random(2590, 2622, 2126, 2207, amount)
+                    self.spawn_grenades_random(2519, 2560, 2126, 2207, amount)
                 else:
-                    x_b: int = 2618
-                    y_b: int = 2147
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 20
-                    x_a: int = 2539
-                    y_a: int = 2147
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 20
+                    self.spawn_grenades_preset(2618, 2147, 20, "y", amount)
+                    self.spawn_grenades_preset(2539, 2147, 20, "y", amount)
             case "SAW Security Grass":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_b: int = random.randint(3461, 3500)
-                        y_b: int = random.randint(1872, 1951)
-                        self.spawn_nade(x_b, y_b)
-                    for i in range(amount):
-                        x_a: int = random.randint(3358, 3397)
-                        y_a: int = random.randint(1872, 1951)
-                        self.spawn_nade(x_a, y_a)
+                    self.spawn_grenades_random(3461, 3500, 1872, 1951, amount)
+                    self.spawn_grenades_random(3358, 3397, 1872, 1951, amount)
                 else:
-                    x_b: int = 3479
-                    y_b: int = 1893
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 20
-                    x_a: int = 3380
-                    y_a: int = 1893
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 20
+                    self.spawn_grenades_preset(3479, 1893, 20, "y", amount)
+                    self.spawn_grenades_preset(3380, 1893, 20, "y", amount)
             case "SAW Research Labs":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_b: int = random.randint(2762, 2817)
-                        y_b: int = random.randint(2944, 3028)
-                        self.spawn_nade(x_b, y_b)
-                    for i in range(amount):
-                        x_a: int = random.randint(2697, 2752)
-                        y_a: int = random.randint(2944, 3028)
-                        self.spawn_nade(x_a, y_a)
+                    self.spawn_grenades_random(2762, 2817, 2944, 3028, amount)
+                    self.spawn_grenades_random(2697, 2752, 2944, 3028, amount)
                 else:
-                    x_b: int = 2793
-                    y_b: int = 2965
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 25
-                    x_a: int = 2719
-                    y_a: int = 2965
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 25
+                    self.spawn_grenades_preset(2793, 2965, 25, "y", amount)
+                    self.spawn_grenades_preset(2719, 2965, 25, "y", amount)
             case "Super Welcome Center":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_b: int = random.randint(563, 609)
-                        y_b: int = random.randint(540, 630)
-                        self.spawn_nade(x_b, y_b)
-                    for i in range(amount):
-                        x_a: int = random.randint(488, 548)
-                        y_a: int = random.randint(540, 630)
-                        self.spawn_nade(x_a, y_a)
+                    self.spawn_grenades_random(563, 609, 540, 630, amount)
+                    self.spawn_grenades_random(488, 548, 540, 630, amount)
                 else:
-                    x_b: int = 592
-                    y_b: int = 549
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 40
-                    x_a: int = 523
-                    y_a: int = 549
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 40
+                    self.spawn_grenades_preset(592, 549, 40, "y", amount)
+                    self.spawn_grenades_preset(523, 549, 40, "y", amount)
             case "Penguin Palace":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_b: int = random.randint(2179, 2239)
-                        y_b: int = random.randint(3848, 3923)
-                        self.spawn_nade(x_b, y_b)
-                    for i in range(amount):
-                        x_a: int = random.randint(2111, 2167)
-                        y_a: int = random.randint(3848, 3923)
-                        self.spawn_nade(x_a, y_a)
+                    self.spawn_grenades_random(2179, 2239, 3848, 3923, amount)
+                    self.spawn_grenades_random(2111, 2167, 3848, 3923, amount)
                 else:
-                    x_b: int = 2216
-                    y_b: int = 3860
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 24
-                    x_a: int = 2133
-                    y_a: int = 3860
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 24
+                    self.spawn_grenades_preset(2216, 3860, 24, "y", amount)
+                    self.spawn_grenades_preset(2133, 3860, 24, "y", amount)
             case "Pyramid":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_b: int = random.randint(1410, 1471)
-                        y_b: int = random.randint(2792, 2828)
-                        self.spawn_nade(x_b, y_b)
-                    for i in range(amount):
-                        x_a: int = random.randint(1339, 1396)
-                        y_a: int = random.randint(2792, 2828)
-                        self.spawn_nade(x_a, y_a)
+                    self.spawn_grenades_random(1410, 1471, 2792, 2828, amount)
+                    self.spawn_grenades_random(1339, 1396, 2792, 2828, amount)
                 else:
-                    x_b: int = 1441
-                    y_b: int = 2796
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 18
-                    x_a: int = 1365
-                    y_a: int = 2796
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 18
+                    self.spawn_grenades_preset(1441, 2796, 18, "y", amount)
+                    self.spawn_grenades_preset(1365, 2796, 18, "y", amount)
             case "Emu Ranch":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_b: int = random.randint(1898, 1953)
-                        y_b: int = random.randint(2572, 2599)
-                        self.spawn_nade(x_b, y_b)
-                    for i in range(amount):
-                        x_a: int = random.randint(1835, 1887)
-                        y_a: int = random.randint(2572, 2599)
-                        self.spawn_nade(x_a, y_a)
+                    self.spawn_grenades_random(1898, 1953, 2572, 2599, amount)
+                    self.spawn_grenades_random(1835, 1887, 2572, 2599, amount)
                 else:
-                    x_b: int = 1930
-                    y_b: int = 2568
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 15
-                    x_a: int = 1862
-                    y_a: int = 2568
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 15
+                    self.spawn_grenades_preset(1930, 2568, 15, "y", amount)
+                    self.spawn_grenades_preset(1862, 2568, 15, "y", amount)
             case "Shooting Range":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_b: int = random.randint(944, 999)
-                        y_b: int = random.randint(1071, 1123)
-                        self.spawn_nade(x_b, y_b)
-                    for i in range(amount):
-                        x_a: int = random.randint(862, 918)
-                        y_a: int = random.randint(1071, 1123)
-                        self.spawn_nade(x_a, y_a)
+                    self.spawn_grenades_random(944, 999, 1071, 1123, amount)
+                    self.spawn_grenades_random(862, 918, 1071, 1123, amount)
                 else:
-                    x_b: int = 972
-                    y_b: int = 1080
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 12
-                    x_a: int = 890
-                    y_a: int = 1080
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 12
+                    self.spawn_grenades_preset(972, 1080, 12, "y", amount)
+                    self.spawn_grenades_preset(890, 1080, 12, "y", amount)
             case "Juice Factory":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_b: int = random.randint(3376, 3497)
-                        y_b: int = random.randint(2762, 2800)
-                        self.spawn_nade(x_b, y_b)
-                    for i in range(amount):
-                        x_a: int = random.randint(3376, 3497)
-                        y_a: int = random.randint(2707, 2746)
-                        self.spawn_nade(x_a, y_a)
+                    self.spawn_grenades_random(3376, 3497, 2762, 2800, amount)
+                    self.spawn_grenades_random(3376, 3497, 2707, 2746, amount)
                 else:
-                    x_b: int = 3411
-                    y_b: int = 2797
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        x_b += 22
-                    x_a: int = 3411
-                    y_a: int = 2711
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        x_a += 22
+                    self.spawn_grenades_preset(3411, 2797, 22, "x", amount)
+                    self.spawn_grenades_preset(3411, 2711, 22, "x", amount)
             case "Super Sea Land":
                 if self.random_nades_switch.get() == 1:
-                    for i in range(amount):
-                        x_b: int = random.randint(4148, 4182)
-                        y_b: int = random.randint(570, 636)
-                        self.spawn_nade(x_b, y_b)
-                    for i in range(amount):
-                        x_a: int = random.randint(4100, 4136)
-                        y_a: int = random.randint(570, 636)
-                        self.spawn_nade(x_a, y_a)
+                    self.spawn_grenades_random(4148, 4182, 570, 636, amount)
+                    self.spawn_grenades_random(4100, 4136, 570, 636, amount)
                 else:
-                    x_b: int = 4161
-                    y_b: int = 591
-                    for i in range(amount):
-                        self.spawn_nade(x_b, y_b)
-                        y_b += 15
-                    x_a: int = 4114
-                    y_a: int = 591
-                    for i in range(amount):
-                        self.spawn_nade(x_a, y_a)
-                        y_a += 15
+                    self.spawn_grenades_preset(4161, 591, 15, "y", amount)
+                    self.spawn_grenades_preset(4114, 591, 15, "y", amount)
     
     def disable_hotkeys(self) -> None:
         if self.disable_hotkeys_switch.get() == 1:
@@ -722,32 +354,19 @@ class Dodgeball(customtkinter.CTkToplevel):
         return re.fullmatch(pattern, value) is not None
     
     def spawn_nade(self, x: int, y: int) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/tele {self.host_id_entry.get()} {x} {y}\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/nade\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
+        if open_window("Super Animal Royale"):
+            send_commands(f"tele {self.host_id_entry.get()} {x} {y}", "nade")
     
     def spawn_zips(self, x: int, y: int, amount: int) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
+        if open_window("Super Animal Royale") is False:
             return
         
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/tele {self.host_id_entry.get()} {x} {y}\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        self.use_bind_input()
+        send_commands(f"tele {self.host_id_entry.get()} {x} {y}")
+        press_use()
         time.sleep(5)
-        keyboard.write(f"\n/zip {amount}\n", delay=self.KEY_DELAY)
+        send_commands(f"zip {amount}")
         time.sleep(2)
-        self.throwable_bind_input()
-        time.sleep(self.KEY_DELAY*2)
+        press_throwable()
     
     def lay_zip(self, x_player: int, y_player: int, x_mouse: int, y_mouse: int) -> None:
         if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
@@ -767,15 +386,10 @@ class Dodgeball(customtkinter.CTkToplevel):
         click_y: int = window_top_left_y + y_mouse
         
         sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/tele {self.host_id_entry.get()} {x_player} {y_player}\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        self.throwable_bind_input()
-        time.sleep(self.KEY_DELAY*8)
-        pyautogui.moveTo(click_x, click_y)
-        time.sleep(self.KEY_DELAY*8)
-        pyautogui.click()
-        time.sleep(self.KEY_DELAY*8)
+        time.sleep(KEY_DELAY*16)
+        send_commands(f"tele {self.host_id_entry.get()} {x_player} {y_player}")
+        press_throwable()
+        mouse_click(click_x, click_y)
     
     def break_boxes(self, x_player: int, y_player: int, x_mouse: int, y_mouse: int) -> None:
         if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
@@ -795,38 +409,21 @@ class Dodgeball(customtkinter.CTkToplevel):
         click_y: int = window_top_left_y + y_mouse
         
         sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/tele {self.host_id_entry.get()} {x_player} {y_player}\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        self.melee_bind_input()
-        time.sleep(self.KEY_DELAY*8)
-        pyautogui.moveTo(click_x, click_y)
-        time.sleep(self.KEY_DELAY*8)
-        pyautogui.click()
-        time.sleep(self.KEY_DELAY*8)
+        time.sleep(KEY_DELAY*16)
+        send_commands(f"tele {self.host_id_entry.get()} {x_player} {y_player}")
+        press_melee()
+        mouse_click(click_x, click_y)
     
     def teleport_host(self, x: int, y: int, zip_amount: int = 0) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/tele {self.host_id_entry.get()} {x} {y}\n", delay=self.KEY_DELAY)
-        keyboard.write("\n/gun13 2\n", delay=self.KEY_DELAY)
-        if zip_amount != 0:
-            keyboard.write(f"\n/zip {zip_amount}\n", delay=self.KEY_DELAY)
+        if open_window("Super Animal Royale"):
+            send_commands(f"tele {self.host_id_entry.get()} {x} {y}", "gun13 2")
+            if zip_amount != 0:
+                send_commands(f"zip {zip_amount}")
     
     def teleport_players(self, team: list[str], x: int, y: int) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        for player in team:
-            keyboard.write(f"\n/tele {player} {x} {y}\n", delay=self.KEY_DELAY)
-            time.sleep(self.KEY_DELAY*2)
+        if open_window("Super Animal Royale"):
+            for player in team:
+                send_commands(f"tele {player} {x} {y}")
     
     def start_match(self) -> None:
         # Guard clauses
@@ -843,47 +440,26 @@ class Dodgeball(customtkinter.CTkToplevel):
                 CTkMessagebox(self, message="Invalid team B IDs")
                 return
         
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
+        if open_window("Super Animal Royale") is False:
             return
         
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
         team_a, team_b = self.get_teams()
         
         # Disable items, emus, hamballs and gas
-        keyboard.write("\n/allitems\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/emus\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/hamballs\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/gasoff\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
+        send_commands("allitems", "emus", "hamballs", "gasoff")
         
         # Start game and instructions
-        keyboard.write(f"\n/dmg {round(self.damage_slider.get(), 1)}\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/startp\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/god all\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/yell Welcome to dodgeball!\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/yell Remember to stay in the arena and don't hit players with\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/yell anything other than grenades or you will be disqualified\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/yell Please jump out of the eagle as soon as possible\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/yell And of course good luck have fun gamers!\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
+        send_commands(f"dmg {round(self.damage_slider.get(), 1)}", "startp", "god all")
+        send_commands("yell Welcome to dodgeball!")
+        send_commands("yell Remember to stay in the arena and don't hit players with")
+        send_commands("yell anything other than grenades or you will be disqualified")
+        send_commands("yell Please jump out of the eagle as soon as possible")
+        send_commands("yell And of course good luck have fun gamers!")
         
         # Wait for eagle and jump out
         time.sleep(16)
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        self.use_bind_input()
+        open_window("Super Animal Royale")
+        press_use()
         
         # Map selection
         match self.map_select.get():
@@ -911,9 +487,9 @@ class Dodgeball(customtkinter.CTkToplevel):
                 self.spawn_zips(3430, 1815, 3)
                 
                 # Opening the door
-                keyboard.write(f"\n/tele {self.host_id_entry.get()} 3350 1816\n", delay=self.KEY_DELAY)
+                send_commands(f"tele {self.host_id_entry.get()} 3350 1816")
                 time.sleep(1)
-                keyboard.send(self.use_bind.get().lower())
+                press_use()
                 time.sleep(1)
                 
                 self.lay_zip(3430, 1865, 960, 80)
@@ -1055,5 +631,4 @@ class Dodgeball(customtkinter.CTkToplevel):
                 self.teleport_players(team_a, 4090, 607)
                 self.teleport_players(team_b, 4193, 607)
         
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/god all\n", delay=self.KEY_DELAY)
+        send_commands("god all")

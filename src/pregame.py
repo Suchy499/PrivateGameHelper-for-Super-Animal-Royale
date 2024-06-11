@@ -1,6 +1,4 @@
 import customtkinter
-import keyboard
-import time
 import random
 import requests
 import webbrowser
@@ -16,7 +14,10 @@ from other import CommandsMenu
 from spawning import SpawningMenu
 from teleporting import TeleportMenu
 from gamemodes import GameModesMenu
+from settings import SettingsMenu
 from _version import __version__
+from packaging.version import Version
+from functions import *
 
 class Pregame(customtkinter.CTk):
     def __init__(self, *args, **kwargs) -> None:
@@ -26,7 +27,6 @@ class Pregame(customtkinter.CTk):
         self.resizable(False, False)
         self.FONT_TITLE = customtkinter.CTkFont(family="Roboto", size=24, weight="bold")
         self.FONT_REGULAR = customtkinter.CTkFont(family="Roboto", size=14, weight="bold")
-        self.KEY_DELAY: float = 0.025
         self.VERSION: str = __version__
         
         # Menu bar
@@ -40,6 +40,7 @@ class Pregame(customtkinter.CTk):
         self.info_dropdown = CustomDropdownMenu(widget=self.info_menu)
         self.info_dropdown.add_option(option="Info", command=self.open_infomenu)
         self.info_dropdown.add_option(option="Check for Updates", command=self.check_for_updates)
+        self.settings_menu = self.menu_bar.add_cascade("Settings", command=self.open_settingsmenu)
         
         # General settings
         self.general_title = customtkinter.CTkLabel(self, text="General Settings", font=self.FONT_TITLE)
@@ -454,6 +455,15 @@ class Pregame(customtkinter.CTk):
         self.all_random = customtkinter.CTkButton(self, width=20, height=20, text="", image=Images.ICON_DICE, hover=False, fg_color="transparent", bg_color="transparent", command=self.randomize_all)
         self.all_random.place(x=1120, y=45)
         self.all_random_tooltip = CTkToolTip(self.all_random, delay=0, message="Randomize all settings")
+        
+        Settings.update(self=Settings)
+        if Settings.popups == "1":
+            response = requests.get("https://api.github.com/repos/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/latest")
+            latest_version: str = response.json()["tag_name"]
+            if Version(self.VERSION) < Version(latest_version):
+                update_popup = CTkMessagebox(title="Private Game Helper", message=f"Current version: {self.VERSION}\nLatest version: {latest_version}\nDo you want to update?", option_1="Yes", option_2="No")
+                if update_popup.get() == "Yes":
+                    webbrowser.open("https://github.com/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/latest")
 
     # Slider Controls
     def gasspeed_slider_ctrl(self, value: float) -> None:
@@ -569,6 +579,14 @@ class Pregame(customtkinter.CTk):
         else:
             infomenu_window = InfoMenu(self)
             infomenu_window.after(100, infomenu_window.lift)
+    
+    def open_settingsmenu(self) -> None:
+        if len(pywinctl.getWindowsWithTitle("Private Game Helper - Settings", flags="IS")) == 1:
+            settingsmenu_window = pywinctl.getWindowsWithTitle("Private Game Helper - Settings", flags="IS")[0]
+            settingsmenu_window.activate()
+        else:
+            settingsmenu_window = SettingsMenu(self)
+            settingsmenu_window.after(100, settingsmenu_window.lift)
                     
     def open_gamemodesmenu(self) -> None:
         if len(pywinctl.getWindowsWithTitle("Private Game Helper - Game Modes", flags="IS")) == 1:
@@ -579,71 +597,58 @@ class Pregame(customtkinter.CTk):
             gamemodes_window.after(100, gamemodes_window.lift)
             
     def apply_settings(self) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
+        if open_window("Super Animal Royale") is False:
             return
         
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
         if self.allitems_switch.get() == 0:
-            keyboard.write("\n/allitems\n", delay=self.KEY_DELAY)
+            send_commands("allitems")
         if self.guns_switch.get() == 0:
-            keyboard.write("\n/guns\n", delay=self.KEY_DELAY)
+            send_commands("guns")
         if self.armors_switch.get() == 0:
-            keyboard.write("\n/armors\n", delay=self.KEY_DELAY)
+            send_commands("armors")
         if self.throwables_switch.get() == 0:
-            keyboard.write("\n/throwables\n", delay=self.KEY_DELAY)
+            send_commands("throwables")
         if self.powerups_switch.get() == 0:
-            keyboard.write("\n/utils\n", delay=self.KEY_DELAY)
+            send_commands("utils")
         if self.onehits_switch.get() == 1:
-            keyboard.write("\n/onehits\n", delay=self.KEY_DELAY)
+            send_commands("onehits")
         if self.emus_switch.get() == 0:
-            keyboard.write("\n/emus\n", delay=self.KEY_DELAY)
+            send_commands("emus")
         if self.hamballs_switch.get() == 0:
-            keyboard.write("\n/hamballs\n", delay=self.KEY_DELAY)
+            send_commands("hamballs")
         if self.moles_switch.get() == 0:
-            keyboard.write("\n/moles\n", delay=self.KEY_DELAY)
+            send_commands("moles")
         if self.pets_switch.get() == 0:
-            keyboard.write("\n/pets\n", delay=self.KEY_DELAY)
+            send_commands("pets")
         if self.gas_switch.get() == 0:
-            keyboard.write("\n/gasoff\n", delay=self.KEY_DELAY)
+            send_commands("gasoff")
         if self.norolls_switch.get() == 1:
-            keyboard.write("\n/noroll\n", delay=self.KEY_DELAY)
+            send_commands("noroll")
         if self.hpm.get() != "":
-            keyboard.write(f"\n/hpm {self.hpm.get()}\n", delay=self.KEY_DELAY)
-        keyboard.write(f"\n/gasspeed {round(self.gasspeed_slider.get(), 1)}\n", delay=self.KEY_DELAY)
-        keyboard.write(f"\n/gasdmg {round(self.gasdamage_slider.get(), 1)}\n", delay=self.KEY_DELAY)
-        keyboard.write(f"\n/bulletspeed {round(self.bulletspeed_slider.get(), 1)}\n", delay=self.KEY_DELAY)
-        keyboard.write(f"\n/dmg {round(self.damage_slider.get(), 1)}\n", delay=self.KEY_DELAY)
-        keyboard.write(f"\n/weight gunpistol {round(self.pistol_slider.get(), 1)} gunmagnum {round(self.magnum_slider.get(), 1)} gundeagle {round(self.deagle_slider.get(), 1)}\n", delay=self.KEY_DELAY)
-        keyboard.write(f"\n/weight gunsilencedpistol {round(self.silencedpistol_slider.get(), 1)} gunshotgun {round(self.shotgun_slider.get(), 1)} gunjag7 {round(self.jag_slider.get(), 1)}\n", delay=self.KEY_DELAY)
-        keyboard.write(f"\n/weight gunsmg {round(self.smg_slider.get(), 1)} gunthomas {round(self.tommy_slider.get(), 1)} gunak {round(self.ak_slider.get(), 1)}\n", delay=self.KEY_DELAY)
-        keyboard.write(f"\n/weight gunm16 {round(self.m16_slider.get(), 1)} gundart {str(round(self.dart_slider.get(), 1))} gundartepic {round(self.dartfly_slider.get(), 1)}\n", delay=self.KEY_DELAY)
-        keyboard.write(f"\n/weight gunhuntingrifle {round(self.huntingrifle_slider.get(), 1)} gunsniper {round(self.sniper_slider.get(), 1)} gunlaser {round(self.laser_slider.get(), 1)}\n", delay=self.KEY_DELAY)
-        keyboard.write(f"\n/weight gunminigun {round(self.minigun_slider.get(), 1)} gunbow {round(self.bow_slider.get(), 1)} guncrossbow {round(self.sparrowlauncher_slider.get(), 1)}\n", delay=self.KEY_DELAY)
-        keyboard.write(f"\n/weight gunegglauncher {round(self.bcg_slider.get(), 1)} grenadefrag {round(self.grenadefrag_slider.get(), 1)} grenadebanana {round(self.grenadebanana_slider.get(), 1)}\n", delay=self.KEY_DELAY)
-        keyboard.write(f"\n/weight grenadeskunk {round(self.grenadeskunk_slider.get(), 1)} grenadecatmine {round(self.grenademine_slider.get(), 1)} grenadezipline {round(self.grenadezip_slider.get(), 1)}\n", delay=self.KEY_DELAY)
+            send_commands(f"hpm {self.hpm.get()}")
+        send_commands(f"gasspeed {round(self.gasspeed_slider.get(), 1)}",
+                      f"gasdmg {round(self.gasdamage_slider.get(), 1)}",
+                      f"bulletspeed {round(self.bulletspeed_slider.get(), 1)}",
+                      f"dmg {round(self.damage_slider.get(), 1)}",
+                      f"weight gunpistol {round(self.pistol_slider.get(), 1)} gunmagnum {round(self.magnum_slider.get(), 1)} gundeagle {round(self.deagle_slider.get(), 1)}",
+                      f"weight gunsilencedpistol {round(self.silencedpistol_slider.get(), 1)} gunshotgun {round(self.shotgun_slider.get(), 1)} gunjag7 {round(self.jag_slider.get(), 1)}",
+                      f"weight gunsmg {round(self.smg_slider.get(), 1)} gunthomas {round(self.tommy_slider.get(), 1)} gunak {round(self.ak_slider.get(), 1)}",
+                      f"weight gunm16 {round(self.m16_slider.get(), 1)} gundart {str(round(self.dart_slider.get(), 1))} gundartepic {round(self.dartfly_slider.get(), 1)}",
+                      f"weight gunhuntingrifle {round(self.huntingrifle_slider.get(), 1)} gunsniper {round(self.sniper_slider.get(), 1)} gunlaser {round(self.laser_slider.get(), 1)}",
+                      f"weight gunminigun {round(self.minigun_slider.get(), 1)} gunbow {round(self.bow_slider.get(), 1)} guncrossbow {round(self.sparrowlauncher_slider.get(), 1)}",
+                      f"weight gunegglauncher {round(self.bcg_slider.get(), 1)} grenadefrag {round(self.grenadefrag_slider.get(), 1)} grenadebanana {round(self.grenadebanana_slider.get(), 1)}",
+                      f"weight grenadeskunk {round(self.grenadeskunk_slider.get(), 1)} grenadecatmine {round(self.grenademine_slider.get(), 1)} grenadezipline {round(self.grenadezip_slider.get(), 1)}")
 
     def match_id(self) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write("\n/matchid\n", delay=self.KEY_DELAY)
+        if open_window("Super Animal Royale"):
+            send_commands("matchid")
 
     def start_match(self) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        if self.bots_switch.get() == 0:
-            keyboard.write("\n/startp\n", delay=self.KEY_DELAY)
-        else:
-            keyboard.write("\n/start\n", delay=self.KEY_DELAY)
+        if open_window("Super Animal Royale"):
+            if self.bots_switch.get() == 0:
+                send_commands("startp")
+            else:
+                send_commands("start")
 
     def always_on_top(self) -> None:
         if self.wm_attributes("-topmost"):
@@ -662,81 +667,81 @@ class Pregame(customtkinter.CTk):
                 if file is not None:
                     file_content: str = file.read()
                     lines: list[str] = file_content.split("\n")
-                    settings: list[str] = []
+                    settings: dict[str, str] = {}
                     for x in lines:
                         setting: list[str] = x.split("=")
-                        settings.append(setting[1])
-                    self.allitems_switch.select() if int(settings[0]) == 1 else self.allitems_switch.deselect()
-                    self.guns_switch.select() if int(settings[1]) == 1 else self.guns_switch.deselect()
-                    self.armors_switch.select() if int(settings[2]) == 1 else self.armors_switch.deselect()
-                    self.throwables_switch.select() if int(settings[3]) == 1 else self.throwables_switch.deselect()
-                    self.powerups_switch.select() if int(settings[4]) == 1 else self.throwables_switch.deselect()
-                    self.onehits_switch.select() if int(settings[5]) == 1 else self.onehits_switch.deselect()
-                    self.emus_switch.select() if int(settings[6]) == 1 else self.emus_switch.deselect()
-                    self.hamballs_switch.select() if int(settings[7]) == 1 else self.hamballs_switch.deselect()
-                    self.moles_switch.select() if int(settings[8]) == 1 else self.moles_switch.deselect()
-                    self.pets_switch.select() if int(settings[9]) == 1 else self.pets_switch.deselect()
-                    self.gas_switch.select() if int(settings[10]) == 1 else self.gas_switch.deselect()
-                    self.norolls_switch.select() if int(settings[11]) == 1 else self.norolls_switch.deselect()
-                    self.bots_switch.select() if int(settings[40]) == 1 else self.bots_switch.deselect()
-                    self.gasspeed_slider.set(float(settings[12]))
-                    self.gasspeed_label.configure(text=settings[12])
-                    self.gasdamage_slider.set(float(settings[13]))
-                    self.gasdamage_label.configure(text=settings[13])
-                    self.bulletspeed_slider.set(float(settings[14]))
-                    self.bulletspeed_label.configure(text=settings[14])
-                    self.damage_slider.set(float(settings[15]))
-                    self.damage_label.configure(text=settings[15])
-                    self.pistol_slider.set(float(settings[16]))
-                    self.pistol_label.configure(text=settings[16])
-                    self.magnum_slider.set(float(settings[17]))
-                    self.magnum_label.configure(text=settings[17])
-                    self.deagle_slider.set(float(settings[18]))
-                    self.deagle_label.configure(text=settings[18])
-                    self.silencedpistol_slider.set(float(settings[19]))
-                    self.silencedpistol_label.configure(text=settings[19])
-                    self.shotgun_slider.set(float(settings[20]))
-                    self.shotgun_label.configure(text=settings[20])
-                    self.jag_slider.set(float(settings[21]))
-                    self.jag_label.configure(text=settings[21])
-                    self.smg_slider.set(float(settings[22]))
-                    self.smg_label.configure(text=settings[22])
-                    self.tommy_slider.set(float(settings[23]))
-                    self.tommy_label.configure(text=settings[23])
-                    self.ak_slider.set(float(settings[24]))
-                    self.ak_label.configure(text=settings[24])
-                    self.m16_slider.set(float(settings[25]))
-                    self.m16_label.configure(text=settings[25])
-                    self.dart_slider.set(float(settings[26]))
-                    self.dart_label.configure(text=settings[26])
-                    self.dartfly_slider.set(float(settings[27]))
-                    self.dartfly_label.configure(text=settings[27])
-                    self.huntingrifle_slider.set(float(settings[28]))
-                    self.huntingrifle_label.configure(text=settings[28])
-                    self.sniper_slider.set(float(settings[29]))
-                    self.sniper_label.configure(text=settings[29])
-                    self.laser_slider.set(float(settings[30]))
-                    self.laser_label.configure(text=settings[30])
-                    self.minigun_slider.set(float(settings[31]))
-                    self.minigun_label.configure(text=settings[31])
-                    self.bow_slider.set(float(settings[32]))
-                    self.bow_label.configure(text=settings[32])
-                    self.sparrowlauncher_slider.set(float(settings[33]))
-                    self.sparrowlauncher_label.configure(text=settings[33])
-                    self.bcg_slider.set(float(settings[34]))
-                    self.bcg_label.configure(text=settings[34])
-                    self.grenadefrag_slider.set(float(settings[35]))
-                    self.grenadefrag_label.configure(text=settings[35])
-                    self.grenadebanana_slider.set(float(settings[36]))
-                    self.grenadebanana_label.configure(text=settings[36])
-                    self.grenadeskunk_slider.set(float(settings[37]))
-                    self.grenadeskunk_label.configure(text=settings[37])
-                    self.grenademine_slider.set(float(settings[38]))
-                    self.grenademine_label.configure(text=settings[38])
-                    self.grenadezip_slider.set(float(settings[39]))
-                    self.grenadezip_label.configure(text=settings[39])
+                        settings[setting[0]] = setting[1]
+                    self.allitems_switch.select() if settings["ALL_ITEMS"] == "1" else self.allitems_switch.deselect()
+                    self.guns_switch.select() if settings["GUNS"] == "1" else self.guns_switch.deselect()
+                    self.armors_switch.select() if settings["ARMORS"] == "1" else self.armors_switch.deselect()
+                    self.throwables_switch.select() if settings["THROWABLES"] == "1" else self.throwables_switch.deselect()
+                    self.powerups_switch.select() if settings["POWERUPS"] == "1" else self.throwables_switch.deselect()
+                    self.onehits_switch.select() if settings["ONEHITS"] == "1" else self.onehits_switch.deselect()
+                    self.emus_switch.select() if settings["EMUS"] == "1" else self.emus_switch.deselect()
+                    self.hamballs_switch.select() if settings["HAMBALLS"] == "1" else self.hamballs_switch.deselect()
+                    self.moles_switch.select() if settings["MOLES"] == "1" else self.moles_switch.deselect()
+                    self.pets_switch.select() if settings["PETS"] == "1" else self.pets_switch.deselect()
+                    self.gas_switch.select() if settings["GAS"] == "1" else self.gas_switch.deselect()
+                    self.norolls_switch.select() if settings["NOROLLS"] == "1" else self.norolls_switch.deselect()
+                    self.bots_switch.select() if settings["BOTS"] == "1" else self.bots_switch.deselect()
+                    self.gasspeed_slider.set(float(settings["GAS_SPEED"]))
+                    self.gasspeed_label.configure(text=settings["GAS_SPEED"])
+                    self.gasdamage_slider.set(float(settings["GAS_DAMAGE"]))
+                    self.gasdamage_label.configure(text=settings["GAS_DAMAGE"])
+                    self.bulletspeed_slider.set(float(settings["BULLET_SPEED"]))
+                    self.bulletspeed_label.configure(text=settings["BULLET_SPEED"])
+                    self.damage_slider.set(float(settings["DAMAGE"]))
+                    self.damage_label.configure(text=settings["DAMAGE"])
+                    self.pistol_slider.set(float(settings["PISTOL"]))
+                    self.pistol_label.configure(text=settings["PISTOL"])
+                    self.magnum_slider.set(float(settings["MAGNUM"]))
+                    self.magnum_label.configure(text=settings["MAGNUM"])
+                    self.deagle_slider.set(float(settings["DEAGLE"]))
+                    self.deagle_label.configure(text=settings["DEAGLE"])
+                    self.silencedpistol_slider.set(float(settings["SILENCED_PISTOL"]))
+                    self.silencedpistol_label.configure(text=settings["SILENCED_PISTOL"])
+                    self.shotgun_slider.set(float(settings["SHOTGUN"]))
+                    self.shotgun_label.configure(text=settings["SHOTGUN"])
+                    self.jag_slider.set(float(settings["JAG-7"]))
+                    self.jag_label.configure(text=settings["JAG-7"])
+                    self.smg_slider.set(float(settings["SMG"]))
+                    self.smg_label.configure(text=settings["SMG"])
+                    self.tommy_slider.set(float(settings["TOMMY_GUN"]))
+                    self.tommy_label.configure(text=settings["TOMMY_GUN"])
+                    self.ak_slider.set(float(settings["AK"]))
+                    self.ak_label.configure(text=settings["AK"])
+                    self.m16_slider.set(float(settings["M16"]))
+                    self.m16_label.configure(text=settings["M16"])
+                    self.dart_slider.set(float(settings["DART"]))
+                    self.dart_label.configure(text=settings["DART"])
+                    self.dartfly_slider.set(float(settings["DARTFLY"]))
+                    self.dartfly_label.configure(text=settings["DARTFLY"])
+                    self.huntingrifle_slider.set(float(settings["HUNTING_RIFLE"]))
+                    self.huntingrifle_label.configure(text=settings["HUNTING_RIFLE"])
+                    self.sniper_slider.set(float(settings["SNIPER"]))
+                    self.sniper_label.configure(text=settings["SNIPER"])
+                    self.laser_slider.set(float(settings["LASER"]))
+                    self.laser_label.configure(text=settings["LASER"])
+                    self.minigun_slider.set(float(settings["MINIGUN"]))
+                    self.minigun_label.configure(text=settings["MINIGUN"])
+                    self.bow_slider.set(float(settings["BOW"]))
+                    self.bow_label.configure(text=settings["BOW"])
+                    self.sparrowlauncher_slider.set(float(settings["SPARROW_LAUNCHER"]))
+                    self.sparrowlauncher_label.configure(text=settings["SPARROW_LAUNCHER"])
+                    self.bcg_slider.set(float(settings["BCG"]))
+                    self.bcg_label.configure(text=settings["BCG"])
+                    self.grenadefrag_slider.set(float(settings["GRENADE"]))
+                    self.grenadefrag_label.configure(text=settings["GRENADE"])
+                    self.grenadebanana_slider.set(float(settings["BANANA"]))
+                    self.grenadebanana_label.configure(text=settings["BANANA"])
+                    self.grenadeskunk_slider.set(float(settings["SKUNK"]))
+                    self.grenadeskunk_label.configure(text=settings["SKUNK"])
+                    self.grenademine_slider.set(float(settings["MINE"]))
+                    self.grenademine_label.configure(text=settings["MINE"])
+                    self.grenadezip_slider.set(float(settings["ZIPLINE"]))
+                    self.grenadezip_label.configure(text=settings["ZIPLINE"])
                     self.hpm.delete(0, 99)
-                    self.hpm.insert(0, settings[41])
+                    self.hpm.insert(0, settings["HPM"])
         except TypeError:
             pass
 
@@ -866,10 +871,9 @@ class Pregame(customtkinter.CTk):
     def check_for_updates(self) -> None:
         response = requests.get("https://api.github.com/repos/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/latest")
         latest_version: str = response.json()["tag_name"]
-        if self.VERSION != latest_version:
+        if Version(self.VERSION) < Version(latest_version):
             update_popup = CTkMessagebox(title="Private Game Helper", message=f"Current version: {self.VERSION}\nLatest version: {latest_version}\nDo you want to update?", option_1="Yes", option_2="No")
             if update_popup.get() == "Yes":
                 webbrowser.open("https://github.com/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/latest")
         else:
             CTkMessagebox(title="Private Game Helper", message="There are currently no updates available")
-            

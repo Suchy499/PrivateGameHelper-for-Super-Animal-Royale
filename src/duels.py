@@ -1,11 +1,10 @@
 import customtkinter
 import re
 import time
-import keyboard
 import random
-import pywinctl
 from CTkToolTip import CTkToolTip
 from CTkMessagebox import CTkMessagebox
+from functions import *
 
 class Duels(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs) -> None:
@@ -15,7 +14,6 @@ class Duels(customtkinter.CTkToplevel):
         self.resizable(False, False)
         self.FONT_TITLE = customtkinter.CTkFont(family="Roboto", size=24, weight="bold")
         self.FONT_REGULAR = customtkinter.CTkFont(family="Roboto", size=16, weight="bold")
-        self.KEY_DELAY: float = 0.025
         
         # Title
         self.duels_title = customtkinter.CTkLabel(self, text="Duels", font=self.FONT_TITLE)
@@ -107,6 +105,8 @@ class Duels(customtkinter.CTkToplevel):
         # Start
         self.start_button = customtkinter.CTkButton(self, text="Start Match", command=self.start_match)
         self.start_button.place(x=20, y=570)
+        
+        Settings.update(self=Settings)
     
     def enable_random_weapons(self) -> None:
         if self.weapons_switch.get() == 1:
@@ -135,88 +135,42 @@ class Duels(customtkinter.CTkToplevel):
         return value.isnumeric()
     
     def teleport_players(self, team: str, x: int, y: int) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        team = team.strip().split(sep=" ")
-        for player in team:
-            keyboard.write(f"\n/tele {player} {x} {y}\n", delay=self.KEY_DELAY)
-            time.sleep(self.KEY_DELAY*2)
+        if open_window("Super Animal Royale"):
+            team = team.strip().split(sep=" ")
+            for player in team:
+                send_commands(f"tele {player} {x} {y}")
         
     def spawn_armor(self, x: int, y: int) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/tele {self.host_id_entry.get()} {x} {y}\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*4)
-        for _ in range(int(self.players_per_team_select.get())):
-            keyboard.write("\n/armor3\n", delay=self.KEY_DELAY)
-            time.sleep(self.KEY_DELAY*2)
+        if open_window("Super Animal Royale"):
+            send_commands(f"tele {self.host_id_entry.get()} {x} {y}")
+            for _ in range(int(self.players_per_team_select.get())):
+                send_commands("armor3")
                 
     def spawn_weapon(self, x: int, y: int, id: int) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/tele {self.host_id_entry.get()} {x} {y}\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*4)
-        for _ in range(int(self.players_per_team_select.get())):
-            keyboard.write(f"\n/gun{id} 3\n", delay=self.KEY_DELAY)
-            time.sleep(self.KEY_DELAY*2)
+        if open_window("Super Animal Royale"):
+            send_commands(f"tele {self.host_id_entry.get()} {x} {y}")
+            for _ in range(int(self.players_per_team_select.get())):
+                send_commands(f"gun{id} 3")
                 
     def spawn_ammo(self, x: int, y: int) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/tele {self.host_id_entry.get()} {x} {y}\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*4)
-        for _ in range(int(self.players_per_team_select.get())):
-            for i in range(6):
-                keyboard.write(f"\n/ammo{i} 500\n", delay=self.KEY_DELAY)
-            keyboard.write("\n/juice 200\n", delay=self.KEY_DELAY)
-            keyboard.write("\n/tape 5\n", delay=self.KEY_DELAY)
-            time.sleep(self.KEY_DELAY*2)
+        if open_window("Super Animal Royale"):
+            send_commands(f"tele {self.host_id_entry.get()} {x} {y}")
+            for _ in range(int(self.players_per_team_select.get())):
+                for i in range(6):
+                    send_commands(f"ammo{i} 500")
+                send_commands("juice 200", "tape 5")
     
     def spawn_powerups(self, x: int, y: int) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/tele {self.host_id_entry.get()} {x} {y}\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*4)
-        for _ in range(int(self.players_per_team_select.get())):
-            keyboard.write("\n/util2\n", delay=self.KEY_DELAY)
-            time.sleep(self.KEY_DELAY*2)
-            keyboard.write("\n/util4\n", delay=self.KEY_DELAY)
-            time.sleep(self.KEY_DELAY*2)
+        if open_window("Super Animal Royale"):
+            send_commands(f"tele {self.host_id_entry.get()} {x} {y}")
+            for _ in range(int(self.players_per_team_select.get())):
+                send_commands("util2", "util4")
     
     def spawn_throwables(self, x: int, y: int) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/tele {self.host_id_entry.get()} {x} {y}\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*4)
-        for _ in range(int(self.players_per_team_select.get())):
-            keyboard.write("\n/banana 10\n", delay=self.KEY_DELAY)
-            time.sleep(self.KEY_DELAY*2)
-            keyboard.write("\n/nade 4\n", delay=self.KEY_DELAY)
-            time.sleep(self.KEY_DELAY*2)
+        if open_window("Super Animal Royale"):
+            send_commands(f"tele {self.host_id_entry.get()} {x} {y}")
+            for _ in range(int(self.players_per_team_select.get())):
+                send_commands("banana 10", "nade 4")
     
     def start_match(self) -> None: # Sourcery, shut your mouth. Fuck you >:c my boyfriend is perfect
         # Guard clauses
@@ -236,60 +190,35 @@ class Duels(customtkinter.CTkToplevel):
             CTkMessagebox(self, message="Invalid HPM")
             return
         
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
+        if open_window("Super Animal Royale") is False:
             return
         
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        
-        # Disable items, emus, hamballs and gas
-        keyboard.write("\n/allitems\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/emus\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/hamballs\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/gasoff\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        
-        # Set HPM
-        keyboard.write(f"\n/highping {self.hpm_entry.get()}\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
+        # Disable items, emus, hamballs, gas and set HPM
+        send_commands("allitems", "emus", "hamballs", "gasoff", f"highping {self.hpm_entry.get()}")
         
         # Set pets
         if self.no_pets_switch.get() == 1:
-            keyboard.write("\n/pets\n", delay=self.KEY_DELAY)
-            time.sleep(self.KEY_DELAY*2)
+            send_commands("pets")
         
         # Set one hits
         if self.one_hit_kills_switch.get() == 1:
-            keyboard.write("\n/onehits\n", delay=self.KEY_DELAY)
-            time.sleep(self.KEY_DELAY*2)
+            send_commands("onehits")
         
         # Set jumprolls
         if self.no_jumprolls_switch.get() == 1:
-            keyboard.write("\n/noroll\n", delay=self.KEY_DELAY)
-            time.sleep(self.KEY_DELAY*2)
+            send_commands("noroll")
         
         # Start game and instructions
-        keyboard.write("\n/startp\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/god all\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/yell Welcome to duels!\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/yell Please jump out of the eagle as soon as possible\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write("\n/yell So you can be teleported to weapon selection\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
-        keyboard.write(f"\n/yell Selected map: {self.map_select.get()}\n", delay=self.KEY_DELAY)
+        send_commands("startp", "god all")
+        send_commands("yell Welcome to duels!",
+                      "yell Please jump out of the eagle as soon as possible",
+                      "yell So you can be teleported to weapon selection",
+                      f"yell Selected map: {self.map_select.get()}")
         
         # Wait for eagle and jump out
         time.sleep(16)
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.send("e")
+        open_window("Super Animal Royale")
+        press_use()
         
         # Spawn ammo
         self.spawn_ammo(705, 1335)
@@ -369,49 +298,44 @@ class Duels(customtkinter.CTkToplevel):
         self.teleport_players(self.team_b_entry.get(), 3855, 1535)
         
         # Wait 30 seconds
-        keyboard.write("\n/yell 30 Seconds\n", delay=self.KEY_DELAY)
+        send_commands("yell 30 Seconds")
         time.sleep(20)
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write("\n/yell 10\n", delay=self.KEY_DELAY)
+        open_window("Super Animal Royale")
+        send_commands("yell 10")
         time.sleep(7)
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write("\n/yell 3\n", delay=self.KEY_DELAY)
+        open_window("Super Animal Royale")
+        send_commands("yell 3")
         time.sleep(1)
-        keyboard.write("\n/yell 2\n", delay=self.KEY_DELAY)
+        send_commands("yell 2")
         time.sleep(1)
-        keyboard.write("\n/yell 1\n", delay=self.KEY_DELAY)
+        send_commands("yell 1")
         time.sleep(1)
-        keyboard.write("\n/god all\n", delay=self.KEY_DELAY)
-        time.sleep(self.KEY_DELAY*2)
+        send_commands("god all")
         
         # Kill host
         if self.kill_host_switch.get() == 1:
-            keyboard.write(f"\n/kill {self.host_id_entry.get()}\n", delay=self.KEY_DELAY)
-            time.sleep(self.KEY_DELAY*2)
-            keyboard.write(f"\n/ghost {self.host_id_entry.get()}\n", delay=self.KEY_DELAY)
-            time.sleep(self.KEY_DELAY*2)
+            send_commands(f"kill {self.host_id_entry.get()}")
+            send_commands(f"ghost {self.host_id_entry.get()}")
         
         # Teleport to selected map
         match self.map_select.get():
             case "Bamboo Resort":
                 self.teleport_players(self.team_a_entry.get(), 2430, 1830)
                 self.teleport_players(self.team_b_entry.get(), 2725, 1830)
-                keyboard.write("\n/yell Fight!\n", delay=self.KEY_DELAY)
+                send_commands("yell Fight!")
             case "SAW Security":
                 self.teleport_players(self.team_a_entry.get(), 3335, 1910)
                 self.teleport_players(self.team_b_entry.get(), 3520, 1910)
-                keyboard.write("\n/yell Fight!\n", delay=self.KEY_DELAY)
+                send_commands("yell Fight!")
             case "SAW Research Labs":
                 self.teleport_players(self.team_a_entry.get(), 2600, 2985)
                 self.teleport_players(self.team_b_entry.get(), 2900, 2985)
-                keyboard.write("\n/yell Fight!\n", delay=self.KEY_DELAY)
+                send_commands("yell Fight!")
             case "Super Welcome Center":
                 self.teleport_players(self.team_a_entry.get(), 510, 735)
                 self.teleport_players(self.team_b_entry.get(), 865, 735)
-                keyboard.write("\n/yell Fight!\n", delay=self.KEY_DELAY)
+                send_commands("yell Fight!")
             case "Penguin Palace":
                 self.teleport_players(self.team_a_entry.get(), 2052, 3886)
                 self.teleport_players(self.team_b_entry.get(), 2295, 3886)
-                keyboard.write("\n/yell Fight!\n", delay=self.KEY_DELAY)
+                send_commands("yell Fight!")

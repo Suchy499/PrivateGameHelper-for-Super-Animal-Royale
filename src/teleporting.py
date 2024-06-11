@@ -1,11 +1,9 @@
 import customtkinter
 import pyperclip
-import keyboard
-import time
-import pywinctl
 from CTkToolTip import CTkToolTip
 from CTkMessagebox import CTkMessagebox
 from images import Images
+from functions import *
 
 class TeleportMenu(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs) -> None:
@@ -16,7 +14,6 @@ class TeleportMenu(customtkinter.CTkToplevel):
         self.FONT_TITLE = customtkinter.CTkFont(family="Roboto", size=24, weight="bold")
         self.FONT_REGULAR = customtkinter.CTkFont(family="Roboto", size=16, weight="bold")
         self.mode_var = customtkinter.IntVar(value=0)
-        self.KEY_DELAY: float = 0.025
         
         # Title
         self.title = customtkinter.CTkLabel(self, text="Teleport Menu", font=self.FONT_TITLE)
@@ -64,13 +61,8 @@ class TeleportMenu(customtkinter.CTkToplevel):
             self.coordinates.configure(text=f"Coordinates:\n({x}, {y})")
         elif self.player_id_entry.get().isnumeric() and 1 <= int(self.player_id_entry.get()) <= 99 or (self.player_id_entry.get().lower() == "all"):
             self.coordinates.configure(text=f"Coordinates:\n({x}, {y})")
-            if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-                return
-            
-            sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-            sar_window.activate()
-            time.sleep(self.KEY_DELAY*16)
-            keyboard.write(f"\n/tele {self.player_id_entry.get().lower()} {x} {y}\n", delay=self.KEY_DELAY)
+            if open_window("Super Animal Royale"):
+                send_commands(f"tele {self.player_id_entry.get().lower()} {x} {y}")
         else:
             CTkMessagebox(title="Private Game Helper", message="Player ID has to be either \"all\" or between 1-99")
     

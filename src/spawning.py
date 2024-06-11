@@ -1,9 +1,7 @@
 import customtkinter
-import keyboard
-import time
-import pywinctl
 from CTkToolTip import CTkToolTip
 from images import Images
+from functions import *
 
 class SpawningMenu(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs) -> None:
@@ -14,7 +12,6 @@ class SpawningMenu(customtkinter.CTkToplevel):
         self.FONT_TITLE = customtkinter.CTkFont(family="Roboto", size=24, weight="bold")
         self.FONT_REGULAR = customtkinter.CTkFont(family="Roboto", size=16, weight="bold")
         self.selected_rarity: int = 2
-        self.KEY_DELAY: float = 0.025
         
         # Spawn Guns
         self.spawn_guns_title = customtkinter.CTkLabel(self, text="Spawn Guns", font=self.FONT_TITLE)
@@ -292,109 +289,54 @@ class SpawningMenu(customtkinter.CTkToplevel):
                 self.selected_rarity = 4
         
     def spawn_weapon_ctrl(self, id: int) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/gun{id} {self.selected_rarity}\n", delay=self.KEY_DELAY)
+        if open_window("Super Animal Royale"):
+            send_commands(f"gun{id} {self.selected_rarity}")
         
     def ammo_slider_ctrl(self, value: float) -> None:
         self.ammo_label.configure(text=round(value))
         
     def spawn_ammo_ctrl(self, id: int) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/ammo{id} {round(self.ammo_slider.get())}\n", delay=self.KEY_DELAY)
+        if open_window("Super Animal Royale"):
+            send_commands(f"ammo{id} {round(self.ammo_slider.get())}")
                 
     def spawn_juice_ctrl(self) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/juice {round(self.ammo_slider.get())}\n", delay=self.KEY_DELAY)
+        if open_window("Super Animal Royale"):
+            send_commands(f"juice {round(self.ammo_slider.get())}")
         
     def tape_slider_ctrl(self, value: float) -> None:
         self.tape_label.configure(text=round(value))
         
     def spawn_tape_ctrl(self) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/tape {round(self.tape_slider.get())}\n", delay=self.KEY_DELAY)
+        if open_window("Super Animal Royale"):
+            send_commands(f"tape {round(self.tape_slider.get())}")
         
     def spawn_grenade_ctrl(self) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/nade {round(self.tape_slider.get())}\n", delay=self.KEY_DELAY)
+        if open_window("Super Animal Royale"):
+            send_commands(f"nade {round(self.tape_slider.get())}")
         
     def spawn_banana_ctrl(self) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/banana {round(self.tape_slider.get())}\n", delay=self.KEY_DELAY)
+        if open_window("Super Animal Royale"):
+            send_commands(f"banana {round(self.tape_slider.get())}")
         
     def spawn_zip_ctrl(self) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/zip {round(self.tape_slider.get())}\n", delay=self.KEY_DELAY)
+        if open_window("Super Animal Royale"):
+            send_commands(f"zip {round(self.tape_slider.get())}")
         
     def spawn_powerup_ctrl(self, id: int) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/util{id}\n", delay=self.KEY_DELAY)
+        if open_window("Super Animal Royale"):
+            send_commands(f"util{id}")
         
     def spawn_armor_ctrl(self, id: int) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write(f"\n/armor{id}\n", delay=self.KEY_DELAY)
+        if open_window("Super Animal Royale"):
+            send_commands(f"armor{id}")
         
     def spawn_emu_ctrl(self) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write("\n/emu\n", delay=self.KEY_DELAY)
+        if open_window("Super Animal Royale"):
+            send_commands("emu")
                 
     def spawn_hamball_ctrl(self) -> None:
-        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
-            return
-        
-        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
-        sar_window.activate()
-        time.sleep(self.KEY_DELAY*16)
-        keyboard.write("\n/hamball\n", delay=self.KEY_DELAY)
+        if open_window("Super Animal Royale"):
+            send_commands("hamball")
         
     def always_on_top(self) -> None:
         if self.wm_attributes("-topmost"):
