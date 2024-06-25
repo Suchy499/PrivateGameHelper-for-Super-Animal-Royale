@@ -58,9 +58,10 @@ the solution to that is changing your in-game resolution to one that's 16:9 (e.g
 
 ## Changelog
 
-### v1.3
+### v1.4
 
-- Added an option to check for updates
-- Added custom game modes:
-  - Duels
-  - Dodgeball
+- New custom game mode: Hamball Racing
+- Added bananas as arena boundaries for duels
+- Moved keybind settings from dodgeball to its own menu
+- Will now show a pop-up at launch whenever a new update is available (can be turned off in the settings)
+  

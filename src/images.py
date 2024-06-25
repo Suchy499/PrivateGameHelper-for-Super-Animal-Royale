@@ -63,3 +63,4 @@ class Images:
     ICON_DICE = customtkinter.CTkImage(Image.open("resources/Dice.png"), size=(15, 15))
     SUPER_STAGE_GP = customtkinter.CTkImage(Image.open("resources/SuperStageGP.png"), size=(500, 300))
     PENGUIN_PALACE_GP = customtkinter.CTkImage(Image.open("resources/PenguinPalaceGP.png"), size=(500, 300))
+    PYRAMID_GP = customtkinter.CTkImage(Image.open("resources/PyramidGP.png"), size=(500, 300))

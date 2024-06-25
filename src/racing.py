@@ -27,7 +27,7 @@ class Racing(customtkinter.CTkToplevel):
         # Maps
         self.map_label = customtkinter.CTkLabel(self, text="Map:", font=self.FONT_REGULAR)
         self.map_label.place(x=20, y=60)
-        self.map_select = customtkinter.CTkOptionMenu(self, width=175, values=["Super Stage GP", "Penguin Palace GP"], command=self.change_map)
+        self.map_select = customtkinter.CTkOptionMenu(self, width=175, values=["Super Stage GP", "Penguin Palace GP", "Pyramid GP"], command=self.change_map)
         self.map_select.place(x=20, y=90)
         
         # Host ID
@@ -57,6 +57,9 @@ class Racing(customtkinter.CTkToplevel):
                 self.selected_map_author.configure(text="Map by:\n DeltaEagle84")
             case "Penguin Palace GP":
                 self.selected_map_image.configure(image=Images.PENGUIN_PALACE_GP)
+                self.selected_map_author.configure(text="Map by:\n UmbraCuticus")
+            case "Pyramid GP":
+                self.selected_map_image.configure(image=Images.PYRAMID_GP)
                 self.selected_map_author.configure(text="Map by:\n UmbraCuticus")
     
     def validate_host(self, value: str) -> bool:
@@ -216,6 +219,7 @@ class Racing(customtkinter.CTkToplevel):
         time.sleep(2)
         press_use()
         time.sleep(10)
+        self.banana_count: int = 0
         match self.map_select.get():
             case "Super Stage GP":
                 self.break_boxes(1572, 1210, 1050, 343)
@@ -446,3 +450,82 @@ class Racing(customtkinter.CTkToplevel):
                 self.spawn_hamball(2020, 3410)
                 self.spawn_hamball(2010, 3430)
                 self.spawn_hamball(2010, 3410)
+            case "Pyramid GP":
+                self.break_boxes(1576, 2801, 800, 400)
+                self.break_boxes(1588, 2804, 800, 400)
+                self.break_boxes(1576, 2811, 800, 400)
+                for i in range(2652, 2592, -20):
+                    self.lay_banana(1435, i, "E")
+                self.lay_banana(1437, 2616, "S")
+                for i in range(0, 40, 10):
+                    self.lay_banana(1424-i, 2567-i, "S")
+                self.lay_banana(1380, 2529, "S")
+                self.lay_banana(1308, 2497, "S")
+                self.lay_banana(1321, 2497, "S")
+                for i in range(1394, 1434, 10):
+                    self.lay_banana(i, 2514, "N")
+                for i in range(2522, 2492, -10):
+                    self.lay_banana(1438, i, "E")
+                for i in range(2480, 2420, -20):
+                    self.lay_banana(1397, i, "W")
+                for i in range(1397, 1497, 20):
+                    self.lay_banana(i, 2444, "S")
+                for x, y in self.get_curve_coordinates(1503, 2534, 100, 90, "SE", 10, reverse=True):
+                    self.lay_banana(x, y+10, "S")
+                for i in range(2528, 2568, 20):
+                    self.lay_banana(1592, i, "E")
+                for i in range(2568, 2628, 20):
+                    self.lay_banana(1600, i, "E")
+                for i in range(0, 40, 10):
+                    self.lay_banana(1496+i, 2477+i, "W")
+                for i in range(0, 30, 10):
+                    self.lay_banana(1543+i, 2524+i, "W")
+                self.lay_banana(1563, 2554, "W")
+                self.lay_banana(1563, 2588, "W")
+                self.lay_banana(1563, 2608, "W")
+                self.lay_banana(1573, 2618, "W")
+                self.lay_banana(1583, 2628, "W")
+                self.lay_banana(1583, 2644, "W")
+                self.lay_banana(1583, 2660, "W")
+                self.lay_banana(1610, 2618, "E")
+                for i in range(2628, 2724, 16):
+                    self.lay_banana(1620, i, "E")
+                self.lay_banana(1632, 2737, "E")
+                for i in range(0, 30, 10):
+                    self.lay_banana(1693+(i*2), 2743+i, "W")
+                self.lay_banana(1719, 2771, "E")
+                self.lay_banana(1717, 2781, "N")
+                for i in range(1698, 1663, -5):
+                    self.lay_banana(i, 2781, "N")
+                for i in range(2816, 2876, 10):
+                    self.lay_banana(1710, i, "E")
+                self.lay_banana(1655, 2866, "N")
+                for i in range(0, 40, 10):
+                    self.lay_banana(1610-i, 2860-i, "N")
+                self.lay_banana(1611, 2820, "E")
+                self.lay_banana(1611, 2810, "E")
+                for i in range(1582, 1622, 10):
+                    self.lay_banana(i, 2773, "N")
+                for i in range(2806, 2836, 10):
+                    self.lay_banana(1469, i, "E")
+                for i in range(2760, 2780, 10):
+                    self.lay_banana(1508, i, "E")
+                for i in range(2771, 2781, 5):
+                    self.lay_banana(1459, i, "E")
+                for i in range(2730, 2790, 20):
+                    self.lay_banana(1410, i, "W")
+                for i in range(1451, 1461, 5):
+                    self.lay_banana(i, 2710, "S")
+                for i in range(1477, 1492, 5):
+                    self.lay_banana(i, 2710, "S")
+                for i in range(2678, 2698, 10):
+                    self.lay_banana(1398, i, "W")
+                for i in range(2652, 2612, -20):
+                    self.lay_banana(1360, i, "E")
+                self.lay_banana(1374, 2603, "W")
+                self.lay_banana(1311, 2586, "N")
+                self.lay_zip(1376, 2608, 1350, 540)
+                self.spawn_hamball(1395, 2618)
+                self.spawn_hamball(1415, 2618)
+                self.spawn_hamball(1395, 2608)
+                self.spawn_hamball(1415, 2608)

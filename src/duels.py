@@ -2,6 +2,8 @@ import customtkinter
 import re
 import time
 import random
+import pywinctl
+import pyperclip
 from CTkToolTip import CTkToolTip
 from CTkMessagebox import CTkMessagebox
 from functions import *
@@ -14,6 +16,7 @@ class Duels(customtkinter.CTkToplevel):
         self.resizable(False, False)
         self.FONT_TITLE = customtkinter.CTkFont(family="Roboto", size=24, weight="bold")
         self.FONT_REGULAR = customtkinter.CTkFont(family="Roboto", size=16, weight="bold")
+        self.banana_count: int = 0
         
         # Title
         self.duels_title = customtkinter.CTkLabel(self, text="Duels", font=self.FONT_TITLE)
@@ -171,6 +174,56 @@ class Duels(customtkinter.CTkToplevel):
             send_commands(f"tele {self.host_id_entry.get()} {x} {y}")
             for _ in range(int(self.players_per_team_select.get())):
                 send_commands("banana 10", "nade 4")
+
+    def spawn_bananas(self, amount: int) -> None:
+        send_commands(f"banana {amount}")
+        time.sleep(KEY_DELAY*8)
+        press_throwable()
+        self.banana_count = 10
+    
+    def lay_banana(self, x_player: int, y_player: int, direction: str = "N") -> None:
+        if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
+            return
+        
+        sar_window = pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")[0]
+        sar_window_rect = sar_window.getClientFrame()
+        window_top_left_x, window_top_left_y = sar_window_rect[0], sar_window_rect[1]
+        window_width: int = sar_window_rect[2] - window_top_left_x
+        x_position, y_position = sar_window.center
+        offset: int = 50
+        
+        size_ratio: float = window_width / 1920
+        if size_ratio != 1:
+            y_position: int = int(x_position * size_ratio)
+            y_position: int = int(y_position * size_ratio)
+            offset: int = int(offset * size_ratio)
+        
+        match direction:
+            case "N":
+                y_position -= offset
+            case "S":
+                y_position += offset
+            case "E":
+                x_position += offset
+            case "W":
+                x_position -= offset
+        
+        click_x: int = window_top_left_x + x_position
+        click_y: int = window_top_left_y + y_position
+        
+        sar_window.activate()
+        pyperclip.copy(f"/tele {self.host_id_entry.get()} {x_player} {y_player}")
+        keyboard.send("\n")
+        time.sleep(KEY_DELAY)
+        keyboard.send("ctrl+v")
+        time.sleep(KEY_DELAY)
+        keyboard.send("\n")
+        if self.banana_count <= 0:
+            self.spawn_bananas(10)
+        time.sleep(KEY_DELAY*8)
+        press_throwable()
+        mouse_click(click_x, click_y)
+        self.banana_count -= 1
     
     def start_match(self) -> None: # Sourcery, shut your mouth. Fuck you >:c my boyfriend is perfect
         # Guard clauses
@@ -192,6 +245,8 @@ class Duels(customtkinter.CTkToplevel):
         
         if open_window("Super Animal Royale") is False:
             return
+        
+        wait_time = 10
         
         # Disable items, emus, hamballs, gas and set HPM
         send_commands("allitems", "emus", "hamballs", "gasoff", f"highping {self.hpm_entry.get()}")
@@ -228,16 +283,19 @@ class Duels(customtkinter.CTkToplevel):
         if self.throwables_switch.get() == 1:
             self.spawn_throwables(735, 1335)
             self.spawn_throwables(3875, 1545)
+            wait_time -= 2.5
             
         # Spawn armor
         if self.armor_switch.get() == 1:
             self.spawn_armor(755, 1335)
             self.spawn_armor(3895, 1545)
+            wait_time -= 2.5
         
         # Spawn powerups
         if self.powerups_switch.get() == 1:
             self.spawn_powerups(775, 1335)
             self.spawn_powerups(3915, 1545)
+            wait_time -= 2.5
         
         # Spawn weapons
         if self.weapons_switch.get() == 1:
@@ -292,6 +350,93 @@ class Duels(customtkinter.CTkToplevel):
                     if i in (6, 13):
                         x_b = 3875
                         y_b -= 20
+            wait_time -= 10
+                        
+        # Bananas
+        self.banana_count: int = 0
+        if wait_time > 0:
+            time.sleep(wait_time)
+        time.sleep(1)
+        match self.map_select.get():
+            case "Bamboo Resort":
+                for i in range(1814, 1853, 10):
+                    self.lay_banana(2370, i, "E")
+                    self.lay_banana(2780, i, "W")
+                for i in range(2555, 2605, 10):
+                    self.lay_banana(i, 1995, "S")
+                for i in range(2530, 2630, 10):
+                    self.lay_banana(i, 1750, "N")
+            case "SAW Security":
+                for i in range(3485, 3515, 10):
+                    self.lay_banana(i, 1720, "N")
+                for i in range(1810, 1870, 10):
+                    self.lay_banana(3683, i, "W")
+                for i in range(1790, 1840, 10):
+                    self.lay_banana(3178, i, "E")
+                for i in range(2037, 2057, 10):
+                    self.lay_banana(3180, i, "E")
+                for i in range(3545, 3575, 10):
+                    self.lay_banana(i, 2073, "S")
+            case "SAW Research Labs":
+                for i in range(0, 40, 10):
+                    self.lay_banana(2571+i, 3103+i, "W")
+                for i in range(3028, 3058, 10):
+                    self.lay_banana(2545, i, "E")
+                for i in range(2920, 2950, 10):
+                    self.lay_banana(2545, i, "E")
+                for i in range(2845, 2865, 10):
+                    self.lay_banana(2542, i, "E")
+                for i in range(2710, 2740, 10):
+                    self.lay_banana(i, 2825, "N")
+                for i in range(2785, 2815, 10):
+                    self.lay_banana(i, 2825, "N")
+                for i in range(2845, 2865, 10):
+                    self.lay_banana(2972, i, "W")
+                for i in range(2920, 2950, 10):
+                    self.lay_banana(2948, i, "E")
+                for i in range(3028, 3058, 10):
+                    self.lay_banana(2948, i, "E")
+                for i in range(0, 40, 10):
+                    self.lay_banana(2967-i, 3109+i, "W")
+                self.lay_banana(2766, 3137, "S")
+                self.lay_banana(2749, 3137, "S")
+                self.lay_banana(2644, 3147, "S")
+            case "Super Welcome Center":
+                for i in range(665, 725, 10):
+                    self.lay_banana(i, 663, "S")
+                for i in range(837, 857, 10):
+                    self.lay_banana(i, 642, "N")
+                for i in range(673, 693, 10):
+                    self.lay_banana(1014, i, "E")
+                self.lay_banana(1014, 745, "E")
+                for i in range(803, 823, 10):
+                    self.lay_banana(1014, i, "E")
+                for i in range(991, 1011, 10):
+                    self.lay_banana(i, 841, "S")
+                self.lay_banana(828, 808, "N")
+                for i in range(784, 814, 10):
+                    self.lay_banana(i, 808, "N")
+                for i in range(736, 766, 10):
+                    self.lay_banana(i, 808, "N")
+                for i in range(659, 719, 10):
+                    self.lay_banana(i, 828, "S")
+                for i in range(616, 646, 10):
+                    self.lay_banana(i, 808, "N")
+                for i in range(578, 608, 10):
+                    self.lay_banana(i, 808, "N")
+                self.lay_banana(550, 808, "N")
+                for i in range(445, 465, 10):
+                    self.lay_banana(i, 808, "N")
+                self.lay_banana(364, 797, "W")
+                self.lay_banana(364, 766, "W")
+                self.lay_banana(364, 694, "W")
+                for i in range(365, 435, 10):
+                    self.lay_banana(i, 640, "N")
+            case "Penguin Palace":
+                for i in range(2159, 2199, 10):
+                    self.lay_banana(i, 3776, "S")
+                self.lay_banana(2304, 3984, "E")
+                self.lay_banana(1984, 3864, "W")
         
         # Teleport players
         self.teleport_players(self.team_a_entry.get(), 715, 1310)
