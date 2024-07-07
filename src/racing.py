@@ -5,9 +5,11 @@ import keyboard
 import time
 import math
 import pyperclip
+from typing import Literal
 from images import Images
 from CTkMessagebox import CTkMessagebox
 from functions import *
+from widgets import *
 
 class Racing(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs) -> None:
@@ -15,42 +17,24 @@ class Racing(customtkinter.CTkToplevel):
         self.geometry("600x600")
         self.title("Private Game Helper - Racing")
         self.resizable(False, False)
-        self.FONT_TITLE = customtkinter.CTkFont(family="Roboto", size=24, weight="bold")
-        self.FONT_REGULAR = customtkinter.CTkFont(family="Roboto", size=16, weight="bold")
-        self.FONT_ITALIC = customtkinter.CTkFont(family="Roboto", weight="bold", slant="italic")
         self.banana_count: int = 0
         
-        # Title
-        self.racing_title = customtkinter.CTkLabel(self, text="Hamball Racing", font=self.FONT_TITLE)
-        self.racing_title.place(x=20, y=20)
+        Text(self, text="Hamball Racing", font="title", place=(20, 20))
         
-        # Maps
-        self.map_label = customtkinter.CTkLabel(self, text="Map:", font=self.FONT_REGULAR)
-        self.map_label.place(x=20, y=60)
-        self.map_select = customtkinter.CTkOptionMenu(self, width=175, values=["Super Stage GP", "Penguin Palace GP", "Pyramid GP"], command=self.change_map)
-        self.map_select.place(x=20, y=90)
+        # Settings
+        Text(self, text="Map:", place=(20, 60))
+        self.map_select = OptionMenu(self, values=["Super Stage GP", "Penguin Palace GP", "Pyramid GP"], width=175, command=self.change_map, place=(20, 90))
+        Text(self, text="Host ID:", place=(300, 60))
+        self.host_id_entry = Entry(self, width=175, placeholder_text="e.g. 1", place=(300, 90))
+        Text(self, text="Selected Map", font="title", place=(20, 160))
+        self.selected_map_image = Image(self, image=Images.SUPER_STAGE_GP, width=500, height=300, place=(50, 190))
+        self.selected_map_author = Text(self, text="Map by:\nDeltaEagle84", justify="center", place=(230, 500))
         
-        # Host ID
-        self.host_id_label = customtkinter.CTkLabel(self, text="Host ID:", font=self.FONT_REGULAR)
-        self.host_id_label.place(x=300, y=60)
-        self.host_id_entry = customtkinter.CTkEntry(self, width=175, placeholder_text="e.g. 1")
-        self.host_id_entry.place(x=300, y=90)
-        
-        # Selected map
-        self.selected_map_title = customtkinter.CTkLabel(self, text="Selected Map", font=self.FONT_TITLE)
-        self.selected_map_title.place(x=20, y=160)
-        self.selected_map_image = customtkinter.CTkLabel(self, width=500, height=300, text="", image=Images.SUPER_STAGE_GP)
-        self.selected_map_image.place(x=50, y=190)
-        self.selected_map_author = customtkinter.CTkLabel(self, text="Map by:\n DeltaEagle84", font=self.FONT_REGULAR, justify="center")
-        self.selected_map_author.place(x=230, y=500)
-        
-        # Start
-        self.start_button = customtkinter.CTkButton(self, text="Start Match", command=self.start_match)
-        self.start_button.place(x=20, y=555)
+        Button(self, text="Start Match", command=self.start_match, place=(20, 555))
         
         Settings.update(self=Settings)
     
-    def change_map(self, value: str) -> None:
+    def change_map(self, value: Literal["Super Stage GP", "Penguin Palace GP", "Pyramid GP"]) -> None:
         match value:
             case "Super Stage GP":
                 self.selected_map_image.configure(image=Images.SUPER_STAGE_GP)
@@ -74,7 +58,7 @@ class Racing(customtkinter.CTkToplevel):
         press_throwable()
         self.banana_count = 10
     
-    def lay_banana(self, x_player: int, y_player: int, direction: str = "N") -> None:
+    def lay_banana(self, x_player: int, y_player: int, direction: Literal["N", "S", "E", "W"] = "N") -> None:
         if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
             return
         
@@ -169,7 +153,7 @@ class Racing(customtkinter.CTkToplevel):
         if open_window("Super Animal Royale"):
             send_commands(f"tele {self.host_id_entry.get()} {x} {y}", "hamball")
     
-    def get_curve_coordinates(self, x_center: int, y_center: int, radius: int, angle: int, quarter: str, num_of_bananas: int, **reverse: bool) -> list[tuple[int, int]]:
+    def get_curve_coordinates(self, x_center: int, y_center: int, radius: int, angle: int, quarter: Literal["NW", "NE", "SW", "SE"], num_of_bananas: int, reverse: bool = False) -> list[tuple[int, int]]:
         angle_increase: float = angle / num_of_bananas
         points_on_curve: list[tuple[int, int]] = []
         match quarter:

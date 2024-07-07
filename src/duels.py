@@ -4,9 +4,10 @@ import time
 import random
 import pywinctl
 import pyperclip
-from CTkToolTip import CTkToolTip
+from typing import Literal
 from CTkMessagebox import CTkMessagebox
 from functions import *
+from widgets import *
 
 class Duels(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs) -> None:
@@ -14,107 +15,42 @@ class Duels(customtkinter.CTkToplevel):
         self.geometry("600x620")
         self.title("Private Game Helper - Duels")
         self.resizable(False, False)
-        self.FONT_TITLE = customtkinter.CTkFont(family="Roboto", size=24, weight="bold")
-        self.FONT_REGULAR = customtkinter.CTkFont(family="Roboto", size=16, weight="bold")
         self.banana_count: int = 0
         
-        # Title
-        self.duels_title = customtkinter.CTkLabel(self, text="Duels", font=self.FONT_TITLE)
-        self.duels_title.place(x=20, y=20)
+        Text(self, text="Duels", font="title", place=(20, 20))
         
-        # Maps
-        self.map_label = customtkinter.CTkLabel(self, text="Map:", font=self.FONT_REGULAR)
-        self.map_label.place(x=20, y=60)
-        self.map_select = customtkinter.CTkOptionMenu(self, width=175, values=["Bamboo Resort", "SAW Security", "SAW Research Labs", "Super Welcome Center", "Penguin Palace"])
-        self.map_select.place(x=20, y=90)
-        
-        # Host ID
-        self.host_id_label = customtkinter.CTkLabel(self, text="Host ID:", font=self.FONT_REGULAR)
-        self.host_id_label.place(x=20, y=140)
-        self.host_id_entry = customtkinter.CTkEntry(self, width=175, placeholder_text="e.g. 1")
-        self.host_id_entry.place(x=20, y=170)
-        
-        # HPM
-        self.hpm_label = customtkinter.CTkLabel(self, text="HPM:", font=self.FONT_REGULAR)
-        self.hpm_label.place(x=20, y=220)
-        self.hpm_entry = customtkinter.CTkEntry(self, width=175, placeholder_text="e.g. 250")
-        self.hpm_entry.place(x=20, y=250)
-        self.hpm_entry.insert(0, "250")
-        
-        # Players per team
-        self.players_per_team_label = customtkinter.CTkLabel(self, text="Players per team:", font=self.FONT_REGULAR)
-        self.players_per_team_label.place(x=300, y=60)
-        self.players_per_team_select = customtkinter.CTkOptionMenu(self, width=175, values=["1", "2", "3", "4"])
-        self.players_per_team_select.place(x=300, y=90)
-        
-        # Team A
-        self.team_a_label = customtkinter.CTkLabel(self, text="Team A IDs (separated by spaces):", font=self.FONT_REGULAR)
-        self.team_a_label.place(x=300, y=140)
-        self.team_a_entry = customtkinter.CTkEntry(self, width=175, placeholder_text="e.g. 2 4 5 8")
-        self.team_a_entry.place(x=300, y=170)
-        
-        # Team B
-        self.team_b_label = customtkinter.CTkLabel(self, text="Team B IDs (separated by spaces):", font=self.FONT_REGULAR)
-        self.team_b_label.place(x=300, y=220)
-        self.team_b_entry = customtkinter.CTkEntry(self, width=175, placeholder_text="e.g. 3 6 7 9")
-        self.team_b_entry.place(x=300, y=250)
-        
-        # Weapons
-        self.weapons_switch = customtkinter.CTkSwitch(self, text="Weapons", font=self.FONT_REGULAR, onvalue=1, offvalue=0, command=self.enable_random_weapons)
-        self.weapons_switch.place(x=20, y=320)
-        self.weapons_switch.select()
-        
-        # Armor
-        self.armor_switch = customtkinter.CTkSwitch(self, text="Armor", font=self.FONT_REGULAR, onvalue=1, offvalue=0)
-        self.armor_switch.place(x=20, y=370)
-        self.armor_switch.select()
-        
-        # Powerups
-        self.powerups_switch = customtkinter.CTkSwitch(self, text="Powerups", font=self.FONT_REGULAR, onvalue=1, offvalue=0)
-        self.powerups_switch.place(x=20, y=420)
-        self.powerups_switch.select()
-        
-        # Throwables
-        self.throwables_switch = customtkinter.CTkSwitch(self, text="Throwables", font=self.FONT_REGULAR, onvalue=1, offvalue=0)
-        self.throwables_switch.place(x=20, y=470)
-        self.throwables_switch.select()
-        
-        # Random weapons
-        self.random_weapons_switch = customtkinter.CTkSwitch(self, text="Random Weapons", font=self.FONT_REGULAR, onvalue=1, offvalue=0, command=self.enable_match_random_weapons)
-        self.random_weapons_switch.place(x=20, y=520)
-        self.random_weapons_tooltip = CTkToolTip(self.random_weapons_switch, delay=0, message="Spawns a selection of 4 random weapons for both teams (instead of all weapons)")
-        
-        # No pets
-        self.no_pets_switch = customtkinter.CTkSwitch(self, text="No Pets", font=self.FONT_REGULAR, onvalue=1, offvalue=0)
-        self.no_pets_switch.place(x=300, y=320)
-        
-        # One hit kills
-        self.one_hit_kills_switch = customtkinter.CTkSwitch(self, text="One Hit Kills", font=self.FONT_REGULAR, onvalue=1, offvalue=0)
-        self.one_hit_kills_switch.place(x=300, y=370)
-        
-        # No jumprolls
-        self.no_jumprolls_switch = customtkinter.CTkSwitch(self, text="No Jumprolls", font=self.FONT_REGULAR, onvalue=1, offvalue=0)
-        self.no_jumprolls_switch.place(x=300, y=420)
-        
-        # Kill host
-        self.kill_host_switch = customtkinter.CTkSwitch(self, text="Kill Host", font=self.FONT_REGULAR, onvalue=1, offvalue=0)
-        self.kill_host_switch.place(x=300, y=470)
-        
-        # Match random weapons
-        self.match_random_weapons_switch = customtkinter.CTkSwitch(self, text="Match Random Weapons", font=self.FONT_REGULAR, onvalue=1, offvalue=0, state="disabled")
-        self.match_random_weapons_switch.place(x=300, y=520)
-        self.match_random_weapons_tooltip = CTkToolTip(self.match_random_weapons_switch, delay=0, message="Makes the random weapons same for both teams")
+        # Settings
+        Text(self, text="Map:", place=(20, 60))
+        self.map_select = OptionMenu(self, values=["Bamboo Resort", "SAW Security", "SAW Research Labs", "Super Welcome Center", "Penguin Palace"], width=175, place=(20, 90))
+        Text(self, text="Host ID:", place=(20, 140))
+        self.host_id_entry = Entry(self, width=175, placeholder_text="e.g. 1", place=(20, 170))
+        Text(self, text="HPM:", place=(20, 220))
+        self.hpm_entry = Entry(self, width=175, placeholder_text="e.g. 250", text="250", place=(20, 250))
+        Text(self, text="Players per team:", place=(300, 60))
+        self.players_per_team_select = OptionMenu(self, width=175, values=["1", "2", "3", "4"], place=(300, 90))
+        Text(self, text="Team A IDs (separated by spaces):", place=(300, 140))
+        self.team_a_entry = Entry(self, width=175, placeholder_text="e.g. 2 4 5 8", place=(300, 170))
+        Text(self, text="Team B IDs (separated by spaces):", place=(300, 220))
+        self.team_b_entry = Entry(self, width=175, placeholder_text="e.g. 3 6 7 9", place=(300, 250))
+        self.weapons_switch = Switch(self, text="Weapons", selected=True, command=self.enable_random_weapons, place=(20, 320))
+        self.armor_switch = Switch(self, text="Armor", selected=True, place=(20, 370))
+        self.powerups_switch = Switch(self, text="Powerups", selected=True, place=(20, 420))
+        self.throwables_switch = Switch(self, text="Throwables", selected=True, place=(20, 470))
+        self.random_weapons_switch = Switch(self, text="Random Weapons", command=self.enable_match_random_weapons, place=(20, 520), tooltip="Spawns a selection of 4 random weapons for both teams (instead of all weapons)")
+        self.no_pets_switch = Switch(self, text="No Pets", place=(300, 320))
+        self.one_hit_kills_switch = Switch(self, text="One Hit Kills", place=(300, 370))
+        self.no_jumprolls_switch = Switch(self, text="No Jumprolls", place=(300, 420))
+        self.kill_host_switch = Switch(self, text="Kill Host", place=(300, 470))
+        self.match_random_weapons_switch = Switch(self, text="Match Random Weapons", state="disabled", place=(300, 520), tooltip="Makes the random weapons same for both teams")
         
         # Start
-        self.start_button = customtkinter.CTkButton(self, text="Start Match", command=self.start_match)
-        self.start_button.place(x=20, y=570)
+        Button(self, text="Start Match", command=self.start_match, place=(20, 570))
         
         Settings.update(self=Settings)
     
     def enable_random_weapons(self) -> None:
         if self.weapons_switch.get() == 1:
             self.random_weapons_switch.configure(state="normal")
-            self.match_random_weapons_switch.configure(state="normal")
         else:
             self.random_weapons_switch.deselect()
             self.match_random_weapons_switch.deselect()
@@ -181,7 +117,7 @@ class Duels(customtkinter.CTkToplevel):
         press_throwable()
         self.banana_count = 10
     
-    def lay_banana(self, x_player: int, y_player: int, direction: str = "N") -> None:
+    def lay_banana(self, x_player: int, y_player: int, direction: Literal["N", "S", "E", "W"] = "N") -> None:
         if len(pywinctl.getWindowsWithTitle("Super Animal Royale", flags="IS")) == 0:
             return
         

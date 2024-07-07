@@ -5,8 +5,10 @@ import time
 import pywinctl
 import random
 import pyperclip
+from typing import Literal
 from CTkMessagebox import CTkMessagebox
 from functions import *
+from widgets import *
 
 class Dodgeball(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs) -> None:
@@ -14,105 +16,47 @@ class Dodgeball(customtkinter.CTkToplevel):
         self.geometry("600x630")
         self.title("Private Game Helper - Dodgeball")
         self.resizable(False, False)
-        self.FONT_TITLE = customtkinter.CTkFont(family="Roboto", size=24, weight="bold")
-        self.FONT_REGULAR = customtkinter.CTkFont(family="Roboto", size=16, weight="bold")
-        self.FONT_ITALIC = customtkinter.CTkFont(family="Roboto", weight="bold", slant="italic")
         
-        # Title
-        self.dodgeball_title = customtkinter.CTkLabel(self, text="Dodgeball", font=self.FONT_TITLE)
-        self.dodgeball_title.place(x=20, y=20)
+        Text(self, text="Dodgeball", font="title", place=(20, 20))
         
-        # Maps
-        self.map_label = customtkinter.CTkLabel(self, text="Map:", font=self.FONT_REGULAR)
-        self.map_label.place(x=20, y=60)
-        self.map_select = customtkinter.CTkOptionMenu(self, width=175, values=["Bamboo Resort", "SAW Security Grass", "SAW Research Labs", "Super Welcome Center", "Penguin Palace", "Pyramid", "Emu Ranch", "Shooting Range", "Juice Factory", "Super Sea Land"])
-        self.map_select.place(x=20, y=90)
-        
-        # Host ID
-        self.host_id_label = customtkinter.CTkLabel(self, text="Host ID:", font=self.FONT_REGULAR)
-        self.host_id_label.place(x=20, y=140)
-        self.host_id_entry = customtkinter.CTkEntry(self, width=175, placeholder_text="e.g. 1")
-        self.host_id_entry.place(x=20, y=170)
-        
-        # Team A
-        self.team_a_label = customtkinter.CTkLabel(self, text="Team A IDs (separated by spaces):", font=self.FONT_REGULAR)
-        self.team_a_label.place(x=300, y=60)
-        self.team_a_entry = customtkinter.CTkEntry(self, width=175, placeholder_text="e.g. 2 4 5 8")
-        self.team_a_entry.place(x=300, y=90)
-        
-        # Team B
-        self.team_b_label = customtkinter.CTkLabel(self, text="Team B IDs (separated by spaces):", font=self.FONT_REGULAR)
-        self.team_b_label.place(x=300, y=140)
-        self.team_b_entry = customtkinter.CTkEntry(self, width=175, placeholder_text="e.g. 3 6 7 9")
-        self.team_b_entry.place(x=300, y=170)
-        
-        # Random nades
-        self.random_nades_switch = customtkinter.CTkSwitch(self, text="Random Nades", font=self.FONT_REGULAR, onvalue=1, offvalue=0)
-        self.random_nades_switch.place(x=20, y=220)
-        
-        # Disable hotkeys
-        self.disable_hotkeys_switch = customtkinter.CTkSwitch(self, text="Disable Hotkeys", font=self.FONT_REGULAR, onvalue=1, offvalue=0, command=self.disable_hotkeys)
-        self.disable_hotkeys_switch.place(x=300, y=220)
-        
-        # Damage
-        self.damage_slider = customtkinter.CTkSlider(self, width=160, from_=0.0, to=10.0, number_of_steps=100, command=self.damage_slider_ctrl)
-        self.damage_slider.place(x=20, y=270)
-        self.damage_slider.set(1.0)
-        self.damage_text = customtkinter.CTkLabel(self, text="Damage:", font=self.FONT_REGULAR)
-        self.damage_text.place(x=20, y=290)
-        self.damage_label = customtkinter.CTkLabel(self, text="1.0", font=self.FONT_REGULAR)
-        self.damage_label.place(x=150, y=290)
-        
-        # Random teams
-        self.random_teams_switch = customtkinter.CTkSwitch(self, text="Random Teams", font=self.FONT_REGULAR, onvalue=1, offvalue=0, command=self.enable_random_teams)
-        self.random_teams_switch.place(x=300, y=270)
+        # Settings
+        Text(self, text="Map:", place=(20, 60))
+        self.map_select = OptionMenu(self, width=175, values=["Bamboo Resort", "SAW Security Grass", "SAW Research Labs", "Super Welcome Center", "Penguin Palace", "Pyramid", "Emu Ranch", "Shooting Range", "Juice Factory", "Super Sea Land"], place=(20, 90))
+        Text(self, text="Host ID:", place=(20, 140))
+        self.host_id_entry = Entry(self, width=175, placeholder_text="e.g. 1", place=(20, 170))
+        Text(self, text="Team A IDs (separated by spaces):", place=(300, 60))
+        self.team_a_entry = Entry(self, width=175, placeholder_text="e.g. 2 4 5 8", place=(300, 90))
+        Text(self, text="Team B IDs (separated by spaces):", place=(300, 140))
+        self.team_b_entry = Entry(self, width=175, placeholder_text="e.g. 3 6 7 9", place=(300, 170))
+        self.random_nades_switch = Switch(self, text="Random Nades", place=(20, 220))
+        self.disable_hotkeys_switch = Switch(self, text="Disable Hotkeys", command=self.disable_hotkeys, place=(300, 220))
+        self.damage_slider = SliderFrame(self, element="damage", place=(20, 270))
+        self.random_teams_switch = Switch(self, text="Random Teams", command=self.enable_random_teams, place=(300, 270))
         
         # Hotkeys
-        self.hotkeys_title = customtkinter.CTkLabel(self, text="Hotkeys", font=self.FONT_TITLE)
-        self.hotkeys_title.place(x=20, y=340)
-        
-        # Spawn HR and ziplines
-        self.hr_and_zip_label = customtkinter.CTkLabel(self, text="(Ctrl + Shift + S)", font=self.FONT_ITALIC)
-        self.hr_and_zip_label.place(x=20, y=390)
-        self.hr_and_zip_desc = customtkinter.CTkLabel(self, text="Spawn hunting rifle and ziplines", font=self.FONT_REGULAR)
-        self.hr_and_zip_desc.place(x=300, y=390)
+        Text(self, text="Hotkeys", font="title", place=(20, 340))
+        Text(self, text="(Ctrl + Shift + S)", font="italic", place=(20, 390))
+        Text(self, text="Spawn hunting rifle and ziplines", place=(300, 390))
         keyboard.add_hotkey("ctrl+shift+s", self.hr_and_zip_hotkey)
-        
-        # Kill and ghost host
-        self.kill_host_label = customtkinter.CTkLabel(self, text="(Ctrl + Shift + K)", font=self.FONT_ITALIC)
-        self.kill_host_label.place(x=20, y=420)
-        self.kill_host_desc = customtkinter.CTkLabel(self, text="Kill and ghost host", font=self.FONT_REGULAR)
-        self.kill_host_desc.place(x=300, y=420)
+        Text(self, text="(Ctrl + Shift + K)", font="italic", place=(20,420))
+        Text(self, text="Kill and ghost host", place=(300, 420))
         keyboard.add_hotkey("ctrl+shift+k", self.kill_host_hotkey)
-        
-        # Spawn a grenade
-        self.spawn_grenade_label = customtkinter.CTkLabel(self, text="(Alt + Y)", font=self.FONT_ITALIC)
-        self.spawn_grenade_label.place(x=20, y=450)
-        self.spawn_grenade_desc = customtkinter.CTkLabel(self, text="Spawn a grenade", font=self.FONT_REGULAR)
-        self.spawn_grenade_desc.place(x=300, y=450)
+        Text(self, text="(Alt + Y)", font="italic", place=(20, 450))
+        Text(self, text="Spawn a grenade", place=(300, 450))
         keyboard.add_hotkey("alt+y", self.spawn_grenade_hotkey)
-        
-        # Spawn grenades for teams starting from the left
-        self.spawn_grenades_from_left_label = customtkinter.CTkLabel(self, text="(Left + [1-3])", font=self.FONT_ITALIC)
-        self.spawn_grenades_from_left_label.place(x=20, y=480)
-        self.spawn_grenades_from_left_desc = customtkinter.CTkLabel(self, text="Spawn [1-3] grenades\nstarting from the left", font=self.FONT_REGULAR)
-        self.spawn_grenades_from_left_desc.place(x=300, y=480)
+        Text(self, text="(Left + [1-3])", font="italic", place=(20, 480))
+        Text(self, text="Spawn [1-3] grenades\nstarting from the left", place=(300, 480))
         keyboard.add_hotkey("left+1", self.spawn_grenades_from_left_hotkey, args=(1,))
         keyboard.add_hotkey("left+2", self.spawn_grenades_from_left_hotkey, args=(2,))
         keyboard.add_hotkey("left+3", self.spawn_grenades_from_left_hotkey, args=(3,))
-        
-        # Spawn grenades for teams starting from the right
-        self.spawn_grenades_from_right_label = customtkinter.CTkLabel(self, text="(Right + [1-3])", font=self.FONT_ITALIC)
-        self.spawn_grenades_from_right_label.place(x=20, y=530)
-        self.spawn_grenades_from_right_desc = customtkinter.CTkLabel(self, text="Spawn [1-3] grenades\nstarting from the right", font=self.FONT_REGULAR)
-        self.spawn_grenades_from_right_desc.place(x=300, y=530)
+        Text(self, text="(Right + [1-3])", font="italic", place=(20, 530))
+        Text(self, text="Spawn [1-3] grenades\nstarting from the right", place=(300, 530))
         keyboard.add_hotkey("right+1", self.spawn_grenades_from_right_hotkey, args=(1,))
         keyboard.add_hotkey("right+2", self.spawn_grenades_from_right_hotkey, args=(2,))
         keyboard.add_hotkey("right+3", self.spawn_grenades_from_right_hotkey, args=(3,))
         
         # Start
-        self.start_button = customtkinter.CTkButton(self, text="Start Match", command=self.start_match)
-        self.start_button.place(x=20, y=585)
+        Button(self, text="Start Match", command=self.start_match, place=(20, 585))
         
         Settings.update(self=Settings)
     
@@ -151,11 +95,6 @@ class Dodgeball(customtkinter.CTkToplevel):
             team_b: list[str] = self.team_b_entry.get().strip().split(sep=" ")
         return team_a, team_b
     
-    def damage_slider_ctrl(self, value: float) -> None:
-        value = round(value, 1)
-        self.damage_label.configure(text=value)
-        self.damage_slider.set(value)
-    
     # Hotkeys
     def hr_and_zip_hotkey(self) -> None:
         if open_window("Super Animal Royale"):
@@ -175,7 +114,7 @@ class Dodgeball(customtkinter.CTkToplevel):
             y: int = random.randint(y_start, y_end)
             self.spawn_nade(x, y)
     
-    def spawn_grenades_preset(self, x: int, y: int, offset: int, offset_direction: str, amount: int) -> None:
+    def spawn_grenades_preset(self, x: int, y: int, offset: int, offset_direction: Literal["x", "y"], amount: int) -> None:
         for _ in range(amount):
             self.spawn_nade(x, y)
             if offset_direction == "x":

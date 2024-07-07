@@ -4,6 +4,7 @@ import time
 from CTkToolTip import CTkToolTip
 from pynput import mouse
 from functions import *
+from widgets import *
 
 class SettingsMenu(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs) -> None:
@@ -11,46 +12,29 @@ class SettingsMenu(customtkinter.CTkToplevel):
         self.geometry("580x280")
         self.title("Private Game Helper - Settings")
         self.resizable(False, False)
-        self.FONT_TITLE = customtkinter.CTkFont(family="Roboto", size=24, weight="bold")
-        self.FONT_REGULAR = customtkinter.CTkFont(family="Roboto", size=16, weight="bold")
-        self.FONT_ITALIC = customtkinter.CTkFont(family="Roboto", weight="bold", slant="italic")
         
         # In-game keybinds
-        self.keybinds_title = customtkinter.CTkLabel(self, text="In-game Keybinds", font=self.FONT_TITLE)
-        self.keybinds_title.place(x=20, y=20)
-        self.use_bind_label = customtkinter.CTkLabel(self, text="Use:", font=self.FONT_REGULAR)
-        self.use_bind_label.place(x=20, y=70)
-        self.use_bind_entry = customtkinter.CTkLabel(self, width=100, text="E", font=self.FONT_REGULAR, fg_color="#343638", corner_radius=10)
-        self.use_bind_entry.place(x=20, y=100)
+        Text(self, text="In-game Keybinds", font="title", place=(20, 20))
+        Text(self, text="Use:", place=(20, 70))
+        self.use_bind_entry = Text(self, text="E", width=100, fg_color="#343638", corner_radius=10, place=(20, 100), tooltip="Click to set")
         self.use_bind_entry.bind("<Button-1>", self.get_use_bind)
-        self.use_bind_tooltip = CTkToolTip(self.use_bind_entry, "Click to set", delay=0.1)
-        self.melee_bind_label = customtkinter.CTkLabel(self, text="Melee:", font=self.FONT_REGULAR)
-        self.melee_bind_label.place(x=220, y=70)
-        self.melee_bind_entry = customtkinter.CTkLabel(self, width=100, text="3", font=self.FONT_REGULAR, fg_color="#343638", corner_radius=10)
-        self.melee_bind_entry.place(x=220, y=100)
+        Text(self, text="Melee:", place=(220, 70))
+        self.melee_bind_entry = Text(self, text="3", width=100, fg_color="#343638", corner_radius=10, place=(220, 100), tooltip="Click to set")
         self.melee_bind_entry.bind("<Button-1>", self.get_melee_bind)
-        self.melee_bind_tooltip = CTkToolTip(self.melee_bind_entry, "Click to set", delay=0.1)
-        self.throwable_bind_label = customtkinter.CTkLabel(self, text="Throwable:", font=self.FONT_REGULAR)
-        self.throwable_bind_label.place(x=420, y=70)
-        self.throwable_bind_entry = customtkinter.CTkLabel(self, width=100, text="4", font=self.FONT_REGULAR, fg_color="#343638", corner_radius=10)
-        self.throwable_bind_entry.place(x=420, y=100)
+        Text(self, text="Throwable:", place=(420, 70))
+        self.throwable_bind_entry = Text(self, text="4", width=100, fg_color="#343638", corner_radius=10, place=(420, 100), tooltip="Click to set")
         self.throwable_bind_entry.bind("<Button-1>", self.get_throwable_bind)
-        self.throwable_bind_tooltip = CTkToolTip(self.throwable_bind_entry, "Click to set", delay=0.1)
         
         # Updates
-        self.updates_title = customtkinter.CTkLabel(self, text="Updates", font=self.FONT_TITLE)
-        self.updates_title.place(x=20, y=160)
-        self.updates_popup_switch = customtkinter.CTkSwitch(self, text="New update popups")
-        self.updates_popup_switch.place(x=20, y=200)
+        Text(self, text="Updates", font="title", place=(20, 160))
+        self.updates_popup_switch = Switch(self, text="New update popups", place=(20, 200))
         
-        # Apply
-        self.apply_button = customtkinter.CTkButton(self, text="OK", command=self.apply_settings)
-        self.apply_button.place(x=420, y=230)
+        Button(self, text="OK", command=self.apply_settings, place=(420, 230))
         
         self.get_settings()
     
     def get_use_bind(self, event) -> None:
-        self.selected_bind = "Use"
+        self.selected_bind: str = "Use"
         self.use_bind_entry.configure(text="...")
         keyboard.unhook_all()
         keyboard.hook(self.key_pressed)
@@ -59,7 +43,7 @@ class SettingsMenu(customtkinter.CTkToplevel):
         self.mouse_listener.start()
         
     def get_melee_bind(self, event) -> None:
-        self.selected_bind = "Melee"
+        self.selected_bind: str = "Melee"
         self.melee_bind_entry.configure(text="...")
         keyboard.unhook_all()
         keyboard.hook(self.key_pressed)
@@ -68,7 +52,7 @@ class SettingsMenu(customtkinter.CTkToplevel):
         self.mouse_listener.start()
         
     def get_throwable_bind(self, event) -> None:
-        self.selected_bind = "Throwable"
+        self.selected_bind: str = "Throwable"
         self.throwable_bind_entry.configure(text="...")
         keyboard.unhook_all()
         keyboard.hook(self.key_pressed)
@@ -92,13 +76,13 @@ class SettingsMenu(customtkinter.CTkToplevel):
         self.mouse_listener.stop()
         match button:
             case mouse.Button.left:
-                button_pressed = "MOUSE0"
+                button_pressed: str = "MOUSE0"
             case mouse.Button.right:
-                button_pressed = "MOUSE1"
+                button_pressed: str = "MOUSE1"
             case mouse.Button.middle:
-                button_pressed = "MOUSE2"
+                button_pressed: str = "MOUSE2"
             case _:
-                button_pressed = "INVALID"
+                button_pressed: str = "INVALID"
         match self.selected_bind:
             case "Use":
                 self.use_bind_entry.configure(text=button_pressed)

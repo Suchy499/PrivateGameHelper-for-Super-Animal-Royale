@@ -1,9 +1,9 @@
 import customtkinter
 import pyperclip
-from CTkToolTip import CTkToolTip
 from CTkMessagebox import CTkMessagebox
 from images import Images
 from functions import *
+from widgets import *
 
 class TeleportMenu(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs) -> None:
@@ -11,47 +11,19 @@ class TeleportMenu(customtkinter.CTkToplevel):
         self.geometry("768x950")
         self.title("Private Game Helper - Teleport Menu")
         self.resizable(False, False)
-        self.FONT_TITLE = customtkinter.CTkFont(family="Roboto", size=24, weight="bold")
-        self.FONT_REGULAR = customtkinter.CTkFont(family="Roboto", size=16, weight="bold")
         self.mode_var = customtkinter.IntVar(value=0)
         
-        # Title
-        self.title = customtkinter.CTkLabel(self, text="Teleport Menu", font=self.FONT_TITLE)
-        self.title.place(x=20, y=20)
-        
-        # Instructions
-        self.copy_instructions = customtkinter.CTkLabel(self, font=self.FONT_REGULAR, justify="left", text=
-                                                        "- Click on the map to copy the coordinates to your clipboard\n"
-                                                        "- Type in game chat \"/tele [id/all] \"\n"
-                                                        "- Press Ctrl + V to paste the coordinates")
-        self.copy_instructions.place(x=20, y=100)
-        self.instant_teleport_instructions = customtkinter.CTkLabel(self, font=self.FONT_REGULAR, justify="left", text=
-                                                                    "- Type in a player's ID or \"All\"\n"
-                                                                    "- Click on the map to teleport a player / all players to that location")
-        
-        # Player ID
-        self.player_id_label = customtkinter.CTkLabel(self, text="Player ID: ", font=self.FONT_REGULAR)
-        self.player_id_entry = customtkinter.CTkEntry(self, placeholder_text="ID / All")
-        
-        # Map
-        self.sar_map = customtkinter.CTkLabel(self, width=768, height=768, text="", image=Images.SAR_MAP)
-        self.sar_map.place(x=0, y=182)
+        Text(self, text="Teleport Menu", font="title", place=(20, 20))
+        self.copy_instructions = Text(self, text="- Click on the map to copy the coordinates to your clipboard\n- Type in game chat \"/tele [id/all] \"\n- Press Ctrl + V to paste the coordinates", place=(20, 100), justify="left")
+        self.instant_teleport_instructions = Text(self, text="- Type in a player's ID or \"All\"\n- Click on the map to teleport a player / all players to that location", justify="left")
+        self.player_id_label = Text(self, text="Player ID:")
+        self.player_id_entry = Entry(self, placeholder_text="ID / All")
+        self.sar_map = Image(self, width=768, height=768, image=Images.SAR_MAP, place=(0, 182))
         self.sar_map.bind("<Button-1>", self.copy_coordinates)
-        
-        # Coordinates
-        self.coordinates = customtkinter.CTkLabel(self, text="Coordinates:\n(x, y)", font=self.FONT_REGULAR)
-        self.coordinates.place(x=600, y=75)
-        
-        # Modes
-        self.copy_mode = customtkinter.CTkRadioButton(self, text="Copy Mode", font=self.FONT_REGULAR, variable=self.mode_var, value=0, command=self.change_mode)
-        self.copy_mode.place(x=20, y=60)
-        self.tele_mode = customtkinter.CTkRadioButton(self, text="Instant Teleport Mode", font=self.FONT_REGULAR, variable=self.mode_var, value=1, command=self.change_mode)
-        self.tele_mode.place(x=150, y=60)
-        
-        # Always on top
-        self.alwaysontop_button = customtkinter.CTkButton(self, width=20, height=20, text="", image=Images.ICON_PIN, hover=False, fg_color="transparent", bg_color="transparent", command=self.always_on_top)
-        self.alwaysontop_button.place(x=720, y=20)
-        self.alwaysontop_tooltip = CTkToolTip(self.alwaysontop_button, delay=0, message="Keep this window on top")
+        self.coordinates = Text(self, text="Coordinates:\n(x, y)", place=(600, 75))
+        self.copy_mode = Radio(self, text="Copy Mode", variable=self.mode_var, value=0, command=self.change_mode, place=(20, 60))
+        self.tele_mode = Radio(self, text="Instant Teleport Mode", variable=self.mode_var, value=1, command=self.change_mode, place=(150, 60))
+        self.always_on_top_button = ImageButton(self, image_type="always_on_top", image=Images.ICON_PIN, command=self.always_on_top, place=(720, 20), tooltip="Keep this window on top")
         
     def copy_coordinates(self, event) -> None:
         x: int = event.x * 6
@@ -81,7 +53,7 @@ class TeleportMenu(customtkinter.CTkToplevel):
     def always_on_top(self) -> None:
         if self.wm_attributes("-topmost"):
             self.wm_attributes("-topmost", False)
-            self.alwaysontop_button.configure(image=Images.ICON_PIN)
+            self.always_on_top_button.configure(image=Images.ICON_PIN)
         else:
             self.wm_attributes("-topmost", True)
-            self.alwaysontop_button.configure(image=Images.ICON_PIN_VERTICAL)
+            self.always_on_top_button.configure(image=Images.ICON_PIN_VERTICAL)
