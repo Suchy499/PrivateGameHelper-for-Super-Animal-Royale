@@ -42,6 +42,7 @@ class Duels(customtkinter.CTkToplevel):
         self.no_jumprolls_switch = Switch(self, text="No Jumprolls", place=(300, 420))
         self.kill_host_switch = Switch(self, text="Kill Host", place=(300, 470))
         self.match_random_weapons_switch = Switch(self, text="Match Random Weapons", state="disabled", place=(300, 520), tooltip="Makes the random weapons same for both teams")
+        self.bananas_as_boundaries = Switch(self, text="Banans as Boundaries", place=(300, 570))
         
         # Start
         Button(self, text="Start Match", command=self.start_match, place=(20, 570))
@@ -289,90 +290,91 @@ class Duels(customtkinter.CTkToplevel):
             wait_time -= 10
                         
         # Bananas
-        self.banana_count: int = 0
-        if wait_time > 0:
-            time.sleep(wait_time)
-        time.sleep(1)
-        match self.map_select.get():
-            case "Bamboo Resort":
-                for i in range(1814, 1853, 10):
-                    self.lay_banana(2370, i, "E")
-                    self.lay_banana(2780, i, "W")
-                for i in range(2555, 2605, 10):
-                    self.lay_banana(i, 1995, "S")
-                for i in range(2530, 2630, 10):
-                    self.lay_banana(i, 1750, "N")
-            case "SAW Security":
-                for i in range(3485, 3515, 10):
-                    self.lay_banana(i, 1720, "N")
-                for i in range(1810, 1870, 10):
-                    self.lay_banana(3683, i, "W")
-                for i in range(1790, 1840, 10):
-                    self.lay_banana(3178, i, "E")
-                for i in range(2037, 2057, 10):
-                    self.lay_banana(3180, i, "E")
-                for i in range(3545, 3575, 10):
-                    self.lay_banana(i, 2073, "S")
-            case "SAW Research Labs":
-                for i in range(0, 40, 10):
-                    self.lay_banana(2571+i, 3103+i, "W")
-                for i in range(3028, 3058, 10):
-                    self.lay_banana(2545, i, "E")
-                for i in range(2920, 2950, 10):
-                    self.lay_banana(2545, i, "E")
-                for i in range(2845, 2865, 10):
-                    self.lay_banana(2542, i, "E")
-                for i in range(2710, 2740, 10):
-                    self.lay_banana(i, 2825, "N")
-                for i in range(2785, 2815, 10):
-                    self.lay_banana(i, 2825, "N")
-                for i in range(2845, 2865, 10):
-                    self.lay_banana(2972, i, "W")
-                for i in range(2920, 2950, 10):
-                    self.lay_banana(2948, i, "E")
-                for i in range(3028, 3058, 10):
-                    self.lay_banana(2948, i, "E")
-                for i in range(0, 40, 10):
-                    self.lay_banana(2967-i, 3109+i, "W")
-                self.lay_banana(2766, 3137, "S")
-                self.lay_banana(2749, 3137, "S")
-                self.lay_banana(2644, 3147, "S")
-            case "Super Welcome Center":
-                for i in range(665, 725, 10):
-                    self.lay_banana(i, 663, "S")
-                for i in range(837, 857, 10):
-                    self.lay_banana(i, 642, "N")
-                for i in range(673, 693, 10):
-                    self.lay_banana(1014, i, "E")
-                self.lay_banana(1014, 745, "E")
-                for i in range(803, 823, 10):
-                    self.lay_banana(1014, i, "E")
-                for i in range(991, 1011, 10):
-                    self.lay_banana(i, 841, "S")
-                self.lay_banana(828, 808, "N")
-                for i in range(784, 814, 10):
-                    self.lay_banana(i, 808, "N")
-                for i in range(736, 766, 10):
-                    self.lay_banana(i, 808, "N")
-                for i in range(659, 719, 10):
-                    self.lay_banana(i, 828, "S")
-                for i in range(616, 646, 10):
-                    self.lay_banana(i, 808, "N")
-                for i in range(578, 608, 10):
-                    self.lay_banana(i, 808, "N")
-                self.lay_banana(550, 808, "N")
-                for i in range(445, 465, 10):
-                    self.lay_banana(i, 808, "N")
-                self.lay_banana(364, 797, "W")
-                self.lay_banana(364, 766, "W")
-                self.lay_banana(364, 694, "W")
-                for i in range(365, 435, 10):
-                    self.lay_banana(i, 640, "N")
-            case "Penguin Palace":
-                for i in range(2159, 2199, 10):
-                    self.lay_banana(i, 3776, "S")
-                self.lay_banana(2304, 3984, "E")
-                self.lay_banana(1984, 3864, "W")
+        if self.bananas_as_boundaries.get() == 1:
+            self.banana_count: int = 0
+            if wait_time > 0:
+                time.sleep(wait_time)
+            time.sleep(1)
+            match self.map_select.get():
+                case "Bamboo Resort":
+                    for i in range(1814, 1853, 10):
+                        self.lay_banana(2370, i, "E")
+                        self.lay_banana(2780, i, "W")
+                    for i in range(2555, 2605, 10):
+                        self.lay_banana(i, 1995, "S")
+                    for i in range(2530, 2630, 10):
+                        self.lay_banana(i, 1750, "N")
+                case "SAW Security":
+                    for i in range(3485, 3515, 10):
+                        self.lay_banana(i, 1720, "N")
+                    for i in range(1810, 1870, 10):
+                        self.lay_banana(3683, i, "W")
+                    for i in range(1790, 1840, 10):
+                        self.lay_banana(3178, i, "E")
+                    for i in range(2037, 2057, 10):
+                        self.lay_banana(3180, i, "E")
+                    for i in range(3545, 3575, 10):
+                        self.lay_banana(i, 2073, "S")
+                case "SAW Research Labs":
+                    for i in range(0, 40, 10):
+                        self.lay_banana(2571+i, 3103+i, "W")
+                    for i in range(3028, 3058, 10):
+                        self.lay_banana(2545, i, "E")
+                    for i in range(2920, 2950, 10):
+                        self.lay_banana(2545, i, "E")
+                    for i in range(2845, 2865, 10):
+                        self.lay_banana(2542, i, "E")
+                    for i in range(2710, 2740, 10):
+                        self.lay_banana(i, 2825, "N")
+                    for i in range(2785, 2815, 10):
+                        self.lay_banana(i, 2825, "N")
+                    for i in range(2845, 2865, 10):
+                        self.lay_banana(2972, i, "W")
+                    for i in range(2920, 2950, 10):
+                        self.lay_banana(2948, i, "E")
+                    for i in range(3028, 3058, 10):
+                        self.lay_banana(2948, i, "E")
+                    for i in range(0, 40, 10):
+                        self.lay_banana(2967-i, 3109+i, "W")
+                    self.lay_banana(2766, 3137, "S")
+                    self.lay_banana(2749, 3137, "S")
+                    self.lay_banana(2644, 3147, "S")
+                case "Super Welcome Center":
+                    for i in range(665, 725, 10):
+                        self.lay_banana(i, 663, "S")
+                    for i in range(837, 857, 10):
+                        self.lay_banana(i, 642, "N")
+                    for i in range(673, 693, 10):
+                        self.lay_banana(1014, i, "E")
+                    self.lay_banana(1014, 745, "E")
+                    for i in range(803, 823, 10):
+                        self.lay_banana(1014, i, "E")
+                    for i in range(991, 1011, 10):
+                        self.lay_banana(i, 841, "S")
+                    self.lay_banana(828, 808, "N")
+                    for i in range(784, 814, 10):
+                        self.lay_banana(i, 808, "N")
+                    for i in range(736, 766, 10):
+                        self.lay_banana(i, 808, "N")
+                    for i in range(659, 719, 10):
+                        self.lay_banana(i, 828, "S")
+                    for i in range(616, 646, 10):
+                        self.lay_banana(i, 808, "N")
+                    for i in range(578, 608, 10):
+                        self.lay_banana(i, 808, "N")
+                    self.lay_banana(550, 808, "N")
+                    for i in range(445, 465, 10):
+                        self.lay_banana(i, 808, "N")
+                    self.lay_banana(364, 797, "W")
+                    self.lay_banana(364, 766, "W")
+                    self.lay_banana(364, 694, "W")
+                    for i in range(365, 435, 10):
+                        self.lay_banana(i, 640, "N")
+                case "Penguin Palace":
+                    for i in range(2159, 2199, 10):
+                        self.lay_banana(i, 3776, "S")
+                    self.lay_banana(2304, 3984, "E")
+                    self.lay_banana(1984, 3864, "W")
         
         # Teleport players
         self.teleport_players(self.team_a_entry.get(), 715, 1310)

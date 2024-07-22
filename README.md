@@ -30,11 +30,11 @@ This tool lets you input every in-game command with a click of a button!
 ### Method #2
 
 - Install Python and pip
-- Clone (or download) the repo:<br>
+- Clone (or download) the repo:  
   `git clone https://github.com/Suchy499/PrivateGameHelper-for-Super-Animal-Royale.git`
-- Navigate to repo's directory:<br>
+- Navigate to repo's directory:  
   `cd PrivateGameHelper-for-Super-Animal-Royale`
-- Install the requirements:<br>
+- Install the requirements:  
   `py -m pip install -r requirements.txt`
 - Run the `__main__.py` file
 
@@ -58,10 +58,12 @@ the solution to that is changing your in-game resolution to one that's 16:9 (e.g
 
 ## Changelog
 
-### v1.4
+### v1.4.1
 
-- New custom game mode: Hamball Racing
-- Added bananas as arena boundaries for duels
-- Moved keybind settings from dodgeball to its own menu
-- Will now show a pop-up at launch whenever a new update is available (can be turned off in the settings)
-  
+- Added an option to disable bananas as boundaries for duels
+- Code refactoring
+
+## Disclaimer
+
+Assets used in this project come from the [Official Super Animal Royale Wiki](https://animalroyale.fandom.com/wiki/Super_Animal_Royale_Wiki).  
+Super Animal Royale is a trademark owned by Pixile Studios. This project is not associated with Pixile Studios in any form.
