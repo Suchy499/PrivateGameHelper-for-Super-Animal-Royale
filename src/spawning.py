@@ -68,7 +68,6 @@ class SpawningMenu(customtkinter.CTkToplevel):
         ImageButton(self, image_type="powerup", image=Images.ICON_CUPGRADE, command=lambda: self.spawn_powerup(4), place=(950, 180))
         ImageButton(self, image_type="powerup", image=Images.ICON_BANDOLIER, command=lambda: self.spawn_powerup(5), place=(1040, 180))
         ImageButton(self, image_type="powerup", image=Images.ICON_IMPOSSIBLE_TAPE, command=lambda: self.spawn_powerup(6), place=(1130, 180))
-        ImageButton(self, image_type="powerup", image=Images.ICON_JUICER, command=lambda: self.spawn_powerup(7), place=(1220, 180))
         ImageButton(self, image_type="armor", image=Images.ICON_ARMOR1, command=lambda: self.spawn_armor(1), place=(940, 240))
         ImageButton(self, image_type="armor", image=Images.ICON_ARMOR2, command=lambda: self.spawn_armor(2), place=(1055, 240))
         ImageButton(self, image_type="armor", image=Images.ICON_ARMOR3, command=lambda: self.spawn_armor(3), place=(1170, 240))

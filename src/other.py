@@ -6,7 +6,7 @@ from widgets import *
 class CommandsMenu(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self.geometry("780x310")
+        self.geometry("780x360")
         self.title("Private Game Helper - Other Commands")
         self.resizable(False, False)
         
@@ -23,8 +23,9 @@ class CommandsMenu(customtkinter.CTkToplevel):
         Button(self, text="/gasstart", command=lambda: self.change_setting("gasstart"), place=(170, 140), tooltip="Makes the first skunk gas timer start right away (if in lobby, it just means it'll start right when the eagle starts).")
         Button(self, text="/boss", command=lambda: self.change_setting("boss"), place=(170, 180), tooltip="Spawns a Giant Star-nosed Mole.")
         Button(self, text="/getpid", command=lambda: self.change_setting("getpid"), place=(170, 220), tooltip="Shows your in-game player id #.")
+        Button(self, text="/ziplines", command=lambda: self.change_setting("ziplines"), place=(20, 300), tooltip="Blocks access to ziplines.")
         self.mystery_options = OptionMenu(self, values=["Shotgun & Sniper", "Wild West", "Slow Bullets", "Bananarama", "Handguns Only", "Fast Bullets", "One Hit Kill"], place=(20, 260))
-        Button(self, text="Select", command=self.change_mystery, place=(170, 270), tooltip="In Mystery Mode, selects which mystery mode will be ran.")
+        Button(self, text="Select", command=self.change_mystery, place=(170, 260), tooltip="In Mystery Mode, selects which mystery mode will be ran.")
         
         # Player specific commands
         Text(self, text="Player specific commands", font="title", place=(400, 20))

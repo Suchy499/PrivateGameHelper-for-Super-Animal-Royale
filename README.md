@@ -58,10 +58,11 @@ the solution to that is changing your in-game resolution to one that's 16:9 (e.g
 
 ## Changelog
 
-### v1.4.1
+### v1.4.2
 
-- Added an option to disable bananas as boundaries for duels
-- Code refactoring
+- Removed the super juicer
+- Added the /ziplines command
+- Fixed zipline placement for dodgeball and hamball racing
 
 ## Disclaimer
 

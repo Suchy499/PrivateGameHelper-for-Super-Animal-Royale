@@ -194,7 +194,7 @@ class Racing(customtkinter.CTkToplevel):
             return
         
         # Startup commands
-        send_commands("allitems", "emus", "hamballs", "gasoff", "startp", "god all")
+        send_commands("allitems", "emus", "hamballs", "gasoff", "ziplines", "startp", "god all")
         send_commands("yell Welcome to hamball racing!",
                       "yell Please jump out of the eagle as soon as possible")
         
@@ -303,7 +303,7 @@ class Racing(customtkinter.CTkToplevel):
                     self.lay_banana(x+10, y, "W")
                 self.lay_banana(1542, 1437, "W")
                 self.lay_banana(1542, 1427, "W")
-                self.lay_zip(1574, 1410, 730, 530)
+                self.lay_zip(1574, 1410, 760, 530)
                 self.spawn_hamball(1550, 1422)
                 self.spawn_hamball(1570, 1422)
                 self.spawn_hamball(1550, 1432)
@@ -313,7 +313,7 @@ class Racing(customtkinter.CTkToplevel):
                 self.break_boxes(1583, 3651, 1050, 343)
                 self.break_boxes(1620, 3540, 1050, 343)
                 self.break_boxes(2153, 3563, 800, 800)
-                self.lay_zip(2030, 3452, 970, 900)
+                self.lay_zip(2030, 3452, 970, 850)
                 self.lay_banana(2050, 3407, "S")
                 self.lay_banana(2070, 3407, "S")
                 for x, y in self.get_curve_coordinates(2097, 3502, 105, 90, "SE", 9, reverse=True):
@@ -508,7 +508,7 @@ class Racing(customtkinter.CTkToplevel):
                     self.lay_banana(1360, i, "E")
                 self.lay_banana(1374, 2603, "W")
                 self.lay_banana(1311, 2586, "N")
-                self.lay_zip(1376, 2608, 1350, 540)
+                self.lay_zip(1376, 2608, 1300, 540)
                 self.spawn_hamball(1395, 2618)
                 self.spawn_hamball(1415, 2618)
                 self.spawn_hamball(1395, 2608)
