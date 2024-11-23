@@ -1,0 +1,347 @@
+#MainWindowContent {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(0, 4, 44, 255), stop:1 rgba(65, 77, 76, 255));
+    border-radius: 20px;
+    border: 2px solid rgba(65, 77, 76, 255);
+}
+
+#TitleBar {
+    background: rgba(0, 0, 0, 20);
+}
+
+#Title {
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: center;
+}
+
+#TitleButton {
+    border: 0;
+    background: transparent;
+}
+
+#TitleButton:hover {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#TitleButton:pressed {
+    background: rgba(128, 128, 128, 0.6);
+}
+
+#TitleButtonClose {
+    border: 0;
+    background: transparent;
+}
+
+#TitleButtonClose:hover {
+    background: rgba(232, 17, 35, 0.4);
+}
+
+#TitleButtonClose:pressed {
+    background: rgba(232, 17, 35, 0.6);
+}
+
+#Sidebar {
+    background: rgba(0, 0, 0, 20);
+}
+
+#SidebarButton {
+    background: rgba(0, 0, 0, 0);
+    image-position: left;
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: left;
+    padding-left: 20px;
+    border: none;
+    border-radius: 8px;
+}
+
+#SidebarButton:hover {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#SidebarButton:pressed {
+    background: rgba(128, 128, 128, 0.6);
+}
+
+#SidebarButtonActive {
+    background: rgba(128, 128, 128, 0.2);
+    image-position: left;
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: left;
+    padding-left: 20px;
+    border: none;
+    border-radius: 8px;
+}
+
+#SidebarButtonActive:hover {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#SidebarButtonActive:pressed {
+    background: rgba(128, 128, 128, 0.6);
+}
+
+#SidebarLine {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#DivLine {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#NameLabel {
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 50px;
+    color: white;
+    text-align: center;
+}
+
+#ScrollArea {
+    background: transparent;
+}
+
+#Content {
+    background: transparent;
+}
+
+QScrollBar:vertical {
+    border: none;
+    background: rgba(0, 0, 0, 0);
+    width: 14px;
+    margin: 15px 0 15px 0;
+    border-radius: 0px;
+}
+
+QScrollBar::handle:vertical {	
+    background-color: rgba(129, 126, 120, 0.4);
+    min-height: 30px;
+    border-radius: 7px;
+}
+
+QScrollBar::handle:vertical:hover{	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::handle:vertical:pressed {	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::sub-line:vertical {
+    border: none;
+    background-color: rgba(129, 126, 120, 0.4);
+    height: 15px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical:hover {	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::sub-line:vertical:pressed {	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::add-line:vertical {
+    border: none;
+    background-color: rgba(129, 126, 120, 0.4);
+    height: 15px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::add-line:vertical:hover {	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::add-line:vertical:pressed {	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+    background: none;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+#PresetsHeaderName {
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 24px;
+    color: white;
+}
+
+#PregameHeaderName {
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 24px;
+    color: white;
+    margin-bottom: 10px;
+}
+
+#PregameToggle, #SliderLabel {
+    background: transparent;
+    font-family: Aptos;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 13px;
+    color: white;
+}
+
+#SavedPreset {
+    background: transparent;
+    font-family: Aptos;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 13px;
+    text-align: left;
+    color: white;
+}
+
+#Slider {
+    margin: 0px; 
+}
+
+#Slider::groove:horizontal {
+    border-radius: 10px;
+    height: 20px;
+	margin: 0px;
+	background-color: "#595b5e";
+}
+
+#Slider::handle:horizontal {
+    border: none;
+    height: 16px;
+    width: 16px;
+    margin: 2px;
+	border-radius: 8px;
+    background-color: "#568af2";
+}
+
+#Slider::handle:horizontal:hover {
+    background-color: "#6c99f4";
+}
+
+#Slider::handle:horizontal:pressed {
+    background-color: "#3f6fd1";
+}
+
+#Slider::groove:vertical {
+    border-radius: 10px;
+    width: 20px;
+    margin: 0px;
+	background-color: "#595b5e";
+}
+
+#Slider::handle:vertical {
+	border: none;
+    height: 16px;
+    width: 16px;
+    margin: 2px;
+	border-radius: 8px;
+    background-color: "#568af2";
+}
+#Slider::handle:vertical:hover {
+    background-color: "#6c99f4";
+}
+
+#Slider::handle:vertical:pressed {
+    background-color: "#3f6fd1";
+}
+
+#SliderValue {
+    font-family: Aptos;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 13px;
+    color: white;
+}
+
+#NavbarButton {
+    background: rgba(0, 0, 0, 0);
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: center;
+    border: none;
+}
+
+#NavbarButtonActive {
+    background: rgba(0, 0, 0, 0);
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: center;
+    border: 2px solid rgba(128, 128, 128, 0.8);
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+}
+
+#PregameLineEdit {
+	background-color: rgba(89, 91, 94, 0.6);
+	border-radius: 8px;
+	border: 2px solid transparent;
+	padding-left: 10px;
+    padding-right: 10px;
+	selection-color: white;
+	selection-background-color: rgb(86, 138, 242);;
+    color: white;
+}
+
+#PregameLineEdit:focus {
+	border: 2px solid rgb(86, 138, 242);;
+    background-color: rgba(89, 91, 94, 0.4);
+}
+
+#ButtonDefault {
+    background: rgba(86, 138, 242, 0.6);
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+}
+
+#ButtonDefault:hover {
+    background: rgba(86, 138, 242, 0.8);
+}
+
+#ButtonDefault:pressed {
+    background: rgba(86, 138, 242, 1);
+}
+
+#ButtonDelete {
+    background: rgba(128, 128, 128, 0.6);
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+}
+
+#ButtonDelete:hover {
+    background: rgba(128, 128, 128, 0.8);
+}
+
+#ButtonDelete:pressed {
+    background: rgba(128, 128, 128, 1);
+}

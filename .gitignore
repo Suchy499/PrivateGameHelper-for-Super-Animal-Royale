@@ -1,7 +1,6 @@
 bin/
-src/__pycache__/
-
-src/presets/
-!src/presets/DefaultPreset.cfg
+**/__pycache__
 
 .vscode/
+
+.venv/
