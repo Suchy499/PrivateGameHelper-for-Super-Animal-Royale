@@ -147,7 +147,7 @@ class MainWindow(QMainWindow):
         super().changeEvent(event)
         event.accept()
     
-    def resize_grips(self):
+    def resizeEvent(self, event):
         self.left_grip.setGeometry(-5, 10, 10, self.height())
         self.right_grip.setGeometry(self.width() - 5, 10, 10, self.height())
         self.top_grip.setGeometry(5, -5, self.width() - 15, 10)
@@ -156,9 +156,6 @@ class MainWindow(QMainWindow):
         self.top_right_grip.setGeometry(self.width() - 10, -5, 15, 15)
         self.bottom_left_grip.setGeometry(-5, self.height() - 10, 15, 15)
         self.bottom_right_grip.setGeometry(self.width() - 10, self.height() - 10, 15, 15)
-
-    def resizeEvent(self, event):
-        self.resize_grips()
     
     def setActivePage(self, page, btn_text):
         self.pages.setCurrentWidget(page)
