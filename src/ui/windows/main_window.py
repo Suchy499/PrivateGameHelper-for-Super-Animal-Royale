@@ -67,7 +67,7 @@ class MainWindow(QMainWindow):
                 "text": "Players",
                 "category": "players",
                 "show_top": True,
-                "page": None,
+                "page": self.pages.players_page,
                 "active": False,
             },
             {

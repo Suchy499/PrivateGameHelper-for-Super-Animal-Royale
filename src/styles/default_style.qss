@@ -178,7 +178,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     background: none;
 }
 
-#PresetsHeaderName {
+#PresetsHeaderName, #PlayersHeaderName {
     font-family: Aptos;
     font-weight: bold;
     font-size: 24px;
@@ -202,7 +202,19 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     color: white;
 }
 
-#SavedPreset {
+#PlayersHeaderRefresh {
+    border-radius: 8px;
+}
+
+#PlayersHeaderRefresh:hover {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#PlayersHeaderRefresh:pressed {
+    background: rgba(128, 128, 128, 0.6);
+}
+
+#SavedPresetName, #SavedPresetEdited, #PlayerName {
     background: transparent;
     font-family: Aptos;
     font-weight: bold;
@@ -210,6 +222,38 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     font-size: 13px;
     text-align: left;
     color: white;
+    border: 2px solid transparent;
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+}
+
+#SavedPresetName:hover, #PlayerName:hover {
+    border: 2px solid rgba(128, 128, 128, 0.4);
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+}
+
+#SavedPresetName:pressed, #PlayerName:pressed {
+    border: 2px solid rgba(128, 128, 128, 0.6);
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+}
+
+#SavedPresetNameActive, #PlayerNameSelected {
+    background: transparent;
+    font-family: Aptos;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 13px;
+    text-align: left;
+    color: white;
+    border: 2px solid rgba(128, 128, 128, 0.8);
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
 }
 
 #Slider {
@@ -279,6 +323,24 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     color: white;
     text-align: center;
     border: none;
+    border: 2px solid transparent;
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+}
+
+#NavbarButton:hover {
+    border: 2px solid rgba(128, 128, 128, 0.4);
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+}
+
+#NavbarButton:pressed {
+    border: 2px solid rgba(128, 128, 128, 0.6);
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
 }
 
 #NavbarButtonActive {

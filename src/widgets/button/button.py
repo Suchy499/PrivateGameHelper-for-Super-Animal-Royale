@@ -21,6 +21,7 @@ class Button(QPushButton):
         self.setFixedSize(self.w, self.h)
         self.setObjectName(self.btn_style)
         self.setText(self.btn_text)
+        self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         if self.btn_icon is not None:
             self.setIcon(self.btn_icon)
             self.setIconSize(self.btn_icon.size())

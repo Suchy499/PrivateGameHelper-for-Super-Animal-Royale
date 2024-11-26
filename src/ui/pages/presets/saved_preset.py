@@ -1,6 +1,7 @@
 from core import *
-import datetime
 import styles
+from widgets import ClickableLabel
+import datetime
 
 class SavedPreset(QWidget):
     def __init__(
@@ -18,14 +19,17 @@ class SavedPreset(QWidget):
         self._layout = QHBoxLayout(self)
         self._layout.setContentsMargins(7, 10, 7, 10)
         
-        self.name_label = QPushButton(self, text=self.name)
-        self.name_label.setObjectName("SavedPreset")
+        self.name_label = ClickableLabel(self, self.name)
+        if Globals.ACTIVE_PRESET == self.id:
+            self.name_label.setObjectName("SavedPresetNameActive")
+        else:
+            self.name_label.setObjectName("SavedPresetName")
         self.name_label.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.name_label.clicked.connect(self.set_active)
         
         self.last_edited_label = QLabel(self, text=self.get_relative_time(self.last_edited))
         self.last_edited_label.setFixedWidth(75)
-        self.last_edited_label.setObjectName("SavedPreset")
+        self.last_edited_label.setObjectName("SavedPresetEdited")
         self.last_edited_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
         self._layout.addWidget(self.name_label)
@@ -64,4 +68,5 @@ class SavedPreset(QWidget):
         return relative_time
 
     def set_active(self):
+        Globals.ACTIVE_PRESET = self.id
         Globals.SIGNAL_MANAGER.presetOpened.emit(self.preset)

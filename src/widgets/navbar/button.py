@@ -1,7 +1,8 @@
 from core.qt_core import *
+from widgets.clickable_label import ClickableLabel
 import styles
 
-class Button(QPushButton):
+class Button(ClickableLabel):
     def __init__(
         self,
         parent: QWidget | None = None, 
@@ -20,6 +21,8 @@ class Button(QPushButton):
         self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.setFixedSize(self.w, self.h)
         self.setText(self.text)
+        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.setContentsMargins(0, 0, 0, 0)
         self.clicked.connect(self.select)
         
     def select(self) -> None:

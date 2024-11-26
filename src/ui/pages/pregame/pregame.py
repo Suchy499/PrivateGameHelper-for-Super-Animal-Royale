@@ -56,7 +56,7 @@ class Pregame(QWidget):
         Globals.PREGAME_SETTINGS["last_edited"] = preset["last_edited"]
     
     def reset_settings(self, preset: dict) -> None:
-        self.general_page.reset_settings(preset)
+        self.general_page.reset_settings()
         self.settings_page.load_settings(preset["settings"])
         self.spawn_rates_page.load_settings(preset["settings"]["gun_weights"])
         Globals.PREGAME_SETTINGS["preset_id"] = preset["preset_id"]

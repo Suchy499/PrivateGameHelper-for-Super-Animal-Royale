@@ -3,8 +3,10 @@ import json
 import os
 import time
 import keyboard
+import pyperclip
 import pywinctl
 import pyautogui
+from dataclasses import dataclass
 
 # Keybinds
 keyboard.add_hotkey("ctrl+alt+q", lambda: clear_queue())
@@ -14,11 +16,20 @@ class SignalManager(QObject):
     presetOpened = Signal(dict)
     presetsChanged = Signal()
     presetRestored = Signal(dict)
+    playersRefreshed = Signal()
+    playerSelected = Signal()
+
+@dataclass
+class PlayerItem:
+    player_id: int
+    name: str
 
 class Globals:
     SIGNAL_MANAGER: SignalManager = SignalManager()
     QUEUE: list = []
     TIMER: QTimer = QTimer()
+    ACTIVE_PRESET: int | None = None
+    SELECTED_PLAYER: PlayerItem | None = None
     PREGAME_SETTINGS: dict = {
         "preset_id": None,
         "name": None,
@@ -121,6 +132,7 @@ class Globals:
             }
         }
     }
+    PLAYER_LIST: list[PlayerItem] = []
     
 # Presets
 def read_presets() -> list[dict]:
@@ -160,13 +172,16 @@ def delete_preset() -> None:
     presets_data.pop(preset_index)
     save_presets(presets_data)
     Globals.SIGNAL_MANAGER.presetsChanged.emit()
+    Globals.ACTIVE_PRESET = None
 
 # Queue
-def add_commands(*commands: str) -> None:
-    for command in commands:
-        Globals.QUEUE.append(lambda: pyautogui.press("enter"))
-        Globals.QUEUE.append(lambda: pyautogui.write(f"/{command}"))
-        Globals.QUEUE.append(lambda: pyautogui.press("enter"))
+def send_command(command):
+    pyautogui.press("enter")
+    pyautogui.write(f"/{command}")
+    pyautogui.press("enter")
+        
+def add_commands(commands: str) -> None:
+        Globals.QUEUE.append(lambda: send_command(commands))
     
 def execute_queue(timeout_msc: int = 0) -> None:
     Globals.TIMER.timeout.connect(execute_command)
@@ -185,13 +200,15 @@ def clear_queue() -> None:
 
 # Buttons
 def get_match_id() -> None:
-    open_window("Super Animal Royale")
+    if not open_window("Super Animal Royale"):
+        return
     Globals.QUEUE = []
     add_commands("matchid")
     execute_queue()
 
 def start_game() -> None:
-    open_window("Super Animal Royale")
+    if not open_window("Super Animal Royale"):
+        return
     Globals.QUEUE = []
     if Globals.PREGAME_SETTINGS["settings"]["bots"]:
         add_commands("start")
@@ -200,7 +217,8 @@ def start_game() -> None:
     execute_queue()
     
 def apply_settings() -> None:
-    open_window("Super Animal Royale")
+    if not open_window("Super Animal Royale"):
+        return
     Globals.QUEUE = []
     settings: dict = Globals.PREGAME_SETTINGS["settings"]
     weights: dict = settings["gun_weights"]
@@ -240,3 +258,26 @@ def open_window(window_title: str) -> None | object:
     window = pywinctl.getWindowsWithTitle(window_title, flags="IS")[0]
     window.activate()
     return window
+
+# Players
+def read_players() -> list:
+    if open_window("Super Animal Royale"):
+        Globals.PLAYER_LIST = []
+        send_command("getplayers")
+        time.sleep(0.5)
+        clipboard: list[str] = pyperclip.paste().split("\n")
+        clipboard.remove("")
+        clipboard.pop(0)
+        for player in clipboard:
+            player_id = int(player.split("\t")[0])
+            name = player.split("\t")[1]
+            Globals.PLAYER_LIST.append(PlayerItem(player_id, name))
+        Globals.SIGNAL_MANAGER.playersRefreshed.emit()
+    return Globals.PLAYER_LIST
+
+def send_player_command(command: str) -> None:
+    if not Globals.SELECTED_PLAYER:
+        return
+    if not open_window("Super Animal Royale"):
+        return
+    send_command(f"{command} {Globals.SELECTED_PLAYER.player_id}")
