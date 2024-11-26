@@ -9,7 +9,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         
         self.setObjectName("MainWindow")
-        self.setMinimumSize(1265, 600)
+        self.setMinimumSize(1265, 620)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.setWindowTitle("Private Game Helper")
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
@@ -75,7 +75,7 @@ class MainWindow(QMainWindow):
                 "text": "Teleport",
                 "category": "players",
                 "show_top": True,
-                "page": None,
+                "page": self.pages.teleport_page,
                 "active": False,
             },
             {

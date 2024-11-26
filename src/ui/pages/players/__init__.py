@@ -1,1 +1,1 @@
-from .players import Players
+from .players import PagePlayers

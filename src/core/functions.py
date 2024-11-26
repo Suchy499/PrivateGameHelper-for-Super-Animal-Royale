@@ -7,9 +7,7 @@ import pyperclip
 import pywinctl
 import pyautogui
 from dataclasses import dataclass
-
-# Keybinds
-keyboard.add_hotkey("ctrl+alt+q", lambda: clear_queue())
+from typing import Literal
 
 # Classes
 class SignalManager(QObject):
@@ -30,6 +28,7 @@ class Globals:
     TIMER: QTimer = QTimer()
     ACTIVE_PRESET: int | None = None
     SELECTED_PLAYER: PlayerItem | None = None
+    SELECTED_PLAYER_TELE: PlayerItem | Literal["ALL"] | None = None
     PREGAME_SETTINGS: dict = {
         "preset_id": None,
         "name": None,
@@ -281,3 +280,21 @@ def send_player_command(command: str) -> None:
     if not open_window("Super Animal Royale"):
         return
     send_command(f"{command} {Globals.SELECTED_PLAYER.player_id}")
+
+# Teleport
+def teleport_player(x: int, y: int) -> None:
+    if not Globals.SELECTED_PLAYER_TELE:
+        return
+    if not open_window("Super Animal Royale"):
+        return
+    if Globals.SELECTED_PLAYER_TELE == "ALL":
+        send_command(f"tele all {x} {y}")
+    else:
+        send_command(f"tele {Globals.SELECTED_PLAYER_TELE.player_id} {x} {y}")
+
+def select_all_players() -> None:
+    Globals.SELECTED_PLAYER_TELE = "ALL"
+    Globals.SIGNAL_MANAGER.playerSelected.emit()
+
+# Keybinds
+keyboard.add_hotkey("ctrl+alt+q", clear_queue)

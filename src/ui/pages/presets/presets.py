@@ -3,7 +3,7 @@ from .content import Content
 from widgets import HLine
 from images import IMAGES
 
-class Presets(QWidget):
+class PagePresets(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
@@ -14,10 +14,11 @@ class Presets(QWidget):
         self.header_layout = QHBoxLayout(self.header)
         self.header_layout.setContentsMargins(10, 0, 40, 0)
         
-        self.header_name = QLabel(self.header, text="Name")
+        self.header_name = QLabel(self.header, text="Presets")
         self.header_name.setObjectName("PresetsHeaderName")
         
         self.header_edited = QLabel(self.header)
+        self.header_edited.setToolTip("Last Edited")
         self.header_edited_pixmap = QPixmap(IMAGES["pencil"]).scaledToWidth(20, Qt.TransformationMode.SmoothTransformation)
         self.header_edited.setPixmap(self.header_edited_pixmap)
         self.header_edited.setFixedSize(self.header_edited_pixmap.size())

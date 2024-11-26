@@ -4,7 +4,7 @@ from .spawn_rates import SpawnRates
 from .general import General
 from widgets import NavBar
 
-class Pregame(QWidget):
+class PagePregame(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         

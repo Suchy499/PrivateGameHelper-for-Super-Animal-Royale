@@ -407,3 +407,18 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
 #ButtonDelete:pressed {
     background: rgba(128, 128, 128, 1);
 }
+
+#TeleportMouseTip {
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+}
+
+QToolTip {
+    background: rgba(128, 128, 128, 0.6);
+    font-family: Aptos;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+}

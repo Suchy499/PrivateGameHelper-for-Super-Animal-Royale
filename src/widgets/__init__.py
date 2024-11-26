@@ -7,3 +7,4 @@ from .size_grip import SizeGrip
 from .navbar import NavBar
 from .button import Button
 from .clickable_label import ClickableLabel
+from .map_widget import MapWidget

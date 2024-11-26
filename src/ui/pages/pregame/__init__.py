@@ -1,1 +1,1 @@
-from .pregame import Pregame
+from .pregame import PagePregame

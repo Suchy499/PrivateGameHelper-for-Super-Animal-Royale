@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (
     QSizeGrip, 
     QToolButton, 
     QStyle,
+    QToolTip,
 )
 from PySide6.QtCore import (
     Qt, 
@@ -38,4 +39,5 @@ from PySide6.QtGui import (
     QPainter, 
     QFont,
     QColor,
+    QMouseEvent
 )

@@ -3,7 +3,7 @@ from .content import Content
 from images import IMAGES
 from widgets import HLine, ClickableLabel, Button
 
-class Players(QWidget):
+class PagePlayers(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
@@ -14,10 +14,11 @@ class Players(QWidget):
         self.header_layout = QHBoxLayout(self.header)
         self.header_layout.setContentsMargins(10, 0, 10, 0)
         
-        self.header_name = QLabel(self.header, text="Name")
+        self.header_name = QLabel(self.header, text="Players")
         self.header_name.setObjectName("PlayersHeaderName")
         
         self.header_refresh = ClickableLabel(self)
+        self.header_refresh.setToolTip("Refresh")
         self.header_refresh_icon = QPixmap(IMAGES["refresh"]).scaledToWidth(20, Qt.TransformationMode.SmoothTransformation)
         self.header_refresh.setPixmap(self.header_refresh_icon)
         self.header_refresh.setFixedSize(self.header_refresh_icon.width() + 9, self.header_refresh_icon.height() + 9)

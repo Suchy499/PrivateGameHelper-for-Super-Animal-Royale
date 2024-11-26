@@ -1,7 +1,7 @@
 from core.qt_core import *
 from images import IMAGES
 
-class Home(QWidget):
+class PageHome(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
