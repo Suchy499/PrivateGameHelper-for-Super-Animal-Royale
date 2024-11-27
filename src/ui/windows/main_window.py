@@ -83,7 +83,7 @@ class MainWindow(QMainWindow):
                 "text": "Items",
                 "category": "commands",
                 "show_top": True,
-                "page": None,
+                "page": self.pages.items_page,
                 "active": False,
             },
             {
@@ -91,7 +91,7 @@ class MainWindow(QMainWindow):
                 "text": "Commands",
                 "category": "commands",
                 "show_top": True,
-                "page": None,
+                "page": self.pages.commands_page,
                 "active": False,
             },
             {
@@ -99,7 +99,7 @@ class MainWindow(QMainWindow):
                 "text": "Duels",
                 "category": "gamemodes",
                 "show_top": True,
-                "page": None,
+                "page": self.pages.duels_page,
                 "active": False,
             },
             {
@@ -107,7 +107,7 @@ class MainWindow(QMainWindow):
                 "text": "Dodgeball",
                 "category": "gamemodes",
                 "show_top": True,
-                "page": None,
+                "page": self.pages.dodgeball_page,
                 "active": False,
             },
             {
@@ -115,7 +115,7 @@ class MainWindow(QMainWindow):
                 "text": "Changelog",
                 "category": "info",
                 "show_top": False,
-                "page": None,
+                "page": self.pages.changelog_page,
                 "active": False,
             },
             {
@@ -123,7 +123,7 @@ class MainWindow(QMainWindow):
                 "text": "About",
                 "category": "info",
                 "show_top": False,
-                "page": None,
+                "page": self.pages.about_page,
                 "active": False,
             },
             {
@@ -131,7 +131,7 @@ class MainWindow(QMainWindow):
                 "text": "Settings",
                 "category": "settings",
                 "show_top": False,
-                "page": None,
+                "page": self.pages.settings_page,
                 "active": False,
             },
         ]

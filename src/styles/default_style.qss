@@ -185,7 +185,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     color: white;
 }
 
-#PregameHeaderName {
+#PregameHeaderName, #ItemsHeaderName {
     font-family: Aptos;
     font-weight: bold;
     font-size: 24px;
@@ -421,4 +421,20 @@ QToolTip {
     color: white;
     font-weight: bold;
     border-radius: 6px;
+}
+
+#WeaponButton {
+    background: none;
+    border: none;
+    border-radius: 8px;
+}
+
+#WeaponButton:hover {
+    background: rgba(128, 128, 128, 0.2);
+    border: none;
+}
+
+#WeaponButton:pressed {
+    background: rgba(128, 128, 128, 0.4);
+    border: none;
 }

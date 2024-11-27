@@ -16,6 +16,7 @@ class SignalManager(QObject):
     presetRestored = Signal(dict)
     playersRefreshed = Signal()
     playerSelected = Signal()
+    raritySelected = Signal()
 
 @dataclass
 class PlayerItem:
@@ -29,6 +30,7 @@ class Globals:
     ACTIVE_PRESET: int | None = None
     SELECTED_PLAYER: PlayerItem | None = None
     SELECTED_PLAYER_TELE: PlayerItem | Literal["ALL"] | None = None
+    SELECTED_RARITY: int = 0
     PREGAME_SETTINGS: dict = {
         "preset_id": None,
         "name": None,
@@ -295,6 +297,12 @@ def teleport_player(x: int, y: int) -> None:
 def select_all_players() -> None:
     Globals.SELECTED_PLAYER_TELE = "ALL"
     Globals.SIGNAL_MANAGER.playerSelected.emit()
+
+# Items
+def spawn_weapon(weapon_id: int) -> None:
+    if not open_window("Super Animal Royale"):
+        return
+    send_command(f"gun{weapon_id} {Globals.SELECTED_RARITY}")
 
 # Keybinds
 keyboard.add_hotkey("ctrl+alt+q", clear_queue)

@@ -16,9 +16,9 @@ class PagePregame(QWidget):
         
         self.navbar = NavBar(self)
         self.pages = QStackedWidget(self)
-        self.general_page = General(self)
-        self.settings_page = Settings(self)
-        self.spawn_rates_page = SpawnRates(self)
+        self.general_page = General(self.pages)
+        self.settings_page = Settings(self.pages)
+        self.spawn_rates_page = SpawnRates(self.pages)
         self.pages.addWidget(self.general_page)
         self.pages.addWidget(self.settings_page)
         self.pages.addWidget(self.spawn_rates_page)

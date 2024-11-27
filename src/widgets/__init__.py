@@ -8,3 +8,5 @@ from .navbar import NavBar
 from .button import Button
 from .clickable_label import ClickableLabel
 from .map_widget import MapWidget
+from .rarity_button import RarityButton
+from .weapon_button import WeaponButton
