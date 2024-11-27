@@ -13,7 +13,7 @@ class WeaponButton(QPushButton):
         _icon_size = size.width() - 10, size.height() - 10
         self.pixmap_icon = icon.scaled(*_icon_size, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.setIcon(self.pixmap_icon)
-        self.setIconSize(size)
+        self.setIconSize(self.pixmap_icon.size())
         self.setContentsMargins(5, 5, 5, 5)
         self.setFixedSize(size)
         self.setObjectName("WeaponButton")

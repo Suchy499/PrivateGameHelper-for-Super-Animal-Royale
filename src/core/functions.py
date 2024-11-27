@@ -304,5 +304,25 @@ def spawn_weapon(weapon_id: int) -> None:
         return
     send_command(f"gun{weapon_id} {Globals.SELECTED_RARITY}")
 
+def spawn_ammo(amount: int, ammo_id: int) -> None:
+    if not open_window("Super Animal Royale"):
+        return
+    send_command(f"ammo{ammo_id} {amount}")
+
+def spawn_healing(amount: int, healing_type: Literal["juice", "tape"]) -> None:
+    if not open_window("Super Animal Royale"):
+        return
+    send_command(f"{healing_type} {amount}")
+
+def spawn_throwable(amount: int, throwable_type: Literal["banana", "nade", "zip"]) -> None:
+    if not open_window("Super Animal Royale"):
+        return
+    send_command(f"{throwable_type} {amount}")
+
+def spawn_equipment(command: str) -> None:
+    if not open_window("Super Animal Royale"):
+        return
+    send_command(command)
+
 # Keybinds
 keyboard.add_hotkey("ctrl+alt+q", clear_queue)

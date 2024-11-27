@@ -10,3 +10,7 @@ from .clickable_label import ClickableLabel
 from .map_widget import MapWidget
 from .rarity_button import RarityButton
 from .weapon_button import WeaponButton
+from .ammo_button import AmmoButton
+from .healing_button import HealingButton
+from .throwable_button import ThrowableButton
+from .equipment_button import EquipmentButton

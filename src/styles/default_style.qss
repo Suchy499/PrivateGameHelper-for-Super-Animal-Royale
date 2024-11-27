@@ -423,18 +423,18 @@ QToolTip {
     border-radius: 6px;
 }
 
-#WeaponButton {
+#WeaponButton, #AmmoButton, #HealingButton, #ThrowableButton, #EquipmentButton {
     background: none;
     border: none;
     border-radius: 8px;
 }
 
-#WeaponButton:hover {
+#WeaponButton:hover, #AmmoButton:hover, #HealingButton:hover, #ThrowableButton:hover, #EquipmentButton:hover {
     background: rgba(128, 128, 128, 0.2);
     border: none;
 }
 
-#WeaponButton:pressed {
+#WeaponButton:pressed, #AmmoButton:pressed, #HealingButton:pressed, #ThrowableButton:pressed, #EquipmentButton:pressed {
     background: rgba(128, 128, 128, 0.4);
     border: none;
 }
