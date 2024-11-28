@@ -44,6 +44,7 @@ class Globals:
             "onehits": False,
             "emus": True,
             "hamballs": True,
+            "ziplines": True,
             "moles": True,
             "pets": True,
             "gasoff": True,
@@ -95,6 +96,7 @@ class Globals:
             "onehits": False,
             "emus": True,
             "hamballs": True,
+            "ziplines": True,
             "moles": True,
             "pets": True,
             "gasoff": True,
@@ -182,7 +184,7 @@ def send_command(command):
     pyautogui.press("enter")
         
 def add_commands(commands: str) -> None:
-        Globals.QUEUE.append(lambda: send_command(commands))
+    Globals.QUEUE.append(lambda: send_command(commands))
     
 def execute_queue(timeout_msc: int = 0) -> None:
     Globals.TIMER.timeout.connect(execute_command)
@@ -323,6 +325,9 @@ def spawn_equipment(command: str) -> None:
     if not open_window("Super Animal Royale"):
         return
     send_command(command)
+
+# Commands
+send_other_command = spawn_equipment
 
 # Keybinds
 keyboard.add_hotkey("ctrl+alt+q", clear_queue)

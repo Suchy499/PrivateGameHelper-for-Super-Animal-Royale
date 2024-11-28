@@ -1,4 +1,4 @@
-from core.qt_core import *
+from core import *
 from typing import Literal
 
 class Button(QPushButton):
@@ -9,7 +9,8 @@ class Button(QPushButton):
         btn_icon: QIcon | QPixmap | None = None,
         w: int = 100,
         h: int = 30,
-        btn_style: Literal["ButtonDefault", "ButtonDelete"] = "ButtonDefault"
+        btn_style: Literal["ButtonDefault", "ButtonDelete"] = "ButtonDefault",
+        command: str | None = None
     ):
         super().__init__(parent)
         self.w = w
@@ -17,6 +18,7 @@ class Button(QPushButton):
         self.btn_style = btn_style
         self.btn_icon = btn_icon
         self.btn_text = btn_text
+        self.command = command
         
         self.setFixedSize(self.w, self.h)
         self.setObjectName(self.btn_style)
@@ -25,3 +27,6 @@ class Button(QPushButton):
         if self.btn_icon is not None:
             self.setIcon(self.btn_icon)
             self.setIconSize(self.btn_icon.size())
+
+        if self.command is not None:
+            self.clicked.connect(lambda: send_other_command(self.command))

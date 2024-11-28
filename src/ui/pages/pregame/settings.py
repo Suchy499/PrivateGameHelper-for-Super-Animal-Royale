@@ -77,8 +77,13 @@ class Settings(QWidget):
         self.hamballs_toggle.setObjectName("PregameToggle")
         self.hamballs_toggle.stateChanged.connect(lambda: self.set_setting("hamballs", self.hamballs_toggle.isChecked()))
         
+        self.ziplines_toggle = LabeledToggle(self.vehicles_settings, text="Ziplines", default_state=True)
+        self.ziplines_toggle.setObjectName("PregameToggle")
+        self.ziplines_toggle.stateChanged.connect(lambda: self.set_setting("ziplines", self.ziplines_toggle.isChecked()))
+        
         self.vehicles_settings_layout.addWidget(self.emus_toggle)
         self.vehicles_settings_layout.addWidget(self.hamballs_toggle)
+        self.vehicles_settings_layout.addWidget(self.ziplines_toggle)
         
         self.vehicles_hline = HLine(self, h=self.line_width)
         self.vehicles_hline.setObjectName("DivLine")
@@ -193,6 +198,7 @@ class Settings(QWidget):
         self.powerups_toggle.setChecked(settings["powerups"])
         self.emus_toggle.setChecked(settings["emus"])
         self.hamballs_toggle.setChecked(settings["hamballs"])
+        self.ziplines_toggle.setChecked(settings["ziplines"])
         self.gas_toggle.setChecked(settings["gasoff"])
         self.moles_toggle.setChecked(settings["moles"])
         self.pets_toggle.setChecked(settings["pets"])
