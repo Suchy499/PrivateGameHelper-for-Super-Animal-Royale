@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint, True)
         self.setStyleSheet(styles.default_style)
         
-        Globals.SIGNAL_MANAGER.presetOpened.connect(lambda: self.setActivePage(self.pages.pregame_page, "Pregame"))
+        global_vars.SIGNAL_MANAGER.presetOpened.connect(lambda: self.setActivePage(self.pages.pregame_page, "Pregame"))
         
         self.content = QWidget(self)
         self.content.setObjectName("MainWindowContent")

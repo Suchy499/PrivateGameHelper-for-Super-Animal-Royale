@@ -8,7 +8,7 @@ class SpawnRates(QWidget):
         self._layout = QVBoxLayout(self)
         self._layout.setContentsMargins(0, 0, 0, 0)
         self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.line_width = 2
+        self.line_height = 2
         
         self.spawn_rates_label = QLabel(self, text="Spawn Rates")
         self.spawn_rates_label.setContentsMargins(0, 0, 0, 15)
@@ -145,4 +145,4 @@ class SpawnRates(QWidget):
         self.zipline_slider.setValue(settings["grenadezipline"])
     
     def set_setting(self, setting: str, value: bool | int | float) -> None:
-        Globals.PREGAME_SETTINGS["settings"]["gun_weights"][setting] = value
+        global_vars.PREGAME_SETTINGS["settings"]["gun_weights"][setting] = value

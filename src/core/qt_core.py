@@ -18,6 +18,7 @@ from PySide6.QtWidgets import (
     QToolButton, 
     QStyle,
     QToolTip,
+    QComboBox,
 )
 from PySide6.QtCore import (
     Qt, 
@@ -31,6 +32,7 @@ from PySide6.QtCore import (
     QEvent,
     Signal,
     QObject,
+    QThread
 )
 from PySide6.QtGui import (
     QCursor, 
@@ -39,5 +41,6 @@ from PySide6.QtGui import (
     QPainter, 
     QFont,
     QColor,
-    QMouseEvent
+    QMouseEvent,
+    QRegularExpressionValidator,
 )

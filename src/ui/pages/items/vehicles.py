@@ -23,7 +23,7 @@ class Vehicles(QWidget):
         self._layout = QVBoxLayout(self.content_area)
         self._layout.setContentsMargins(0, 0, 9, 0)
         self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.line_width = 2
+        self.line_height = 2
         
         self.vehicles_label = QLabel(self.content_area, text="Vehicles")
         self.vehicles_label.setContentsMargins(0, 0, 0, 15)

@@ -1,4 +1,4 @@
-from core import *
+from core.qt_core import *
 from widgets import Button, HLine
 
 class PageCommands(QWidget):
@@ -22,7 +22,7 @@ class PageCommands(QWidget):
         self._layout = QVBoxLayout(self.content_area)
         self._layout.setContentsMargins(0, 0, 9, 0)
         self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.line_width = 2
+        self.line_height = 2
         
         self.info_label = QLabel(self.content_area, text="Information")
         self.info_label.setContentsMargins(0, 0, 0, 15)
@@ -41,7 +41,7 @@ class PageCommands(QWidget):
         self.info_container_layout.addWidget(self.score_button)
         self.info_container_layout.addWidget(self.getpid_button)
         
-        self.info_hline = HLine(self, h=self.line_width)
+        self.info_hline = HLine(self, h=self.line_height)
         self.info_hline.setObjectName("DivLine")
         
         self.environment_label = QLabel(self.content_area, text="Environment")
@@ -63,7 +63,7 @@ class PageCommands(QWidget):
         self.environment_container_layout.addWidget(self.rain_off_button)
         self.environment_container_layout.addWidget(self.gas_start_button)
         
-        self.environment_hline = HLine(self, h=self.line_width)
+        self.environment_hline = HLine(self, h=self.line_height)
         self.environment_hline.setObjectName("DivLine")
         
         self.svr_label = QLabel(self.content_area, text="S.A.W. vs Rebellion")
@@ -81,7 +81,7 @@ class PageCommands(QWidget):
         self.svr_container_layout.addWidget(self.boss_button)
         self.svr_container_layout.addWidget(self.no_boss_button)
         
-        self.svr_hline = HLine(self, h=self.line_width)
+        self.svr_hline = HLine(self, h=self.line_height)
         self.svr_hline.setObjectName("DivLine")
         
         self.mystery_label = QLabel(self.content_area, text="Mystery Mode")
@@ -109,7 +109,7 @@ class PageCommands(QWidget):
         self.mystery_container_layout.addWidget(self.fast_bullets_button)
         self.mystery_container_layout.addWidget(self.one_hit_kill_button)
         
-        self.mystery_hline = HLine(self, h=self.line_width)
+        self.mystery_hline = HLine(self, h=self.line_height)
         self.mystery_hline.setObjectName("DivLine")
         
         self.misc_label = QLabel(self.content_area, text="Miscellaneous")

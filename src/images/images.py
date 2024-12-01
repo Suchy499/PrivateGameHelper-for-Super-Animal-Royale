@@ -1,8 +1,13 @@
 import os
+from . import rc_images
 
-path = os.path.dirname(__file__)
 IMAGES = {}
 
-for dirpath, dirnames, filenames in os.walk(rf"{path}\images"):
-    for f in filenames:
-        IMAGES[os.path.splitext(f)[0]] = os.path.join(dirpath, f)
+with open(os.path.join(os.path.dirname(__file__), "rc_images.qrc"), "r") as f:
+    file_lines = f.readlines()
+    for line in file_lines[2:-2]:
+        line = line.strip()
+        line = line.replace("<file>", "")
+        line = line.replace("</file>", "")
+        line_data = line.split("/")
+        IMAGES[os.path.splitext(line_data[1])[0]] = f":/{line}"

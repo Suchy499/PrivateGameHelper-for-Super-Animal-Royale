@@ -45,6 +45,7 @@ class LabeledToggle(QWidget):
         layout.addWidget(self.label)
         self.setChecked(self._default_state)
         self.stateChanged = self.toggle.stateChanged
+        self.setObjectName("LabeledToggle")
     
     def isChecked(self) -> bool:
         return self.toggle.isChecked()
@@ -54,5 +55,4 @@ class LabeledToggle(QWidget):
     
     def setObjectName(self, name) -> None:
         self.label.setObjectName(name)
-    
     

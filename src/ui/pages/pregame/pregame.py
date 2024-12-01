@@ -45,19 +45,19 @@ class PagePregame(QWidget):
         self._layout.addWidget(self.navbar)
         self._layout.addWidget(self.pages)
         
-        Globals.SIGNAL_MANAGER.presetOpened.connect(self.load_settings)
-        Globals.SIGNAL_MANAGER.presetRestored.connect(self.reset_settings)
+        global_vars.SIGNAL_MANAGER.presetOpened.connect(self.load_settings)
+        global_vars.SIGNAL_MANAGER.presetRestored.connect(self.reset_settings)
         
     def load_settings(self, preset: dict) -> None:
         self.general_page.load_settings(preset)
         self.settings_page.load_settings(preset["settings"])
         self.spawn_rates_page.load_settings(preset["settings"]["gun_weights"])
-        Globals.PREGAME_SETTINGS["preset_id"] = preset["preset_id"]
-        Globals.PREGAME_SETTINGS["last_edited"] = preset["last_edited"]
+        global_vars.PREGAME_SETTINGS["preset_id"] = preset["preset_id"]
+        global_vars.PREGAME_SETTINGS["last_edited"] = preset["last_edited"]
     
     def reset_settings(self, preset: dict) -> None:
         self.general_page.reset_settings()
         self.settings_page.load_settings(preset["settings"])
         self.spawn_rates_page.load_settings(preset["settings"]["gun_weights"])
-        Globals.PREGAME_SETTINGS["preset_id"] = preset["preset_id"]
-        Globals.PREGAME_SETTINGS["last_edited"] = preset["last_edited"]
+        global_vars.PREGAME_SETTINGS["preset_id"] = preset["preset_id"]
+        global_vars.PREGAME_SETTINGS["last_edited"] = preset["last_edited"]

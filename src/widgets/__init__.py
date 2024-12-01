@@ -14,3 +14,5 @@ from .ammo_button import AmmoButton
 from .healing_button import HealingButton
 from .throwable_button import ThrowableButton
 from .equipment_button import EquipmentButton
+from .map_combobox import MapComboBox
+from .weapon_select import WeaponSelect

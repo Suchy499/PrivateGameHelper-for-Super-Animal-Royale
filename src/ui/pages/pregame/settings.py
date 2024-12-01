@@ -22,7 +22,7 @@ class Settings(QWidget):
         self._layout = QVBoxLayout(self.content_area)
         self._layout.setContentsMargins(0, 0, 9, 0)
         self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.line_width = 2
+        self.line_height = 2
         
         self.ground_loot_label = QLabel(self, text="Ground Loot")
         self.ground_loot_label.setContentsMargins(0, 0, 0, 15)
@@ -33,23 +33,18 @@ class Settings(QWidget):
         self.ground_loot_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
         
         self.all_items_toggle = LabeledToggle(self.ground_loot_settings, text="All Items", default_state=True)
-        self.all_items_toggle.setObjectName("PregameToggle")
         self.all_items_toggle.stateChanged.connect(lambda: self.set_setting("allitems", self.all_items_toggle.isChecked()))
         
         self.guns_toggle = LabeledToggle(self.ground_loot_settings, text="Guns", default_state=True)
-        self.guns_toggle.setObjectName("PregameToggle")
         self.guns_toggle.stateChanged.connect(lambda: self.set_setting("guns", self.guns_toggle.isChecked()))
         
         self.armor_toggle = LabeledToggle(self.ground_loot_settings, text="Armor", default_state=True)
-        self.armor_toggle.setObjectName("PregameToggle")
         self.armor_toggle.stateChanged.connect(lambda: self.set_setting("armors", self.armor_toggle.isChecked()))
         
         self.throwables_toggle = LabeledToggle(self.ground_loot_settings, text="Throwables", default_state=True)
-        self.throwables_toggle.setObjectName("PregameToggle")
         self.throwables_toggle.stateChanged.connect(lambda: self.set_setting("throwables", self.throwables_toggle.isChecked()))
         
         self.powerups_toggle = LabeledToggle(self.ground_loot_settings, text="Powerups", default_state=True)
-        self.powerups_toggle.setObjectName("PregameToggle")
         self.powerups_toggle.stateChanged.connect(lambda: self.set_setting("powerups", self.powerups_toggle.isChecked()))
         
         self.ground_loot_layout.addWidget(self.all_items_toggle)
@@ -58,7 +53,7 @@ class Settings(QWidget):
         self.ground_loot_layout.addWidget(self.throwables_toggle)
         self.ground_loot_layout.addWidget(self.powerups_toggle)
         
-        self.ground_loot_hline = HLine(self, h=self.line_width)
+        self.ground_loot_hline = HLine(self, h=self.line_height)
         self.ground_loot_hline.setObjectName("DivLine")
         
         self.vehicles_label = QLabel(self, text="Vehicles")
@@ -70,22 +65,19 @@ class Settings(QWidget):
         self.vehicles_settings_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
         
         self.emus_toggle = LabeledToggle(self.vehicles_settings, text="Emus", default_state=True)
-        self.emus_toggle.setObjectName("PregameToggle")
         self.emus_toggle.stateChanged.connect(lambda: self.set_setting("emus", self.emus_toggle.isChecked()))
         
         self.hamballs_toggle = LabeledToggle(self.vehicles_settings, text="Hamballs", default_state=True)
-        self.hamballs_toggle.setObjectName("PregameToggle")
         self.hamballs_toggle.stateChanged.connect(lambda: self.set_setting("hamballs", self.hamballs_toggle.isChecked()))
         
         self.ziplines_toggle = LabeledToggle(self.vehicles_settings, text="Ziplines", default_state=True)
-        self.ziplines_toggle.setObjectName("PregameToggle")
         self.ziplines_toggle.stateChanged.connect(lambda: self.set_setting("ziplines", self.ziplines_toggle.isChecked()))
         
         self.vehicles_settings_layout.addWidget(self.emus_toggle)
         self.vehicles_settings_layout.addWidget(self.hamballs_toggle)
         self.vehicles_settings_layout.addWidget(self.ziplines_toggle)
         
-        self.vehicles_hline = HLine(self, h=self.line_width)
+        self.vehicles_hline = HLine(self, h=self.line_height)
         self.vehicles_hline.setObjectName("DivLine")
         
         self.gas_label = QLabel(self, text="Gas")
@@ -97,7 +89,6 @@ class Settings(QWidget):
         
         self.gas_toggle = LabeledToggle(self.gas_settings, text="Gas", default_state=True)
         self.gas_toggle.setContentsMargins(0, 15, 0, 0)
-        self.gas_toggle.setObjectName("PregameToggle")
         self.gas_toggle.stateChanged.connect(lambda: self.set_setting("gasoff", self.gas_toggle.isChecked()))
         
         self.gas_speed_slider = LabeledSlider(self.gas_settings, Qt.Orientation.Horizontal, 0.4, 3.0, 0.1, 1, "Gas Speed")
@@ -110,7 +101,7 @@ class Settings(QWidget):
         self.gas_settings_layout.addWidget(self.gas_speed_slider)
         self.gas_settings_layout.addWidget(self.gas_damage_slider)
         
-        self.gas_hline = HLine(self, h=self.line_width)
+        self.gas_hline = HLine(self, h=self.line_height)
         self.gas_hline.setObjectName("DivLine")
         
         self.combat_label = QLabel(self, text="Combat")
@@ -134,7 +125,7 @@ class Settings(QWidget):
         self.combat_settings_layout.addWidget(self.bullet_speed_slider)
         self.combat_settings_layout.addWidget(self.hpm_slider)
         
-        self.combat_hline = HLine(self, h=self.line_width)
+        self.combat_hline = HLine(self, h=self.line_height)
         self.combat_hline.setObjectName("DivLine")
         
         self.misc_label = QLabel(self, text="Miscellaneous")
@@ -146,23 +137,18 @@ class Settings(QWidget):
         self.misc_settings_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
         
         self.moles_toggle = LabeledToggle(self.misc_settings, text="Moles", default_state=True)
-        self.moles_toggle.setObjectName("PregameToggle")
         self.moles_toggle.stateChanged.connect(lambda: self.set_setting("moles", self.moles_toggle.isChecked()))
         
         self.pets_toggle = LabeledToggle(self.misc_settings, text="Pets", default_state=True)
-        self.pets_toggle.setObjectName("PregameToggle")
         self.pets_toggle.stateChanged.connect(lambda: self.set_setting("pets", self.pets_toggle.isChecked()))
         
         self.onehits_toggle = LabeledToggle(self.misc_settings, text="Onehits")
-        self.onehits_toggle.setObjectName("PregameToggle")
         self.onehits_toggle.stateChanged.connect(lambda: self.set_setting("onehits", self.onehits_toggle.isChecked()))
         
         self.no_rolls_toggle = LabeledToggle(self.misc_settings, text="No Rolls")
-        self.no_rolls_toggle.setObjectName("PregameToggle")
         self.no_rolls_toggle.stateChanged.connect(lambda: self.set_setting("noroll", self.no_rolls_toggle.isChecked()))
         
         self.bots_toggle = LabeledToggle(self.misc_settings, text="Bots")
-        self.bots_toggle.setObjectName("PregameToggle")
         self.bots_toggle.stateChanged.connect(lambda: self.set_setting("bots", self.bots_toggle.isChecked()))
         
         self.misc_settings_layout.addWidget(self.moles_toggle)
@@ -212,4 +198,4 @@ class Settings(QWidget):
         self.hpm_slider.setValue(settings["highping"])
     
     def set_setting(self, setting: str, value: bool | int | float) -> None:
-        Globals.PREGAME_SETTINGS["settings"][setting] = value
+        global_vars.PREGAME_SETTINGS["settings"][setting] = value

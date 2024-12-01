@@ -20,7 +20,7 @@ class SavedPreset(QWidget):
         self._layout.setContentsMargins(7, 10, 7, 10)
         
         self.name_label = ClickableLabel(self, self.name)
-        if Globals.ACTIVE_PRESET == self.id:
+        if global_vars.ACTIVE_PRESET == self.id:
             self.name_label.setObjectName("SavedPresetNameActive")
         else:
             self.name_label.setObjectName("SavedPresetName")
@@ -68,5 +68,5 @@ class SavedPreset(QWidget):
         return relative_time
 
     def set_active(self):
-        Globals.ACTIVE_PRESET = self.id
-        Globals.SIGNAL_MANAGER.presetOpened.emit(self.preset)
+        global_vars.ACTIVE_PRESET = self.id
+        global_vars.SIGNAL_MANAGER.presetOpened.emit(self.preset)

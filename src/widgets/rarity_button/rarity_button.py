@@ -22,14 +22,14 @@ class RarityButton(QPushButton):
             case "Legendary":
                 self.rarity_id = 4
         self.setFixedSize(100, 25)
-        if selected or Globals.SELECTED_RARITY == self.rarity_id:
+        if selected or global_vars.SELECTED_RARITY == self.rarity_id:
             self.select()
         
         self.setObjectName("RarityButton")
         self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.clicked.connect(self.select)
         
-        Globals.SIGNAL_MANAGER.raritySelected.connect(self.on_rarity_selected)
+        global_vars.SIGNAL_MANAGER.raritySelected.connect(self.on_rarity_selected)
         
         match self.rarity:
             case "Common":
@@ -85,11 +85,11 @@ class RarityButton(QPushButton):
         """)
     
     def select(self) -> None:
-        Globals.SELECTED_RARITY = self.rarity_id
-        Globals.SIGNAL_MANAGER.raritySelected.emit()
+        global_vars.SELECTED_RARITY = self.rarity_id
+        global_vars.SIGNAL_MANAGER.raritySelected.emit()
     
     def on_rarity_selected(self) -> None:
-        if Globals.SELECTED_RARITY == self.rarity_id:
+        if global_vars.SELECTED_RARITY == self.rarity_id:
             self.setObjectName("RarityButtonSelected")
             match self.rarity:
                 case "Common":

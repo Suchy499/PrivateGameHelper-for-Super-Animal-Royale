@@ -9,19 +9,19 @@ class General(QWidget):
         self._layout = QVBoxLayout(self)
         self._layout.setContentsMargins(0, 0, 0, 0)
         self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.line_width = 2
+        self.line_height = 2
         
         self.preset_label = QLabel(self, text="Preset")
         self.preset_label.setContentsMargins(0, 0, 0, 15)
         self.preset_label.setObjectName("PregameHeaderName")
         
         self.name_label = QLabel(self, text="Name")
-        self.name_label.setObjectName("PregameToggle")
+        self.name_label.setObjectName("PresetNameLabel")
         self.name_label.setContentsMargins(9, 0, 0, 0)
         
         self.name_edit = QLineEdit(self)
-        self.name_edit.setFixedWidth(220)
-        self.name_edit.setObjectName("PregameLineEdit")
+        self.name_edit.setFixedWidth(221)
+        self.name_edit.setObjectName("LineEdit")
         self.name_edit.setContentsMargins(9, 0, 0, 0)
         self.name_edit.textChanged.connect(self.name_changed)
         
@@ -48,7 +48,7 @@ class General(QWidget):
         self.delete_button.setVisible(False)
         self.preset_buttons_layout.addWidget(self.delete_button)
         
-        self.preset_hline = HLine(self, h=self.line_width)
+        self.preset_hline = HLine(self, h=self.line_height)
         self.preset_hline.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self.preset_hline.setObjectName("DivLine")
         
@@ -88,10 +88,10 @@ class General(QWidget):
         self.delete_button.setVisible(True)
     
     def reset_settings(self) -> None:
-        Globals.PREGAME_SETTINGS["name"] = self.name_edit.text()
+        global_vars.PREGAME_SETTINGS["name"] = self.name_edit.text()
     
     def save_settings(self) -> None:
-        self.name_edit.setText(Globals.PREGAME_SETTINGS["name"])
+        self.name_edit.setText(global_vars.PREGAME_SETTINGS["name"])
         self.edit_button.setVisible(True)
         self.delete_button.setVisible(True)
         save_preset()
@@ -106,8 +106,8 @@ class General(QWidget):
         delete_preset()
     
     def name_changed(self, new_name: str) -> None:
-        Globals.PREGAME_SETTINGS["name"] = new_name
+        global_vars.PREGAME_SETTINGS["name"] = new_name
     
     def restore_defaults(self) -> None:
-        Globals.SIGNAL_MANAGER.presetRestored.emit(Globals.PREGAME_DEFAULT_SETTINGS)
+        global_vars.SIGNAL_MANAGER.presetRestored.emit(global_vars.PREGAME_DEFAULT_SETTINGS)
         

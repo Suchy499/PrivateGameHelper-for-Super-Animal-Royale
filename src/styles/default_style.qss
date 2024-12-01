@@ -193,7 +193,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     margin-bottom: 10px;
 }
 
-#PregameToggle, #SliderLabel {
+#LabeledToggle, #PresetNameLabel, #SliderLabel, #ComboBoxLabel, #HostIDLabel {
     background: transparent;
     font-family: Aptos;
     font-weight: bold;
@@ -226,6 +226,17 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     border-top-style: none;
     border-left-style: none;
     border-right-style: none;
+}
+
+#PlayerNameTeams {
+    background: transparent;
+    font-family: Aptos;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 13px;
+    text-align: left;
+    color: white;
+    border: 2px solid transparent;
 }
 
 #SavedPresetName:hover, #PlayerName:hover {
@@ -356,19 +367,19 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     border-right-style: none;
 }
 
-#PregameLineEdit {
+#LineEdit {
 	background-color: rgba(89, 91, 94, 0.6);
 	border-radius: 8px;
 	border: 2px solid transparent;
 	padding-left: 10px;
     padding-right: 10px;
 	selection-color: white;
-	selection-background-color: rgb(86, 138, 242);;
+	selection-background-color: rgb(86, 138, 242);
     color: white;
 }
 
-#PregameLineEdit:focus {
-	border: 2px solid rgb(86, 138, 242);;
+#LineEdit:focus {
+	border: 2px solid rgb(86, 138, 242);
     background-color: rgba(89, 91, 94, 0.4);
 }
 
@@ -423,18 +434,38 @@ QToolTip {
     border-radius: 6px;
 }
 
-#WeaponButton, #AmmoButton, #HealingButton, #ThrowableButton, #EquipmentButton {
+#WeaponButton, #AmmoButton, #HealingButton, #ThrowableButton, #EquipmentButton, #TeamsButton {
     background: none;
     border: none;
     border-radius: 8px;
 }
 
-#WeaponButton:hover, #AmmoButton:hover, #HealingButton:hover, #ThrowableButton:hover, #EquipmentButton:hover {
+#WeaponButton:hover, #AmmoButton:hover, #HealingButton:hover, #ThrowableButton:hover, #EquipmentButton:hover, #TeamsButton:hover {
     background: rgba(128, 128, 128, 0.2);
     border: none;
 }
 
-#WeaponButton:pressed, #AmmoButton:pressed, #HealingButton:pressed, #ThrowableButton:pressed, #EquipmentButton:pressed {
+#WeaponButton:pressed, #AmmoButton:pressed, #HealingButton:pressed, #ThrowableButton:pressed, #EquipmentButton:pressed, #TeamsButton:pressed  {
     background: rgba(128, 128, 128, 0.4);
     border: none;
+}
+
+#MapSelection {
+	background-color: rgba(89, 91, 94, 0.6);
+	border-radius: 8px;
+	padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+}
+
+#MapSelectionView {
+	background-color: rgb(89, 91, 94);
+	border-radius: 8px;
+	padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+}
+
+#MapSelectionView::item:focus {
+    background-color: rgba(128, 128, 128, 0.4);
 }

@@ -23,7 +23,7 @@ class Equipables(QWidget):
         self._layout = QVBoxLayout(self.content_area)
         self._layout.setContentsMargins(0, 0, 9, 0)
         self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.line_width = 2
+        self.line_height = 2
         
         self.powerups_label = QLabel(self.content_area, text="Powerups")
         self.powerups_label.setContentsMargins(0, 0, 0, 15)
@@ -51,7 +51,7 @@ class Equipables(QWidget):
         self.powerups_container_layout.addWidget(self.bandolier_button, 1, 1)
         self.powerups_container_layout.addWidget(self.impossible_tape_button, 1, 2)
         
-        self.powerups_hline = HLine(self, h=self.line_width)
+        self.powerups_hline = HLine(self, h=self.line_height)
         self.powerups_hline.setObjectName("DivLine")
         
         self.armor_label = QLabel(self.content_area, text="Armor")

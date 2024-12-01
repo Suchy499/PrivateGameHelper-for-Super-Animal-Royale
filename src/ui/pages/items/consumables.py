@@ -23,7 +23,7 @@ class Consumables(QWidget):
         self._layout = QVBoxLayout(self.content_area)
         self._layout.setContentsMargins(0, 0, 9, 0)
         self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.line_width = 2
+        self.line_height = 2
         
         self.ammo_label = QLabel(self.content_area, text="Ammo")
         self.ammo_label.setContentsMargins(0, 0, 0, 15)
@@ -60,7 +60,7 @@ class Consumables(QWidget):
         self.ammo_container_layout.addWidget(self.special_bullets_button, 2, 1)
         self.ammo_container_layout.addWidget(self.laser_bullets_button, 2, 2)
         
-        self.ammo_hline = HLine(self, h=self.line_width)
+        self.ammo_hline = HLine(self, h=self.line_height)
         self.ammo_hline.setObjectName("DivLine")
         
         self.healing_label = QLabel(self.content_area, text="Healing Items")
@@ -112,7 +112,7 @@ class Consumables(QWidget):
         self.healing_container_layout.addWidget(self.juice_container, 1, 0)
         self.healing_container_layout.addWidget(self.tape_container, 1, 1)
         
-        self.healing_hline = HLine(self, h=self.line_width)
+        self.healing_hline = HLine(self, h=self.line_height)
         self.healing_hline.setObjectName("DivLine")
         
         self.throwables_label = QLabel(self.content_area, text="Throwables")

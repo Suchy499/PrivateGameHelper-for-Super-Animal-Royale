@@ -1,4 +1,5 @@
 from core import *
+from core.globals import *
 from .player import Player
 
 class Content(QWidget):
@@ -10,8 +11,8 @@ class Content(QWidget):
         self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.setObjectName("Content")
 
-        Globals.SIGNAL_MANAGER.playersRefreshed.connect(self.load_players)
-        Globals.SIGNAL_MANAGER.playerSelected.connect(self.load_players)
+        global_vars.SIGNAL_MANAGER.playersRefreshed.connect(self.load_players)
+        global_vars.SIGNAL_MANAGER.playerSelected.connect(self.load_players)
         
     def reset_players(self) -> None:
         for i in reversed(range(self._layout.count())):
@@ -23,7 +24,7 @@ class Content(QWidget):
     def load_players(self) -> None:
         self.reset_players()
         self.saved_players = []
-        for player_item in Globals.PLAYER_LIST:
+        for player_item in global_vars.PLAYER_LIST:
             player_object = Player(player_item, self)
             self._layout.addWidget(player_object)
             self.saved_players.append(player_object)

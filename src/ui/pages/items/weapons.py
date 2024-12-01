@@ -23,7 +23,7 @@ class Weapons(QWidget):
         self._layout = QVBoxLayout(self.content_area)
         self._layout.setContentsMargins(0, 0, 9, 0)
         self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.line_width = 2
+        self.line_height = 2
         
         self.weapons_label = QLabel(self.content_area, text="Weapons")
         self.weapons_label.setContentsMargins(0, 0, 0, 15)
