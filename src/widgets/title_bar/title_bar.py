@@ -63,7 +63,6 @@ class TitleBar(QFrame):
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
             self.initial_pos = event.position().toPoint()
-            self.window_state_changed(self.windowState())
         super().mousePressEvent(event)
         event.accept()
 
@@ -76,6 +75,13 @@ class TitleBar(QFrame):
             )
         super().mouseMoveEvent(event)
         event.accept()
+    
+    def mouseDoubleClickEvent(self, event):
+        if self.window().windowState() == Qt.WindowState.WindowMaximized:
+            self.window().showNormal()
+        else:
+            self.window().showMaximized()
+        return super().mouseDoubleClickEvent(event)
 
     def mouseReleaseEvent(self, event):
         self.initial_pos = None

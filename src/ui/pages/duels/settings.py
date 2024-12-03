@@ -38,7 +38,7 @@ class Settings(QWidget):
         
         self.host_id_label = QLabel(self, text="Host ID")
         self.host_id_label.setObjectName("HostIDLabel")
-        self.host_id_label.setContentsMargins(9, 0, 0, 0)
+        self.host_id_label.setContentsMargins(0, 0, 0, 0)
         
         self.host_id_edit = QLineEdit(self)
         self.host_id_edit.setText("1")

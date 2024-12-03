@@ -4,6 +4,12 @@ from images import IMAGES
 from widgets import Sidebar, TitleBar, SizeGrip
 from ui.pages import Pages
 
+try:
+    from ctypes import windll
+    myappid = 'suchy499.privategamehelper.v2'
+    windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+except ImportError:
+    pass
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -12,6 +18,7 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(1265, 620)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.setWindowTitle("Private Game Helper")
+        self.setWindowIcon(QIcon(IMAGES["icon"]))
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint, True)
         self.setStyleSheet(styles.default_style)
@@ -146,6 +153,10 @@ class MainWindow(QMainWindow):
             self.title_bar.window_state_changed(self.windowState())
         super().changeEvent(event)
         event.accept()
+    
+    def moveEvent(self, event):
+        self.title_bar.window_state_changed(self.windowState())
+        return super().moveEvent(event)
     
     def resizeEvent(self, event):
         self.left_grip.setGeometry(-5, 10, 10, self.height())

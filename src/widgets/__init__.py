@@ -16,3 +16,4 @@ from .throwable_button import ThrowableButton
 from .equipment_button import EquipmentButton
 from .map_combobox import MapComboBox
 from .weapon_select import WeaponSelect
+from .keybind_edit import KeybindEdit

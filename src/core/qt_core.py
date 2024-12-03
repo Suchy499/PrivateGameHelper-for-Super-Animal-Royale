@@ -32,7 +32,8 @@ from PySide6.QtCore import (
     QEvent,
     Signal,
     QObject,
-    QThread
+    QThread,
+    QSettings,
 )
 from PySide6.QtGui import (
     QCursor, 
@@ -43,4 +44,6 @@ from PySide6.QtGui import (
     QColor,
     QMouseEvent,
     QRegularExpressionValidator,
+    QKeySequence,
+    QKeyEvent
 )

@@ -26,6 +26,8 @@ class SignalManager(QObject):
     weaponSelectedAll = Signal(str, bool)
     hostIdChanged = Signal(int)
     duelsSettingChanged = Signal(str, bool)
+    dodgeballSettingChanged = Signal(str, bool)
+    dodgeballDamageChanged = Signal(float)
 
 @dataclass
 class PlayerItem:

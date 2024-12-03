@@ -5,12 +5,14 @@ from typing import Literal
 KEY_DELAY: float = 0.025
 SIGNAL_MANAGER: SignalManager = SignalManager()
 WORK_THREAD: QThread = WorkThread()
+SETTINGS: QSettings = QSettings("Suchy499", "Private Game Helper")
 ACTIVE_PRESET: int | None = None
 SELECTED_PLAYER: PlayerItem | None = None
 SELECTED_PLAYER_TELE: PlayerItem | Literal["ALL"] | None = None
 SELECTED_RARITY: int = 0
 HOST_ID: int = 1
 SELECTED_MAP_DUELS: str = "Bamboo Resort"
+SELECTED_MAP_DODGEBALL: str = "Bamboo Resort"
 PREGAME_SETTINGS: dict = {
     "preset_id": None,
     "name": None,
@@ -168,5 +170,10 @@ DUELS_B_WEAPONS: dict = {
     17: True,
     18: True,
     19: True,
+}
+DODGEBALL_SETTINGS: dict = {
+    "random_nades": True,
+    "hotkeys": True,
+    "damage": 1.0
 }
 PLAYER_LIST: list[PlayerItem] = []

@@ -249,7 +249,7 @@ def spawn_armor(x: int, y: int, players: int) -> None:
        send_commands("armor3")
     time.sleep(0.5)
 
-def spawn_weapon(x: int, y: int, weapon_id: int, players: int) -> None:
+def spawn_weapon_duel(x: int, y: int, weapon_id: int, players: int) -> None:
     send_commands(f"tele {global_vars.HOST_ID} {x} {y}")
     time.sleep(0.5)
     for _ in range(players):
@@ -262,7 +262,7 @@ def append_weapons(weapons_list: list[int], players: int, team: Literal["a", "b"
             x_a: int = 735
             y_a: int = 1305
             for i, weapon_id in enumerate(weapons_list):
-                call = partial(spawn_weapon, x_a, y_a, weapon_id, players)
+                call = partial(spawn_weapon_duel, x_a, y_a, weapon_id, players)
                 queue_append(call)
                 x_a += 10
                 if i == 9:
@@ -272,7 +272,7 @@ def append_weapons(weapons_list: list[int], players: int, team: Literal["a", "b"
             x_b: int = 3875
             y_b: int = 1515
             for i, weapon_id in enumerate(weapons_list):
-                call = partial(spawn_weapon, x_b, y_b, weapon_id, players)
+                call = partial(spawn_weapon_duel, x_b, y_b, weapon_id, players)
                 queue_append(call)
                 x_b += 10
                 if i in (6, 13):
@@ -289,18 +289,18 @@ def teleport_players(x: int, y: int, team: list[int]) -> None:
         send_commands(f"tele {player} {x} {y}")
 
 def wait_time() -> None:
-    send_commands("yell 30 Seconds")
-    time.sleep(20)
-    open_window("Super Animal Royale")
-    send_commands("yell 10")
-    time.sleep(7)
-    open_window("Super Animal Royale")
-    send_commands("yell 3")
-    time.sleep(1)
-    send_commands("yell 2")
-    time.sleep(1)
-    send_commands("yell 1")
-    time.sleep(1)
+    add_commands("yell 30 Seconds")
+    queue_append(lambda: time.sleep(20))
+    queue_append(lambda: open_window("Super Animal Royale"))
+    add_commands("yell 10")
+    queue_append(lambda: time.sleep(7))
+    queue_append(lambda: open_window("Super Animal Royale"))
+    add_commands("yell 3")
+    queue_append(lambda: time.sleep(1))
+    add_commands("yell 2")
+    queue_append(lambda: time.sleep(1))
+    add_commands("yell 1")
+    queue_append(lambda: time.sleep(1))
     
 def start_duel() -> None:
     if not open_window("Super Animal Royale"):
@@ -325,8 +325,8 @@ def start_duel() -> None:
     if global_vars.DUELS_SETTINGS["noroll"]:
         add_commands("noroll")
         
-    add_commands("startp", "god all")
     add_commands(
+        "startp", "god all",
         "yell Welcome to duels!",
         "yell Please jump out of the eagle as soon as possible",
         "yell So you can be teleported to weapon selection",
@@ -373,7 +373,7 @@ def start_duel() -> None:
     queue_append(lambda: teleport_players(715, 1310, team_a))
     queue_append(lambda: teleport_players(3855, 1535, team_b))
     
-    queue_append(wait_time)
+    wait_time()
     add_commands("god all")
 
     match global_vars.SELECTED_MAP_DUELS:
@@ -396,6 +396,280 @@ def start_duel() -> None:
     add_commands("yell Fight!")
     
     execute_queue()
+    
+# Dodgeball
+def mouse_click(x: int, y: int) -> None:
+    pyautogui.moveTo(x, y)
+    time.sleep(global_vars.KEY_DELAY*8)
+    pyautogui.click()
+    time.sleep(global_vars.KEY_DELAY*4)
+
+def spawn_nade(x: int, y: int) -> None:
+    add_commands(f"tele {global_vars.HOST_ID} {x} {y}")
+    queue_append(lambda: time.sleep(0.2))
+    add_commands("nade")
+
+def spawn_zips(x: int, y: int, amount: int) -> None:
+    add_commands(f"tele {global_vars.HOST_ID} {x} {y}")
+    queue_append(lambda: keyboard.send("e"))
+    queue_append(lambda: time.sleep(8))
+    add_commands(f"zip {amount}")
+    queue_append(lambda: time.sleep(2))
+    queue_append(lambda: keyboard.send("4"))
+
+def lay_zip(sar_handle, x_player: int, y_player: int, x_mouse: int, y_mouse: int) -> None:
+        sar_window_rect = sar_handle.getClientFrame()
+        window_top_left_x, window_top_left_y = sar_window_rect[0], sar_window_rect[1]
+        window_width: int = sar_window_rect[2] - window_top_left_x
         
+        size_ratio: float = window_width / 1920
+        if size_ratio != 1:
+            x_mouse = int(x_mouse * size_ratio)
+            y_mouse = int(y_mouse * size_ratio)
+        
+        click_x: int = window_top_left_x + x_mouse
+        click_y: int = window_top_left_y + y_mouse
+        
+        sar_handle.activate()
+        time.sleep(global_vars.KEY_DELAY*16)
+        send_commands(f"tele {global_vars.HOST_ID} {x_player} {y_player}")
+        keyboard.send("4")
+        mouse_click(click_x, click_y)
+
+def break_boxes(sar_handle, x_player: int, y_player: int, x_mouse: int, y_mouse: int) -> None:
+        sar_window_rect = sar_handle.getClientFrame()
+        window_top_left_x, window_top_left_y = sar_window_rect[0], sar_window_rect[1]
+        window_width: int = sar_window_rect[2] - window_top_left_x
+        
+        size_ratio: float = window_width / 1920
+        if size_ratio != 1:
+            x_mouse = int(x_mouse * size_ratio)
+            y_mouse = int(y_mouse * size_ratio)
+        
+        click_x: int = window_top_left_x + x_mouse
+        click_y: int = window_top_left_y + y_mouse
+        
+        sar_handle.activate()
+        time.sleep(global_vars.KEY_DELAY*16)
+        send_commands(f"tele {global_vars.HOST_ID} {x_player} {y_player}")
+        keyboard.send("3")
+        mouse_click(click_x, click_y)
+
+def teleport_host(x: int, y: int, zip_amount: int = 0) -> None:
+    send_commands(f"tele {global_vars.HOST_ID} {x} {y}")
+    time.sleep(1)
+    send_commands("gun13 2")
+    if zip_amount != 0:
+        send_commands(f"zip {zip_amount}")
+
+def start_dodgeball() -> None:
+    sar_handle = open_window("Super Animal Royale")
+    lay_zip_prep = partial(lay_zip, sar_handle)
+    break_boxes_prep = partial(break_boxes, sar_handle)
+    if not sar_handle:
+        return
+    
+    team_a, team_b, team_spec = get_teams()
+    
+    try:
+        team_a.remove(global_vars.HOST_ID)
+    except ValueError:
+        pass
+    
+    try:
+        team_b.remove(global_vars.HOST_ID)
+    except ValueError:
+        pass
+    
+    queue_append(lambda: time.sleep(0.2))
+    add_commands(
+        "allitems", "emus", "hamballs", "gasoff", "ziplines",
+        f"dmg {global_vars.DODGEBALL_SETTINGS["damage"]}", "startp", "god all",
+        "yell Welcome to dodgeball!",
+        "yell Remember to stay in the arena and don't hit players with",
+        "yell anything other than grenades or you will be disqualified",
+        "yell Please jump out of the eagle as soon as possible",
+        "yell And of course good luck have fun gamers!",
+        f"yell Selected map: {global_vars.SELECTED_MAP_DODGEBALL}"
+    )
+    
+    queue_append(lambda: ghost_spectators(team_spec))
+    queue_append(lambda: time.sleep(20))
+    queue_append(lambda: open_window("Super Animal Royale"))
+    queue_append(lambda: time.sleep(1))
+    queue_append(lambda: keyboard.send("e"))
+    queue_append(lambda: time.sleep(1))
+    
+    match global_vars.SELECTED_MAP_DODGEBALL:
+        case "Bamboo Resort":
+            spawn_zips(2575, 2047, 4)
+            spawn_nade(2575, 2138)
+            spawn_nade(2575, 2130)
+            spawn_nade(2575, 2122)
+            spawn_nade(2575, 2114)
+            spawn_nade(2575, 2210)
+            spawn_nade(2575, 2218)
+            spawn_nade(2575, 2224)
+            spawn_nade(2575, 2228)
+            queue_append(lambda: lay_zip_prep(2575, 2235, 960, 750))
+            queue_append(lambda: lay_zip_prep(2575, 2090, 960, 220))
+            queue_append(lambda: lay_zip_prep(2512, 2149, 950, 320))
+            queue_append(lambda: lay_zip_prep(2639, 2149, 950, 320))
+            queue_append(lambda: teleport_host(2574, 2037, 4))
+            queue_append(lambda: teleport_players(2513, 2165, team_a))
+            queue_append(lambda: teleport_players(2637, 2165, team_b))
+        case "SAW Security":
+            spawn_zips(3430, 1815, 3)
+            
+            add_commands(f"tele {global_vars.HOST_ID} 3350 1816")
+            queue_append(lambda: time.sleep(2))
+            queue_append(lambda: keyboard.send("e"))
+            queue_append(lambda: time.sleep(2))
+            
+            spawn_nade(3430, 1877)
+            spawn_nade(3430, 1885)
+            spawn_nade(3430, 1951)
+            spawn_nade(3430, 1892)
+            spawn_nade(3430, 1899)
+            spawn_nade(3430, 1906)
+            spawn_nade(3430, 1913)
+            spawn_nade(3430, 1920)
+            queue_append(lambda: lay_zip_prep(3430, 1865, 960, 150))
+            queue_append(lambda: lay_zip_prep(3430, 1965, 960, 670))
+            queue_append(lambda: teleport_host(3430, 1839))
+            queue_append(lambda: teleport_players(3358, 1910, team_a))
+            queue_append(lambda: teleport_players(3500, 1910, team_b))
+        case "SAW Research Labs":
+            spawn_zips(2757, 3200, 4)
+            spawn_nade(2757, 2951)
+            spawn_nade(2757, 2974)
+            spawn_nade(2757, 2982)
+            spawn_nade(2757, 2990)
+            spawn_nade(2757, 2998)
+            spawn_nade(2757, 3020)
+            spawn_nade(2757, 3025)
+            queue_append(lambda: lay_zip_prep(2757, 3038, 1400, 534))
+            queue_append(lambda: lay_zip_prep(2757, 3038, 500, 534))
+            queue_append(lambda: lay_zip_prep(2757, 2937, 500, 534))
+            queue_append(lambda: lay_zip_prep(2757, 2937, 1400, 534))
+            queue_append(lambda: teleport_host(2757, 2890))
+            queue_append(lambda: teleport_players(2695, 2989, team_a))
+            queue_append(lambda: teleport_players(2816, 2989, team_b))
+        case "Welcome Center":
+            spawn_zips(512, 404, 4)
+            spawn_nade(555, 541)
+            spawn_nade(555, 549)
+            spawn_nade(555, 557)
+            spawn_nade(555, 564)
+            spawn_nade(555, 583)
+            spawn_nade(555, 591)
+            spawn_nade(555, 599)
+            spawn_nade(555, 622)
+            spawn_nade(555, 628)
+            queue_append(lambda: lay_zip_prep(555, 538, 954, 360))
+            queue_append(lambda: lay_zip_prep(555, 580, 954, 360))
+            queue_append(lambda: lay_zip_prep(549, 619, 1034, 460))
+            queue_append(lambda: lay_zip_prep(515, 527, 1197, 544))
+            queue_append(lambda: teleport_host(512, 404, 2))
+            queue_append(lambda: teleport_players(489, 588, team_a))
+            queue_append(lambda: teleport_players(617, 588, team_b))
+        case "Penguin Palace":
+            spawn_zips(2174, 3690, 4)
+            spawn_nade(2175, 3822)
+            spawn_nade(2175, 3848)
+            spawn_nade(2175, 3856)
+            spawn_nade(2175, 3864)
+            spawn_nade(2175, 3870)
+            spawn_nade(2175, 3905)
+            spawn_nade(2175, 3913)
+            spawn_nade(2175, 3921)
+            queue_append(lambda: lay_zip_prep(2166, 3818, 1060, 480))
+            queue_append(lambda: lay_zip_prep(2174, 3846, 965, 380))
+            queue_append(lambda: lay_zip_prep(2174, 3904, 961, 420))
+            queue_append(lambda: teleport_host(2174, 3690))
+            queue_append(lambda: teleport_players(2096, 3883, team_a))
+            queue_append(lambda: teleport_players(2250, 3883, team_b))
+        case "Pyramid":
+            spawn_zips(1405, 2692, 2)
+            spawn_nade(1405, 2792)
+            spawn_nade(1405, 2798)
+            spawn_nade(1405, 2802)
+            spawn_nade(1405, 2810)
+            spawn_nade(1405, 2816)
+            spawn_nade(1405, 2822)
+            spawn_nade(1405, 2827)
+            queue_append(lambda: lay_zip_prep(1403, 2791, 963, 290))
+            queue_append(lambda: lay_zip_prep(1479, 2806, 967, 410))
+            queue_append(lambda: teleport_host(1403, 2692))
+            queue_append(lambda: teleport_players(1343, 2819, team_a))
+            queue_append(lambda: teleport_players(1471, 2819, team_b))
+        case "Emu Ranch":
+            spawn_zips(1900, 2530, 4)
+            spawn_nade(1893, 2557)
+            spawn_nade(1893, 2561)
+            spawn_nade(1893, 2564)
+            spawn_nade(1893, 2571)
+            spawn_nade(1893, 2590)
+            spawn_nade(1893, 2596)
+            queue_append(lambda: break_boxes_prep(1891, 2574, 1050, 343))
+            queue_append(lambda: lay_zip_prep(1893, 2552, 957, 220))
+            queue_append(lambda: lay_zip_prep(1881, 2546, 1340, 535))
+            queue_append(lambda: lay_zip_prep(1825, 2570, 954, 430))
+            queue_append(lambda: lay_zip_prep(1960, 2566, 952, 390))
+            queue_append(lambda: teleport_host(1900, 2530))
+            queue_append(lambda: teleport_players(1838, 2580, team_a))
+            queue_append(lambda: teleport_players(1952, 2580, team_b))
+        case "Shooting Range":
+            spawn_zips(930, 1016, 4)
+            spawn_nade(930, 1073)
+            spawn_nade(930, 1081)
+            spawn_nade(930, 1089)
+            spawn_nade(930, 1096)
+            spawn_nade(930, 1124)
+            spawn_nade(930, 1128)
+            queue_append(lambda: lay_zip_prep(930, 1064, 954, 330))
+            queue_append(lambda: lay_zip_prep(848, 1064, 954, 330))
+            queue_append(lambda: lay_zip_prep(1009, 1064, 954, 330))
+            queue_append(lambda: lay_zip_prep(938, 1119, 827, 480))
+            queue_append(lambda: teleport_host(930, 1016))
+            queue_append(lambda: teleport_players(859, 1090, team_a))
+            queue_append(lambda: teleport_players(1002, 1090, team_b))
+        case "Juice Factory":
+            spawn_zips(3433, 2655, 4)
+            queue_append(lambda: break_boxes_prep(3428, 2744, 1050, 343))
+            queue_append(lambda: break_boxes_prep(3450, 2740, 1050, 343))
+            queue_append(lambda: break_boxes_prep(3427, 2723, 1050, 343))
+            spawn_nade(3412, 2751)
+            spawn_nade(3428, 2751)
+            spawn_nade(3436, 2751)
+            spawn_nade(3454, 2751)
+            queue_append(lambda: lay_zip_prep(3372, 2711, 965, 100))
+            queue_append(lambda: lay_zip_prep(3369, 2751, 1145, 539))
+            queue_append(lambda: lay_zip_prep(3413, 2751, 1255, 539))
+            queue_append(lambda: lay_zip_prep(3472, 2751, 1145   , 539))
+            queue_append(lambda: teleport_host(3433, 2665))
+            queue_append(lambda: teleport_players(3433, 2701, team_a))
+            queue_append(lambda: teleport_players(3433, 2799, team_b))
+        case "Super Sea Land":
+            spawn_zips(4028, 606, 4)
+            spawn_nade(4140, 570)
+            spawn_nade(4140, 588)
+            spawn_nade(4140, 596)
+            spawn_nade(4140, 618)
+            spawn_nade(4140, 626)
+            spawn_nade(4140, 634)
+            queue_append(lambda: break_boxes_prep(4130, 573, 1050, 343))
+            queue_append(lambda: lay_zip_prep(4142, 556, 948, 270))
+            queue_append(lambda: lay_zip_prep(4142, 616, 948, 140))
+            queue_append(lambda: lay_zip_prep(4090, 596, 950, 400))
+            queue_append(lambda: lay_zip_prep(4193, 596, 950, 400))
+            queue_append(lambda: teleport_host(4028, 606))
+            queue_append(lambda: teleport_players(4090, 607, team_a))
+            queue_append(lambda: teleport_players(4193, 607, team_b))
+    
+    add_commands("god all")
+    
+    execute_queue()
+    
 # Keybinds
 keyboard.add_hotkey("ctrl+alt+q", clear_queue)

@@ -1,1 +1,1 @@
-from .styles import default_style
+from .styles import default_style, blue

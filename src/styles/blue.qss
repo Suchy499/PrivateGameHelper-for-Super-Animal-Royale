@@ -1,7 +1,7 @@
 #MainWindowContent {
-    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 #161733, stop:1 #332757);
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(0, 4, 44, 255), stop:1 rgba(65, 77, 76, 255));
     border-radius: 20px;
-    border: 2px solid #332757;
+    border: 2px solid rgba(65, 77, 76, 255);
 }
 
 #TitleBar {

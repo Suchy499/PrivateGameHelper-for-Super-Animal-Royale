@@ -21,7 +21,7 @@ class MapComboBox(QWidget):
         label.setObjectName("ComboBoxLabel")
         
         self.combobox = QComboBox(self)
-        self.combobox.setFixedHeight(21)
+        self.combobox.setFixedHeight(20)
         self.combobox.setObjectName("MapSelection")
         self.combobox.view().setObjectName("MapSelectionView")
         self.combobox.view().window().setWindowFlags(Qt.WindowType.Popup | Qt.WindowType.FramelessWindowHint)
@@ -39,7 +39,7 @@ class MapComboBox(QWidget):
         self.combobox.currentTextChanged.connect(self.set_map)
         if self.mode == "duels":
             global_vars.SIGNAL_MANAGER.duelsMapSelected.connect(self.change_map)
-        else:
+        elif self.mode == "dodgeball":
             global_vars.SIGNAL_MANAGER.dodgeballMapSelected.connect(self.change_map)
         
         _layout.addWidget(label)
@@ -54,9 +54,13 @@ class MapComboBox(QWidget):
     def set_map(self, text: str) -> None:
         if self.mode == "duels":
             global_vars.SIGNAL_MANAGER.duelsMapSelected.emit(text)
-        else:
+        elif self.mode == "dodgeball":
             global_vars.SIGNAL_MANAGER.dodgeballMapSelected.emit(text)
     
     def change_map(self, text: str) -> None:
-        global_vars.SELECTED_MAP_DUELS = text
+        if self.mode == "duels":
+            global_vars.SELECTED_MAP_DUELS = text
+        elif self.mode == "dodgeball":
+            global_vars.SELECTED_MAP_DODGEBALL = text
+            print(global_vars.SELECTED_MAP_DODGEBALL)
         self.combobox.setCurrentText(text)
