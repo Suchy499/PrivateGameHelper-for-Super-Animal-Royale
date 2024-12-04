@@ -447,19 +447,69 @@ def wait_time() -> None:
     queue_append(lambda: time.sleep(1))
     add_commands("yell 1")
     queue_append(lambda: time.sleep(1))
+
+def spawn_bananas(amount: int) -> None:
+    time.sleep(global_vars.KEY_DELAY*40)
+    send_commands(f"banana {amount}")
+    time.sleep(global_vars.KEY_DELAY*80)
+    press_hotkey(global_vars.THROWABLE_BIND)
+    global_vars.BANANA_COUNT = 10
+    send_commands("tele all 511 391")
+    time.sleep(global_vars.KEY_DELAY*10)
+
+def lay_banana(sar_handle, host_id: int, x_player: int, y_player: int, direction: Literal["N", "S", "E", "W"] = "N") -> None:
+    sar_window_rect = sar_handle.getClientFrame()
+    window_top_left_x, window_top_left_y = sar_window_rect[0], sar_window_rect[1]
+    window_width: int = sar_window_rect[2] - window_top_left_x
+    x_position, y_position = sar_handle.center
+    player_offset: int = 9
+    offset: int = 50
+    
+    size_ratio: float = window_width / 1920
+    if size_ratio != 1:
+        offset: int = int(offset * size_ratio)
+    
+    match direction:
+        case "N":
+            y_position -= offset
+            y_player -= player_offset
+        case "S":
+            y_position += offset
+            y_player += player_offset
+        case "E":
+            x_position += offset
+            x_player -= player_offset
+        case "W":
+            x_position -= offset
+            x_player += player_offset
+    
+    send_commands(f"tele {host_id} {x_player} {y_player}")
+    time.sleep(global_vars.KEY_DELAY*8)
+    if global_vars.BANANA_COUNT <= 0:
+        spawn_bananas(10)
+        send_commands(f"tele {host_id} {x_player} {y_player}")
+    mouse_click(x_position, y_position)
+    global_vars.BANANA_COUNT -= 1
     
 def start_duel() -> None:
-    if not open_window("Super Animal Royale"):
+    sar_handle = open_window("Super Animal Royale")
+    place_banana = partial(lay_banana, sar_handle, global_vars.HOST_ID)
+    if not sar_handle:
         return
     
     team_a, team_b, team_spec = get_teams()
     team_a_len, team_b_len = len(team_a), len(team_b)
     if team_a_len > 4:
         team_a_len = 4
+    elif team_a_len == 0:
+        team_a_len = 1
 
     if team_b_len > 4:
         team_b_len = 4
+    elif team_b_len == 0:
+        team_b_len = 1
     
+    queue_append(lambda: time.sleep(0.2))
     add_commands("allitems", "emus", "hamballs", "gasoff")
     
     if global_vars.DUELS_SETTINGS["no_pets"]:
@@ -513,6 +563,113 @@ def start_duel() -> None:
         append_weapons(team_a_weapons, team_a_len, "a")
         append_weapons(team_b_weapons, team_b_len, "b")
     
+    if global_vars.DUELS_SETTINGS["boundaries"]:
+        global_vars.BANANA_COUNT = 0
+        match global_vars.SELECTED_MAP_DUELS:
+            case "Bamboo Resort":
+                for x in range(2530, 2630, 30):
+                    queue_append(partial(place_banana, x, 1760, "N"))
+                
+                for x in range(2556, 2606, 20):
+                    queue_append(partial(place_banana, x, 1985, "S"))
+                    
+                for y in range(1817, 1857, 10):
+                    queue_append(partial(place_banana, 2380, y, "E"))
+                    queue_append(partial(place_banana, 2770, y, "W"))
+                    
+            case "SAW Security":
+                for x in range(3460, 3530, 20):
+                    queue_append(partial(place_banana, x, 1695, "N"))
+                    
+                for x in range(3600, 3630, 20):
+                    queue_append(partial(place_banana, x, 1695, "N"))
+                    
+                for y in range(1810, 1865, 15):
+                    queue_append(partial(place_banana, 3675, y, "W"))
+                    
+                for x in range(3545, 3575, 10):
+                    queue_append(partial(place_banana, x, 2065, "S"))
+                    
+                for y in range(2037, 2057, 10):
+                    queue_append(partial(place_banana, 3190, y, "E"))
+                    
+                for y in range(1795, 1835, 10):
+                    queue_append(partial(place_banana, 3187, y, "E"))
+                
+            case "SAW Research Labs":
+                for x in range(2710, 2740, 10):
+                    queue_append(partial(place_banana, x, 2835, "N"))
+                    
+                for x in range(2784, 2814, 10):
+                    queue_append(partial(place_banana, x, 2835, "N"))
+                    
+                for y in range(2847, 2867, 10):
+                    queue_append(partial(place_banana, 2958, y, "E"))
+                    queue_append(partial(place_banana, 2553, y, "E"))
+                    
+                for y in range(2920, 2950, 10):
+                    queue_append(partial(place_banana, 2556, y, "W"))
+                    queue_append(partial(place_banana, 2957, y, "E"))
+                    
+                for y in range(3028, 3058, 10):
+                    queue_append(partial(place_banana, 2556, y, "W"))
+                    queue_append(partial(place_banana, 2957, y, "E"))
+                
+                for offset in range(0, 40, 10):
+                    queue_append(partial(place_banana, 2561 + offset, 3103 + offset, "W"))
+                    queue_append(partial(place_banana, 2956 - offset, 3110 + offset, "W"))
+                
+                queue_append(partial(place_banana, 2766, 3126, "N"))
+                queue_append(partial(place_banana, 2748, 3126, "N"))
+                queue_append(partial(place_banana, 2644, 3136, "N"))
+                    
+            case "Welcome Center":
+                for x in range(660, 740, 20):
+                    queue_append(partial(place_banana, x, 660, "S"))
+                    
+                for x in range(835, 865, 15):
+                    queue_append(partial(place_banana, x, 650, "S"))
+                    
+                queue_append(partial(place_banana, 1023, 678, "E"))
+                queue_append(partial(place_banana, 1023, 745, "E"))
+                queue_append(partial(place_banana, 1023, 806, "E"))
+                
+                for x in range(990, 1010, 10):
+                    queue_append(partial(place_banana, x, 830, "N"))
+                
+                queue_append(partial(place_banana, 828, 815, "N"))
+                
+                for x in range(740, 770, 15):
+                    queue_append(partial(place_banana, x, 815, "N"))
+                    
+                for x in range(785, 815, 15):
+                    queue_append(partial(place_banana, x, 815, "N"))
+                    
+                for x in range(660, 720, 20):
+                    queue_append(partial(place_banana, x, 815, "N"))
+                    
+                for x in range(580, 645, 15):
+                    queue_append(partial(place_banana, x, 815, "N"))
+                    
+                queue_append(partial(place_banana, 550, 815, "N"))
+                queue_append(partial(place_banana, 450, 815, "N"))
+                queue_append(partial(place_banana, 354, 796, "W"))
+                queue_append(partial(place_banana, 354, 765, "W"))
+                queue_append(partial(place_banana, 354, 694, "W"))
+                
+                for x in range(365, 430, 15):
+                    queue_append(partial(place_banana, x, 649, "N"))
+                    
+            case "Penguin Palace":
+                for x in range(2160, 2195, 15):
+                    queue_append(partial(place_banana, x, 3766, "S"))
+                    
+                queue_append(partial(place_banana, 2314, 3865, "E"))
+                queue_append(partial(place_banana, 2284, 3964, "N"))
+                queue_append(partial(place_banana, 2118, 3955, "N"))
+                queue_append(partial(place_banana, 2052, 3954, "N"))
+                queue_append(partial(place_banana, 2033, 3865, "W"))
+            
     if global_vars.HOST_ID in team_spec:
         add_commands(f"kill {global_vars.HOST_ID}", f"ghost {global_vars.HOST_ID}")
     

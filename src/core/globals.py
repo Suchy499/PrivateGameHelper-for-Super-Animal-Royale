@@ -12,6 +12,7 @@ OPEN_CHAT_BIND: str | int = "enter"
 MELEE_BIND: str | int = "3"
 THROWABLE_BIND: str | int = "4"
 USE_BIND: str | int = "e"
+BANANA_COUNT: int = 0
 ACTIVE_PRESET: int | None = None
 SELECTED_PLAYER: PlayerItem | None = None
 SELECTED_PLAYER_TELE: PlayerItem | Literal["ALL"] | None = None
