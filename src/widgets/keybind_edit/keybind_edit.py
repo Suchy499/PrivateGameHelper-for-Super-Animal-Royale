@@ -53,3 +53,4 @@ class KeybindEdit(QLineEdit):
     
         global_vars.SETTINGS.setValue(f"Keybinds/{self.setting_key}", text)
         global_vars.SETTINGS.sync()
+        update_hotkeys()

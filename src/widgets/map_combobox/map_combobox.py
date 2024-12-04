@@ -62,5 +62,4 @@ class MapComboBox(QWidget):
             global_vars.SELECTED_MAP_DUELS = text
         elif self.mode == "dodgeball":
             global_vars.SELECTED_MAP_DODGEBALL = text
-            print(global_vars.SELECTED_MAP_DODGEBALL)
         self.combobox.setCurrentText(text)

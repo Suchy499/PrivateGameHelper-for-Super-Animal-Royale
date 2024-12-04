@@ -8,6 +8,7 @@ import keyboard
 import pyperclip
 import pywinctl
 import pyautogui
+import random
 from functools import partial
 from typing import Literal, Callable
     
@@ -670,6 +671,229 @@ def start_dodgeball() -> None:
     add_commands("god all")
     
     execute_queue()
+    update_hotkeys()
     
 # Keybinds
+def spawn_nade_setup(x: int, y: int) -> None:
+    if not global_vars.DODGEBALL_SETTINGS["hotkeys"]:
+        return
+    
+    if pywinctl.getActiveWindowTitle() == "Super Animal Royale":
+        send_commands(f"tele {global_vars.HOST_ID} {x} {y}")
+        time.sleep(0.5)
+        send_commands("nade")
+        
+def hr_and_zip_hotkey() -> None:
+    if not global_vars.DODGEBALL_SETTINGS["hotkeys"]:
+        return
+    
+    if pywinctl.getActiveWindowTitle() == "Super Animal Royale":
+        time.sleep(0.5)
+        send_commands("gun13 2", "zip 4")
+    
+def ghost_host_hotkey() -> None:
+    if not global_vars.DODGEBALL_SETTINGS["hotkeys"]:
+        return
+    
+    if pywinctl.getActiveWindowTitle() == "Super Animal Royale":
+        time.sleep(0.5)
+        send_commands(f"kill {global_vars.HOST_ID}", f"ghost {global_vars.HOST_ID}")
+
+def spawn_grenade_hotkey() -> None:
+    if not global_vars.DODGEBALL_SETTINGS["hotkeys"]:
+        return
+    
+    if pywinctl.getActiveWindowTitle() == "Super Animal Royale":
+        send_commands("nade")
+
+def spawn_grenades_random(x_start: int, x_end: int, y_start: int, y_end: int, amount: int) -> None:
+    for _ in range(amount):
+        x: int = random.randint(x_start, x_end)
+        y: int = random.randint(y_start, y_end)
+        spawn_nade_setup(x, y)
+
+def spawn_grenades_preset(x: int, y: int, offset: int, offset_direction: Literal["x", "y"], amount: int) -> None:
+    for _ in range(amount):
+        spawn_nade_setup(x, y)
+        if offset_direction == "x":
+            x += offset
+        elif offset_direction == "y":
+            y += offset
+        else:
+            raise ValueError("Invalid offset_direction, use 'x' or 'y'")
+
+def spawn_grenades_from_left_hotkey(amount: int) -> None:
+    if not global_vars.DODGEBALL_SETTINGS["hotkeys"]:
+        return
+    
+    if pywinctl.getActiveWindowTitle() != "Super Animal Royale":
+        return
+    
+    time.sleep(0.5)
+    match global_vars.SELECTED_MAP_DODGEBALL:
+        case "Bamboo Resort":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(2519, 2560, 2126, 2207, amount)
+                spawn_grenades_random(2590, 2622, 2126, 2207, amount)
+            else:
+                spawn_grenades_preset(2539, 2147, 20, "y", amount)
+                spawn_grenades_preset(2618, 2147, 20, "y", amount)
+        case "SAW Security":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(3358, 3397, 1872, 1951, amount)
+                spawn_grenades_random(3461, 3500, 1872, 1951, amount)
+            else:
+                spawn_grenades_preset(3380, 1893, 20, "y", amount)
+                spawn_grenades_preset(3479, 1893, 20, "y", amount)
+        case "SAW Research Labs":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(2697, 2752, 2944, 3028, amount)
+                spawn_grenades_random(2762, 2817, 2944, 3028, amount)
+            else:
+                spawn_grenades_preset(2719, 2965, 25, "y", amount)
+                spawn_grenades_preset(2793, 2965, 25, "y", amount)
+        case "Welcome Center":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(488, 548, 540, 630, amount)
+                spawn_grenades_random(563, 609, 540, 630, amount)
+            else:
+                spawn_grenades_preset(523, 549, 40, "y", amount)
+                spawn_grenades_preset(592, 549, 40, "y", amount)
+        case "Penguin Palace":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(2111, 2167, 3848, 3923, amount)
+                spawn_grenades_random(2179, 2239, 3848, 3923, amount)
+            else:
+                spawn_grenades_preset(2133, 3860, 24, "y", amount)
+                spawn_grenades_preset(2216, 3860, 24, "y", amount)
+        case "Pyramid":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(1339, 1396, 2792, 2828, amount)
+                spawn_grenades_random(1410, 1471, 2792, 2828, amount)
+            else:
+                spawn_grenades_preset(1365, 2796, 18, "y", amount)
+                spawn_grenades_preset(1441, 2796, 18, "y", amount)
+        case "Emu Ranch":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(1835, 1887, 2572, 2599, amount)
+                spawn_grenades_random(1898, 1953, 2572, 2599, amount)
+            else:
+                spawn_grenades_preset(1862, 2568, 15, "y", amount)
+                spawn_grenades_preset(1930, 2568, 15, "y", amount)
+        case "Shooting Range":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(862, 918, 1071, 1123, amount)
+                spawn_grenades_random(944, 999, 1071, 1123, amount)
+            else:
+                spawn_grenades_preset(890, 1080, 12, "y", amount)
+                spawn_grenades_preset(972, 1080, 12, "y", amount)
+        case "Juice Factory":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(3376, 3497, 2707, 2746, amount)
+                spawn_grenades_random(3376, 3497, 2762, 2800, amount)
+            else:
+                spawn_grenades_preset(3411, 2711, 22, "x", amount)
+                spawn_grenades_preset(3411, 2797, 22, "x", amount)
+        case "Super Sea Land":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(4100, 4136, 570, 636, amount)
+                spawn_grenades_random(4148, 4182, 570, 636, amount)
+            else:
+                spawn_grenades_preset(4114, 591, 15, "y", amount)
+                spawn_grenades_preset(4161, 591, 15, "y", amount)
+    
+def spawn_grenades_from_right_hotkey(amount: int) -> None:
+    if not global_vars.DODGEBALL_SETTINGS["hotkeys"]:
+        return
+    
+    if pywinctl.getActiveWindowTitle() != "Super Animal Royale":
+        return
+    
+    time.sleep(0.5)
+    match global_vars.SELECTED_MAP_DODGEBALL:
+        case "Bamboo Resort":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(2590, 2622, 2126, 2207, amount)
+                spawn_grenades_random(2519, 2560, 2126, 2207, amount)
+            else:
+                spawn_grenades_preset(2618, 2147, 20, "y", amount)
+                spawn_grenades_preset(2539, 2147, 20, "y", amount)
+        case "SAW Security":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(3461, 3500, 1872, 1951, amount)
+                spawn_grenades_random(3358, 3397, 1872, 1951, amount)
+            else:
+                spawn_grenades_preset(3479, 1893, 20, "y", amount)
+                spawn_grenades_preset(3380, 1893, 20, "y", amount)
+        case "SAW Research Labs":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(2762, 2817, 2944, 3028, amount)
+                spawn_grenades_random(2697, 2752, 2944, 3028, amount)
+            else:
+                spawn_grenades_preset(2793, 2965, 25, "y", amount)
+                spawn_grenades_preset(2719, 2965, 25, "y", amount)
+        case "Welcome Center":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(563, 609, 540, 630, amount)
+                spawn_grenades_random(488, 548, 540, 630, amount)
+            else:
+                spawn_grenades_preset(592, 549, 40, "y", amount)
+                spawn_grenades_preset(523, 549, 40, "y", amount)
+        case "Penguin Palace":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(2179, 2239, 3848, 3923, amount)
+                spawn_grenades_random(2111, 2167, 3848, 3923, amount)
+            else:
+                spawn_grenades_preset(2216, 3860, 24, "y", amount)
+                spawn_grenades_preset(2133, 3860, 24, "y", amount)
+        case "Pyramid":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(1410, 1471, 2792, 2828, amount)
+                spawn_grenades_random(1339, 1396, 2792, 2828, amount)
+            else:
+                spawn_grenades_preset(1441, 2796, 18, "y", amount)
+                spawn_grenades_preset(1365, 2796, 18, "y", amount)
+        case "Emu Ranch":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(1898, 1953, 2572, 2599, amount)
+                spawn_grenades_random(1835, 1887, 2572, 2599, amount)
+            else:
+                spawn_grenades_preset(1930, 2568, 15, "y", amount)
+                spawn_grenades_preset(1862, 2568, 15, "y", amount)
+        case "Shooting Range":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(944, 999, 1071, 1123, amount)
+                spawn_grenades_random(862, 918, 1071, 1123, amount)
+            else:
+                spawn_grenades_preset(972, 1080, 12, "y", amount)
+                spawn_grenades_preset(890, 1080, 12, "y", amount)
+        case "Juice Factory":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(3376, 3497, 2762, 2800, amount)
+                spawn_grenades_random(3376, 3497, 2707, 2746, amount)
+            else:
+                spawn_grenades_preset(3411, 2797, 22, "x", amount)
+                spawn_grenades_preset(3411, 2711, 22, "x", amount)
+        case "Super Sea Land":
+            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+                spawn_grenades_random(4148, 4182, 570, 636, amount)
+                spawn_grenades_random(4100, 4136, 570, 636, amount)
+            else:
+                spawn_grenades_preset(4161, 591, 15, "y", amount)
+                spawn_grenades_preset(4114, 591, 15, "y", amount)
+
 keyboard.add_hotkey("ctrl+alt+q", clear_queue)
+
+def update_hotkeys() -> None:
+    keyboard.unhook_all_hotkeys()
+    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/SpawnHrAndZiplines", "Ctrl+Shift+S"), hr_and_zip_hotkey)
+    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/GhostHost", "Ctrl+Shift+K"), ghost_host_hotkey)
+    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/SpawnSingleNade", "Ctrl+Y"), spawn_grenade_hotkey)
+    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/SpawnOneNadeLeft", "Ctrl+1"), spawn_grenades_from_left_hotkey, args=(1,))
+    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/SpawnTwoNadesLeft", "Ctrl+2"), spawn_grenades_from_left_hotkey, args=(2,))
+    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/SpawnThreeNadesLeft", "Ctrl+3"), spawn_grenades_from_left_hotkey, args=(3,))
+    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/SpawnOneNadeRight", "Alt+1"), spawn_grenades_from_right_hotkey, args=(1,))
+    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/SpawnTwoNadesRight", "Alt+2"), spawn_grenades_from_right_hotkey, args=(2,))
+    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/SpawnThreeNadesRight", "Alt+3"), spawn_grenades_from_right_hotkey, args=(3,))
+    keyboard.add_hotkey("ctrl+alt+q", clear_queue)
+    
