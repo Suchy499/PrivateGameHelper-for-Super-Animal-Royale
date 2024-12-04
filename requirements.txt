@@ -2,3 +2,5 @@ keyboard==0.13.5
 PyAutoGUI==0.9.54
 PyWinCtl==0.3
 PySide6==6.8.0.2
+pynput==1.7.7
+pyperclip==1.9.0

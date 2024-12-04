@@ -9,8 +9,10 @@ import pyperclip
 import pywinctl
 import pyautogui
 import random
+import winreg
+from pynput.mouse import Button
 from functools import partial
-from typing import Literal, Callable
+from typing import Literal, Callable, Any
     
 # Presets
 def read_presets() -> list[dict]:
@@ -52,12 +54,155 @@ def delete_preset() -> None:
     global_vars.SIGNAL_MANAGER.presetsChanged.emit()
     global_vars.ACTIVE_PRESET = None
 
+# SAR Keybinds
+def read_registry_key(key: str) -> Any:
+    a_reg = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+    a_key = winreg.OpenKey(a_reg, r"SOFTWARE\Pixile Inc\Super Animal Royale")
+    for i in range(1024):
+        try:
+            value_name, value_data, data_type = winreg.EnumValue(a_key, i)
+            if value_name == key:
+                if data_type == 3:
+                    return str(value_data)[2:-5]
+                return value_data
+        except WindowsError:
+            break
+    return None
+
+def parse_hotkey(hotkey: str | None) -> int | str | None:
+    if hotkey is None:
+        return None
+    if "Minus" == hotkey:
+        return 12
+    if "Equals" == hotkey:
+        return 13
+    if "Backspace" == hotkey:
+        return 14
+    if "Tab" == hotkey:
+        return 15
+    if "LeftBracket" == hotkey:
+        return 26
+    if "RightBracket" == hotkey:
+        return 27
+    if "Return" == hotkey:
+        return 28
+    if "LeftControl" == hotkey:
+        return 29
+    if "Semicolon" == hotkey:
+        return 39
+    if "Quote" == hotkey:
+        return 40
+    if "BackQuote" == hotkey:
+        return 41
+    if "LeftShift" == hotkey:
+        return 42
+    if "Backslash" == hotkey:
+        return 43
+    if "Comma" == hotkey:
+        return 51
+    if "Period" == hotkey:
+        return 52
+    if "Slash" == hotkey:
+        return 53
+    if "RightShift" == hotkey:
+        return 54
+    if "KeypadMultiply" == hotkey:
+        return 55
+    if "LeftAlt" == hotkey:
+        return 56
+    if "Space" == hotkey:
+        return 57
+    if "CapsLock" == hotkey:
+        return 58
+    if "Numlock" == hotkey:
+        return 69
+    if "ScrollLock" == hotkey:
+        return 70
+    if "Keypad7" == hotkey:
+        return 71
+    if "Keypad8" == hotkey:
+        return 72
+    if "Keypad9" == hotkey:
+        return 73
+    if "KeypadMinus" == hotkey:
+        return 74
+    if "Keypad4" == hotkey:
+        return 75
+    if "Keypad5" == hotkey:
+        return 76
+    if "Keypad6" == hotkey:
+        return 77
+    if "KeypadPlus" == hotkey:
+        return 78
+    if "Keypad1" == hotkey:
+        return 79
+    if "Keypad2" == hotkey:
+        return 80
+    if "Keypad3" == hotkey:
+        return 81
+    if "Keypad0" == hotkey:
+        return 82
+    if "KeypadPeriod" == hotkey:
+        return 83
+    if "KeypadEnter" == hotkey:
+        return 156
+    if "RightControl" == hotkey:
+        return 157
+    if "KeypadDivide" == hotkey:
+        return 181
+    if "Home" == hotkey:
+        return 199
+    if "UpArrow" == hotkey:
+        return 200
+    if "PageUp" == hotkey:
+        return 201
+    if "LeftArrow" == hotkey:
+        return 203
+    if "RightArrow" == hotkey:
+        return 205
+    if "End" == hotkey:
+        return 207
+    if "DownArrow" == hotkey:
+        return 208
+    if "PageDown" == hotkey:
+        return 209
+    if "Insert" == hotkey:
+        return 210
+    if "Delete" == hotkey:
+        return 211
+    if "Alpha" in hotkey:
+        return hotkey[-1]
+    return hotkey.lower()
+
+def press_hotkey(hotkey: str | int) -> None:
+    match hotkey:
+        case "mouse0":
+            global_vars.MOUSE_CTL.click(Button.left)
+        case "mouse1":
+            global_vars.MOUSE_CTL.click(Button.right)
+        case "mouse2":
+            global_vars.MOUSE_CTL.click(Button.middle)
+        case "mouse3":
+            global_vars.MOUSE_CTL.click(Button.x1)
+        case "mouse4":
+            global_vars.MOUSE_CTL.click(Button.x2)
+        case _:
+            keyboard.send(hotkey)
+
+def refresh_hotkeys() -> None:
+    global_vars.OPEN_CHAT_BIND = parse_hotkey(read_registry_key("Open Chat_h2580809935")) or "enter"
+    global_vars.MELEE_BIND = parse_hotkey(read_registry_key("Melee Weapon_h3432856419")) or "3"
+    global_vars.THROWABLE_BIND = parse_hotkey(read_registry_key("Grenade_h3300402683")) or "4"
+    global_vars.USE_BIND = parse_hotkey(read_registry_key("Use / Pickup_h1560228861")) or "e"
+
+refresh_hotkeys()
+
 # Queue
 def send_commands(*commands: str, delay: int = 1):
     for command in commands:
         time.sleep(global_vars.KEY_DELAY*delay)
         pyperclip.copy(f"/{command}")
-        keyboard.send("enter")
+        press_hotkey(global_vars.OPEN_CHAT_BIND)
         time.sleep(global_vars.KEY_DELAY*delay)
         keyboard.send("ctrl+v")
         time.sleep(global_vars.KEY_DELAY*delay)
@@ -337,7 +482,7 @@ def start_duel() -> None:
     
     queue_append(lambda: time.sleep(25))
     queue_append(lambda: open_window("Super Animal Royale"))
-    queue_append(lambda: keyboard.send("e"))
+    queue_append(lambda: press_hotkey(global_vars.USE_BIND))
     queue_append(lambda: spawn_ammo(705, 1335, team_a_len))
     queue_append(lambda: spawn_ammo(3845, 1535, team_b_len))
     
@@ -412,11 +557,11 @@ def spawn_nade(x: int, y: int) -> None:
 
 def spawn_zips(x: int, y: int, amount: int) -> None:
     add_commands(f"tele {global_vars.HOST_ID} {x} {y}")
-    queue_append(lambda: keyboard.send("e"))
+    queue_append(lambda: press_hotkey(global_vars.USE_BIND))
     queue_append(lambda: time.sleep(8))
     add_commands(f"zip {amount}")
     queue_append(lambda: time.sleep(2))
-    queue_append(lambda: keyboard.send("4"))
+    queue_append(lambda: press_hotkey(global_vars.THROWABLE_BIND))
 
 def lay_zip(sar_handle, x_player: int, y_player: int, x_mouse: int, y_mouse: int) -> None:
         sar_window_rect = sar_handle.getClientFrame()
@@ -434,7 +579,7 @@ def lay_zip(sar_handle, x_player: int, y_player: int, x_mouse: int, y_mouse: int
         sar_handle.activate()
         time.sleep(global_vars.KEY_DELAY*16)
         send_commands(f"tele {global_vars.HOST_ID} {x_player} {y_player}")
-        keyboard.send("4")
+        press_hotkey(global_vars.THROWABLE_BIND)
         mouse_click(click_x, click_y)
 
 def break_boxes(sar_handle, x_player: int, y_player: int, x_mouse: int, y_mouse: int) -> None:
@@ -453,7 +598,7 @@ def break_boxes(sar_handle, x_player: int, y_player: int, x_mouse: int, y_mouse:
         sar_handle.activate()
         time.sleep(global_vars.KEY_DELAY*16)
         send_commands(f"tele {global_vars.HOST_ID} {x_player} {y_player}")
-        keyboard.send("3")
+        press_hotkey(global_vars.MELEE_BIND)
         mouse_click(click_x, click_y)
 
 def teleport_host(x: int, y: int, zip_amount: int = 0) -> None:
@@ -498,7 +643,7 @@ def start_dodgeball() -> None:
     queue_append(lambda: time.sleep(20))
     queue_append(lambda: open_window("Super Animal Royale"))
     queue_append(lambda: time.sleep(1))
-    queue_append(lambda: keyboard.send("e"))
+    queue_append(lambda: press_hotkey(global_vars.USE_BIND))
     queue_append(lambda: time.sleep(1))
     
     match global_vars.SELECTED_MAP_DODGEBALL:
@@ -524,7 +669,7 @@ def start_dodgeball() -> None:
             
             add_commands(f"tele {global_vars.HOST_ID} 3350 1816")
             queue_append(lambda: time.sleep(2))
-            queue_append(lambda: keyboard.send("e"))
+            queue_append(lambda: press_hotkey(global_vars.USE_BIND))
             queue_append(lambda: time.sleep(2))
             
             spawn_nade(3430, 1877)
