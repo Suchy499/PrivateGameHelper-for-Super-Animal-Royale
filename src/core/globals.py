@@ -2,12 +2,14 @@ from core.qt_core import *
 from core.classes import *
 from typing import Literal
 from pynput.mouse import Controller
+from screen_ocr import Reader
 
 KEY_DELAY: float = 0.025
 SIGNAL_MANAGER: SignalManager = SignalManager()
 WORK_THREAD: QThread = WorkThread()
 SETTINGS: QSettings = QSettings("Suchy499", "Private Game Helper")
 MOUSE_CTL: Controller = Controller()
+OCR_READER: Reader = Reader.create_quality_reader()
 OPEN_CHAT_BIND: str | int = "enter"
 MELEE_BIND: str | int = "3"
 THROWABLE_BIND: str | int = "4"

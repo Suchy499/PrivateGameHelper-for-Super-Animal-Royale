@@ -10,6 +10,7 @@ import pywinctl
 import pyautogui
 import random
 import winreg
+import re
 from pynput.mouse import Button
 from functools import partial
 from typing import Literal, Callable, Any
@@ -197,19 +198,186 @@ def refresh_hotkeys() -> None:
 
 refresh_hotkeys()
 
+# OCR
+def close_chat(window: object | Literal["auto"] = "auto") -> None:
+    if window == "auto":
+        window = open_window("Super Animal Royale")
+    if window is None:
+        return
+    sar_window_rect = window.getClientFrame()
+    window_top_left_x, window_top_left_y = sar_window_rect[0], sar_window_rect[1]
+    window_width: int = sar_window_rect[2] - window_top_left_x
+    window_height: int = sar_window_rect[3] - window_top_left_y
+    
+    left_offset: int = 15
+    bottom_offset: int = 16
+    
+    chatbox_width: int = 420
+    chatbox_height: int = 44
+
+    width_ratio: float = window_width / 1920
+    height_ratio: float = window_height / 1080
+    
+    if window_width / 4 == window_height / 3:
+        left_offset = 10
+        bottom_offset = 11
+        
+        chatbox_width = 279
+        chatbox_height = 29
+    
+        width_ratio = window_width / 1280
+        height_ratio = window_height / 960
+    
+    elif window_width / 5 == window_height / 4:
+        left_offset = 11
+        bottom_offset = 11
+        
+        chatbox_width = 279
+        chatbox_height = 29
+    
+        width_ratio = window_width / 1280
+        height_ratio = window_height / 1024
+    
+    elif window_width / 16 == window_height / 10:
+        left_offset = 12
+        bottom_offset = 12
+        
+        chatbox_width = 314
+        chatbox_height = 33
+    
+        width_ratio = window_width / 1440
+        height_ratio = window_height / 900
+    
+    if width_ratio != 1:
+        chatbox_width = int(chatbox_width * width_ratio)
+        chatbox_height = int(chatbox_height * width_ratio)
+        left_offset = int(left_offset * width_ratio)
+    if height_ratio != 1:
+        bottom_offset = int(bottom_offset * height_ratio)
+    
+    left_position: int = window_top_left_x + left_offset
+    top_position: int = window_top_left_y + window_height - bottom_offset - chatbox_height
+    right_position: int = window_top_left_x + left_offset + chatbox_width
+    bottom_position: int = window_top_left_y + window_height - bottom_offset
+    
+    bounding_box = (left_position, top_position, right_position, bottom_position)
+    time.sleep(global_vars.KEY_DELAY*2)
+    ocr_screen = global_vars.OCR_READER.read_screen(bounding_box)
+    results = ocr_screen.as_string()
+    if re.search("all|team|chat", results, re.IGNORECASE):
+        keyboard.send("escape")
+
+def close_pause_menu(window: object | Literal["auto"] = "auto") -> None:
+    if window == "auto":
+        window = open_window("Super Animal Royale")
+    if window is None:
+        return
+    sar_window_rect = window.getClientFrame()
+    window_top_left_x, window_top_left_y = sar_window_rect[0], sar_window_rect[1]
+    window_width: int = sar_window_rect[2] - window_top_left_x
+    window_height: int = sar_window_rect[3] - window_top_left_y
+    
+    left_offset: int = 690
+    bottom_offset: int = 880
+    
+    pause_width: int = 540
+    pause_height: int = 120
+
+    width_ratio: float = window_width / 1920
+    height_ratio: float = window_height / 1080
+    
+    if window_width / 4 == window_height / 3:
+        left_offset = 460
+        bottom_offset = 710
+        
+        pause_width = 360
+        pause_height = 75
+    
+        width_ratio = window_width / 1280
+        height_ratio = window_height / 960
+    
+    elif window_width / 5 == window_height / 4:
+        left_offset = 460
+        bottom_offset = 743
+        
+        pause_width = 360
+        pause_height = 75
+    
+        width_ratio = window_width / 1280
+        height_ratio = window_height / 1024
+    
+    elif window_width / 16 == window_height / 10:
+        left_offset = 517
+        bottom_offset = 710
+        
+        pause_width = 404
+        pause_height = 84
+    
+        width_ratio = window_width / 1440
+        height_ratio = window_height / 900
+    
+    if width_ratio != 1:
+        pause_width = int(pause_width * width_ratio)
+        pause_height = int(pause_height * width_ratio)
+        left_offset = int(left_offset * width_ratio)
+    if height_ratio != 1:
+        bottom_offset = int(bottom_offset * height_ratio)
+    
+    left_position: int = window_top_left_x + left_offset
+    top_position: int = window_top_left_y + window_height - bottom_offset - pause_height
+    right_position: int = window_top_left_x + left_offset + pause_width
+    bottom_position: int = window_top_left_y + window_height - bottom_offset
+    
+    bounding_box = (left_position, top_position, right_position, bottom_position)
+    time.sleep(global_vars.KEY_DELAY*2)
+    ocr_screen = global_vars.OCR_READER.read_screen(bounding_box)
+    results = ocr_screen.as_string()
+    if re.search("paws|menu|game|not|paused", results, re.IGNORECASE):
+        keyboard.send("escape")
+        
+def check_private_match(window: object) -> bool:
+    if window is None:
+        return
+    sar_window_rect = window.getClientFrame()
+    window_top_left_x, window_top_left_y = sar_window_rect[0], sar_window_rect[1]
+    window_width: int = sar_window_rect[2] - window_top_left_x
+    window_height: int = sar_window_rect[3] - window_top_left_y
+    
+    box_width: int = 500
+    box_height: int = 100
+    width_ratio: float = window_width / 1920
+    height_ratio: float = window_height / 1080
+    if width_ratio != 1:
+        box_width = int(box_width * width_ratio)
+    if height_ratio != 1:
+        box_height = int(box_height * height_ratio)
+    box_center_x, _ = window.center
+    box_left: int = box_center_x - box_width / 2
+    box_right: int = box_center_x + box_width / 2
+    box_top: int = window_top_left_y
+    box_bottom: int = box_top + box_height
+    
+    bounding_box = (box_left, box_top, box_right, box_bottom)
+    time.sleep(global_vars.KEY_DELAY*2)
+    ocr_screen = global_vars.OCR_READER.read_screen(bounding_box)
+    results = ocr_screen.as_string()
+    if re.search("priv|vate|match", results, re.IGNORECASE):
+        return True
+    return False
+
 # Queue
-def send_commands(*commands: str, delay: int = 1):
+def send_commands(*commands: str):
     for command in commands:
-        time.sleep(global_vars.KEY_DELAY*delay)
+        time.sleep(global_vars.KEY_DELAY)
         pyperclip.copy(f"/{command}")
         press_hotkey(global_vars.OPEN_CHAT_BIND)
-        time.sleep(global_vars.KEY_DELAY*delay)
+        time.sleep(global_vars.KEY_DELAY)
         keyboard.send("ctrl+v")
-        time.sleep(global_vars.KEY_DELAY*delay)
+        time.sleep(global_vars.KEY_DELAY)
         keyboard.send("enter")
         
-def add_commands(*commands: str, delay: int = 1) -> None:
-    global_vars.WORK_THREAD.QUEUE.append(lambda: send_commands(*commands, delay))
+def add_commands(*commands: str) -> None:
+    global_vars.WORK_THREAD.QUEUE.append(lambda: send_commands(*commands))
 
 def queue_append(command: Callable):
     global_vars.WORK_THREAD.QUEUE.append(command)
@@ -222,16 +390,20 @@ def clear_queue() -> None:
 
 # Buttons
 def get_match_id() -> None:
-    if not open_window("Super Animal Royale"):
+    window = open_window("Super Animal Royale")
+    if not window:
         return
     global_vars.WORK_THREAD.QUEUE = []
+    queue_append(lambda: close_chat(window))
     add_commands("matchid")
     execute_queue()
 
 def start_game() -> None:
-    if not open_window("Super Animal Royale"):
+    window = open_window("Super Animal Royale")
+    if not window:
         return
     global_vars.WORK_THREAD.QUEUE = []
+    queue_append(lambda: close_chat(window))
     if global_vars.PREGAME_SETTINGS["settings"]["bots"]:
         add_commands("start")
     else:
@@ -239,9 +411,15 @@ def start_game() -> None:
     execute_queue()
     
 def apply_settings() -> None:
-    if not open_window("Super Animal Royale"):
+    window = open_window("Super Animal Royale")
+    if not window:
         return
+    
+    if not check_private_match(window):
+        return
+    
     global_vars.WORK_THREAD.QUEUE = []
+    queue_append(lambda: close_chat(window))
     settings: dict = global_vars.PREGAME_SETTINGS["settings"]
     weights: dict = settings["gun_weights"]
     for key, value in settings.items():
@@ -257,6 +435,8 @@ def apply_settings() -> None:
             case "highping":
                 if value != 250:
                     add_commands(f"{key} {value}")
+            case "bots":
+                continue
             case _:
                 if not value:
                     add_commands(key)
@@ -283,25 +463,32 @@ def open_window(window_title: str) -> None | object:
 
 # Players
 def read_players() -> list:
-    if open_window("Super Animal Royale"):
-        global_vars.PLAYER_LIST = []
-        send_commands("getplayers")
-        time.sleep(0.5)
-        clipboard: list[str] = pyperclip.paste().split("\n")
-        clipboard.remove("")
-        clipboard.pop(0)
-        for player in clipboard:
-            player_id = int(player.split("\t")[0])
-            name = player.split("\t")[1]
-            global_vars.PLAYER_LIST.append(PlayerItem(player_id, name))
-        global_vars.SIGNAL_MANAGER.playersRefreshed.emit()
+    window = open_window("Super Animal Royale")
+    if not window:
+        return
+    global_vars.WORK_THREAD.QUEUE = []
+    close_chat(window)
+    global_vars.PLAYER_LIST = []
+    send_commands("getplayers")
+    time.sleep(0.5)
+    clipboard: list[str] = pyperclip.paste().split("\n")
+    clipboard.remove("")
+    clipboard.pop(0)
+    for player in clipboard:
+        player_id = int(player.split("\t")[0])
+        name = player.split("\t")[1]
+        global_vars.PLAYER_LIST.append(PlayerItem(player_id, name))
+    global_vars.SIGNAL_MANAGER.playersRefreshed.emit()
     return global_vars.PLAYER_LIST
 
 def send_player_command(command: str) -> None:
     if not global_vars.SELECTED_PLAYER:
         return
-    if not open_window("Super Animal Royale"):
+    window = open_window("Super Animal Royale")
+    if not window:
         return
+    global_vars.WORK_THREAD.QUEUE = []
+    queue_append(lambda: close_chat(window))
     add_commands(f"{command} {global_vars.SELECTED_PLAYER.player_id}")
     execute_queue()
 
@@ -309,8 +496,11 @@ def send_player_command(command: str) -> None:
 def teleport_player(x: int, y: int) -> None:
     if not global_vars.SELECTED_PLAYER_TELE:
         return
-    if not open_window("Super Animal Royale"):
+    window = open_window("Super Animal Royale")
+    if not window:
         return
+    global_vars.WORK_THREAD.QUEUE = []
+    queue_append(lambda: close_chat(window))
     if global_vars.SELECTED_PLAYER_TELE == "ALL":
         add_commands(f"tele all {x} {y}")
     else:
@@ -323,29 +513,49 @@ def select_all_players() -> None:
 
 # Items
 def spawn_weapon(weapon_id: int) -> None:
-    if not open_window("Super Animal Royale"):
+    window = open_window("Super Animal Royale")
+    if not window:
         return
-    send_commands(f"gun{weapon_id} {global_vars.SELECTED_RARITY}")
+    global_vars.WORK_THREAD.QUEUE = []
+    queue_append(lambda: close_chat(window))
+    add_commands(f"gun{weapon_id} {global_vars.SELECTED_RARITY}")
+    execute_queue()
 
 def spawn_ammo(amount: int, ammo_id: int) -> None:
-    if not open_window("Super Animal Royale"):
+    window = open_window("Super Animal Royale")
+    if not window:
         return
-    send_commands(f"ammo{ammo_id} {amount}")
+    global_vars.WORK_THREAD.QUEUE = []
+    queue_append(lambda: close_chat(window))
+    add_commands(f"ammo{ammo_id} {amount}")
+    execute_queue()
 
 def spawn_healing(amount: int, healing_type: Literal["juice", "tape"]) -> None:
-    if not open_window("Super Animal Royale"):
+    window = open_window("Super Animal Royale")
+    if not window:
         return
-    send_commands(f"{healing_type} {amount}")
+    global_vars.WORK_THREAD.QUEUE = []
+    queue_append(lambda: close_chat(window))
+    add_commands(f"{healing_type} {amount}")
+    execute_queue()
 
 def spawn_throwable(amount: int, throwable_type: Literal["banana", "nade", "zip"]) -> None:
-    if not open_window("Super Animal Royale"):
+    window = open_window("Super Animal Royale")
+    if not window:
         return
-    send_commands(f"{throwable_type} {amount}")
+    global_vars.WORK_THREAD.QUEUE = []
+    queue_append(lambda: close_chat(window))
+    add_commands(f"{throwable_type} {amount}")
+    execute_queue()
 
 def spawn_equipment(command: str) -> None:
-    if not open_window("Super Animal Royale"):
+    window = open_window("Super Animal Royale")
+    if not window:
         return
-    send_commands(command)
+    global_vars.WORK_THREAD.QUEUE = []
+    queue_append(lambda: close_chat(window))
+    add_commands(command)
+    execute_queue()
 
 # Commands
 send_other_command = spawn_equipment
@@ -365,7 +575,7 @@ def get_teams() -> tuple[list, list, list]:
                 b.append(player.player_id)
     return a, b, spec
 
-def spawn_ammo(x: int, y: int, players: int) -> None:
+def spawn_ammo_duel(x: int, y: int, players: int) -> None:
     send_commands(f"tele {global_vars.HOST_ID} {x} {y}")
     time.sleep(0.5)
     for _ in range(players):
@@ -374,21 +584,21 @@ def spawn_ammo(x: int, y: int, players: int) -> None:
         send_commands("juice 200", "tape 5")
     time.sleep(0.5)
 
-def spawn_powerups(x: int, y: int, players: int) -> None:
+def spawn_powerups_duel(x: int, y: int, players: int) -> None:
     send_commands(f"tele {global_vars.HOST_ID} {x} {y}")
     time.sleep(0.5)
     for _ in range(players):
         send_commands("util2", "util4")
     time.sleep(0.5)
 
-def spawn_throwables(x: int, y: int, players: int) -> None:
+def spawn_throwables_duel(x: int, y: int, players: int) -> None:
     send_commands(f"tele {global_vars.HOST_ID} {x} {y}")
     time.sleep(0.5)
     for _ in range(players):
        send_commands("banana 10", "nade 4")
     time.sleep(0.5)
 
-def spawn_armor(x: int, y: int, players: int) -> None:
+def spawn_armor_duel(x: int, y: int, players: int) -> None:
     send_commands(f"tele {global_vars.HOST_ID} {x} {y}")
     time.sleep(0.5)
     for _ in range(players):
@@ -437,10 +647,10 @@ def teleport_players(x: int, y: int, team: list[int]) -> None:
 def wait_time() -> None:
     add_commands("yell 30 Seconds")
     queue_append(lambda: time.sleep(20))
-    queue_append(lambda: open_window("Super Animal Royale"))
+    queue_append(close_chat)
     add_commands("yell 10")
     queue_append(lambda: time.sleep(7))
-    queue_append(lambda: open_window("Super Animal Royale"))
+    queue_append(close_chat)
     add_commands("yell 3")
     queue_append(lambda: time.sleep(1))
     add_commands("yell 2")
@@ -497,6 +707,10 @@ def start_duel() -> None:
     if not sar_handle:
         return
     
+    if not check_private_match(sar_handle):
+        return
+    
+    global_vars.WORK_THREAD.QUEUE = []
     team_a, team_b, team_spec = get_teams()
     team_a_len, team_b_len = len(team_a), len(team_b)
     if team_a_len > 4:
@@ -509,6 +723,7 @@ def start_duel() -> None:
     elif team_b_len == 0:
         team_b_len = 1
     
+    queue_append(lambda: close_chat(sar_handle))
     queue_append(lambda: time.sleep(0.2))
     add_commands("allitems", "emus", "hamballs", "gasoff")
     
@@ -530,23 +745,26 @@ def start_duel() -> None:
     )
     queue_append(lambda: ghost_spectators(team_spec))
     
-    queue_append(lambda: time.sleep(25))
+    queue_append(lambda: time.sleep(20))
     queue_append(lambda: open_window("Super Animal Royale"))
+    queue_append(lambda: time.sleep(0.5))
+    queue_append(lambda: close_chat(sar_handle))
+    queue_append(lambda: time.sleep(0.5))
     queue_append(lambda: press_hotkey(global_vars.USE_BIND))
-    queue_append(lambda: spawn_ammo(705, 1335, team_a_len))
-    queue_append(lambda: spawn_ammo(3845, 1535, team_b_len))
+    queue_append(lambda: spawn_ammo_duel(705, 1335, team_a_len))
+    queue_append(lambda: spawn_ammo_duel(3845, 1535, team_b_len))
     
     if global_vars.DUELS_SETTINGS["throwables"]:
-        queue_append(lambda: spawn_throwables(735, 1335, team_a_len))
-        queue_append(lambda: spawn_throwables(3875, 1545, team_b_len))
+        queue_append(lambda: spawn_throwables_duel(735, 1335, team_a_len))
+        queue_append(lambda: spawn_throwables_duel(3875, 1545, team_b_len))
     
     if global_vars.DUELS_SETTINGS["armor"]:
-        queue_append(lambda: spawn_armor(755, 1335, team_a_len))
-        queue_append(lambda: spawn_armor(3895, 1545, team_b_len))
+        queue_append(lambda: spawn_armor_duel(755, 1335, team_a_len))
+        queue_append(lambda: spawn_armor_duel(3895, 1545, team_b_len))
         
     if global_vars.DUELS_SETTINGS["powerups"]:
-        queue_append(lambda: spawn_powerups(775, 1335, team_a_len))
-        queue_append(lambda: spawn_powerups(3915, 1545, team_b_len))
+        queue_append(lambda: spawn_powerups_duel(775, 1335, team_a_len))
+        queue_append(lambda: spawn_powerups_duel(3915, 1545, team_b_len))
         
     if global_vars.DUELS_SETTINGS["weapons"]:
         team_a_weapons = []
@@ -565,6 +783,8 @@ def start_duel() -> None:
     
     if global_vars.DUELS_SETTINGS["boundaries"]:
         global_vars.BANANA_COUNT = 0
+        queue_append(lambda: close_chat(sar_handle))
+        queue_append(lambda: close_pause_menu(sar_handle))
         match global_vars.SELECTED_MAP_DUELS:
             case "Bamboo Resort":
                 for x in range(2530, 2630, 30):
@@ -714,6 +934,7 @@ def spawn_nade(x: int, y: int) -> None:
 
 def spawn_zips(x: int, y: int, amount: int) -> None:
     add_commands(f"tele {global_vars.HOST_ID} {x} {y}")
+    queue_append(lambda: time.sleep(0.5))
     queue_append(lambda: press_hotkey(global_vars.USE_BIND))
     queue_append(lambda: time.sleep(8))
     add_commands(f"zip {amount}")
@@ -721,42 +942,42 @@ def spawn_zips(x: int, y: int, amount: int) -> None:
     queue_append(lambda: press_hotkey(global_vars.THROWABLE_BIND))
 
 def lay_zip(sar_handle, x_player: int, y_player: int, x_mouse: int, y_mouse: int) -> None:
-        sar_window_rect = sar_handle.getClientFrame()
-        window_top_left_x, window_top_left_y = sar_window_rect[0], sar_window_rect[1]
-        window_width: int = sar_window_rect[2] - window_top_left_x
-        
-        size_ratio: float = window_width / 1920
-        if size_ratio != 1:
-            x_mouse = int(x_mouse * size_ratio)
-            y_mouse = int(y_mouse * size_ratio)
-        
-        click_x: int = window_top_left_x + x_mouse
-        click_y: int = window_top_left_y + y_mouse
-        
-        sar_handle.activate()
-        time.sleep(global_vars.KEY_DELAY*16)
-        send_commands(f"tele {global_vars.HOST_ID} {x_player} {y_player}")
-        press_hotkey(global_vars.THROWABLE_BIND)
-        mouse_click(click_x, click_y)
+    sar_window_rect = sar_handle.getClientFrame()
+    window_top_left_x, window_top_left_y = sar_window_rect[0], sar_window_rect[1]
+    window_width: int = sar_window_rect[2] - window_top_left_x
+    
+    size_ratio: float = window_width / 1920
+    if size_ratio != 1:
+        x_mouse = int(x_mouse * size_ratio)
+        y_mouse = int(y_mouse * size_ratio)
+    
+    click_x: int = window_top_left_x + x_mouse
+    click_y: int = window_top_left_y + y_mouse
+    
+    sar_handle.activate()
+    time.sleep(global_vars.KEY_DELAY*16)
+    send_commands(f"tele {global_vars.HOST_ID} {x_player} {y_player}")
+    press_hotkey(global_vars.THROWABLE_BIND)
+    mouse_click(click_x, click_y)
 
 def break_boxes(sar_handle, x_player: int, y_player: int, x_mouse: int, y_mouse: int) -> None:
-        sar_window_rect = sar_handle.getClientFrame()
-        window_top_left_x, window_top_left_y = sar_window_rect[0], sar_window_rect[1]
-        window_width: int = sar_window_rect[2] - window_top_left_x
-        
-        size_ratio: float = window_width / 1920
-        if size_ratio != 1:
-            x_mouse = int(x_mouse * size_ratio)
-            y_mouse = int(y_mouse * size_ratio)
-        
-        click_x: int = window_top_left_x + x_mouse
-        click_y: int = window_top_left_y + y_mouse
-        
-        sar_handle.activate()
-        time.sleep(global_vars.KEY_DELAY*16)
-        send_commands(f"tele {global_vars.HOST_ID} {x_player} {y_player}")
-        press_hotkey(global_vars.MELEE_BIND)
-        mouse_click(click_x, click_y)
+    sar_window_rect = sar_handle.getClientFrame()
+    window_top_left_x, window_top_left_y = sar_window_rect[0], sar_window_rect[1]
+    window_width: int = sar_window_rect[2] - window_top_left_x
+    
+    size_ratio: float = window_width / 1920
+    if size_ratio != 1:
+        x_mouse = int(x_mouse * size_ratio)
+        y_mouse = int(y_mouse * size_ratio)
+    
+    click_x: int = window_top_left_x + x_mouse
+    click_y: int = window_top_left_y + y_mouse
+    
+    sar_handle.activate()
+    time.sleep(global_vars.KEY_DELAY*16)
+    send_commands(f"tele {global_vars.HOST_ID} {x_player} {y_player}")
+    press_hotkey(global_vars.MELEE_BIND)
+    mouse_click(click_x, click_y)
 
 def teleport_host(x: int, y: int, zip_amount: int = 0) -> None:
     send_commands(f"tele {global_vars.HOST_ID} {x} {y}")
@@ -772,6 +993,10 @@ def start_dodgeball() -> None:
     if not sar_handle:
         return
     
+    if not check_private_match(sar_handle):
+        return
+    
+    global_vars.WORK_THREAD.QUEUE = []
     team_a, team_b, team_spec = get_teams()
     
     try:
@@ -784,6 +1009,7 @@ def start_dodgeball() -> None:
     except ValueError:
         pass
     
+    queue_append(lambda: close_chat(sar_handle))
     queue_append(lambda: time.sleep(0.2))
     add_commands(
         "allitems", "emus", "hamballs", "gasoff", "ziplines",
@@ -799,7 +1025,10 @@ def start_dodgeball() -> None:
     queue_append(lambda: ghost_spectators(team_spec))
     queue_append(lambda: time.sleep(20))
     queue_append(lambda: open_window("Super Animal Royale"))
-    queue_append(lambda: time.sleep(1))
+    queue_append(lambda: time.sleep(0.5))
+    queue_append(lambda: close_chat(sar_handle))
+    queue_append(lambda: close_pause_menu(sar_handle))
+    queue_append(lambda: time.sleep(0.5))
     queue_append(lambda: press_hotkey(global_vars.USE_BIND))
     queue_append(lambda: time.sleep(1))
     
@@ -981,6 +1210,7 @@ def spawn_nade_setup(x: int, y: int) -> None:
         return
     
     if pywinctl.getActiveWindowTitle() == "Super Animal Royale":
+        close_chat()
         send_commands(f"tele {global_vars.HOST_ID} {x} {y}")
         time.sleep(0.5)
         send_commands("nade")
@@ -990,6 +1220,7 @@ def hr_and_zip_hotkey() -> None:
         return
     
     if pywinctl.getActiveWindowTitle() == "Super Animal Royale":
+        close_chat()
         time.sleep(0.5)
         send_commands("gun13 2", "zip 4")
     
@@ -998,6 +1229,7 @@ def ghost_host_hotkey() -> None:
         return
     
     if pywinctl.getActiveWindowTitle() == "Super Animal Royale":
+        close_chat()
         time.sleep(0.5)
         send_commands(f"kill {global_vars.HOST_ID}", f"ghost {global_vars.HOST_ID}")
 
@@ -1006,6 +1238,8 @@ def spawn_grenade_hotkey() -> None:
         return
     
     if pywinctl.getActiveWindowTitle() == "Super Animal Royale":
+        close_chat()
+        time.sleep(0.5)
         send_commands("nade")
 
 def spawn_grenades_random(x_start: int, x_end: int, y_start: int, y_end: int, amount: int) -> None:
@@ -1032,6 +1266,7 @@ def spawn_grenades_from_left_hotkey(amount: int) -> None:
         return
     
     time.sleep(0.5)
+    close_chat()
     match global_vars.SELECTED_MAP_DODGEBALL:
         case "Bamboo Resort":
             if global_vars.DODGEBALL_SETTINGS["random_nades"]:
@@ -1112,6 +1347,7 @@ def spawn_grenades_from_right_hotkey(amount: int) -> None:
         return
     
     time.sleep(0.5)
+    close_chat()
     match global_vars.SELECTED_MAP_DODGEBALL:
         case "Bamboo Resort":
             if global_vars.DODGEBALL_SETTINGS["random_nades"]:
