@@ -56,8 +56,11 @@ class UpdatePopup(QFrame):
         return super().showEvent(event)
     
     def get_latest_version(self) -> str:
-        response = requests.get("https://api.github.com/repos/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/latest")
-        return response.json()["tag_name"]
+        try:
+            response = requests.get("https://api.github.com/repos/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/latest")
+            return response.json()["tag_name"]
+        except:
+            return __version__
     
     def update_latest_version(self) -> None:
         self.latest_version = self.get_latest_version()

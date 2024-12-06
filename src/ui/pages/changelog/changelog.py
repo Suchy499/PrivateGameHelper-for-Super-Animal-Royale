@@ -65,8 +65,15 @@ class PageChangelog(QWidget):
     def print_changelog(self) -> None:
         try:
             releases = self.get_response("https://api.github.com/repos/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases")
-        except:
+            if "message" in releases:
+                raise requests.exceptions.RequestException("API rate limit reached.")
+        except requests.exceptions.ConnectionError:
             error_message = QLabel("Error retrieving changelog data.\nCheck your internet connection.", self)
+            error_message.setObjectName("ItemsHeaderName")
+            self.content_layout.addWidget(error_message)
+            return
+        except requests.exceptions.RequestException as e:
+            error_message = QLabel(f"Error retrieving changelog data.\n{e}", self)
             error_message.setObjectName("ItemsHeaderName")
             self.content_layout.addWidget(error_message)
             return
