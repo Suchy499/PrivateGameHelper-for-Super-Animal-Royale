@@ -4,6 +4,7 @@ from widgets import Button
 import requests
 import webbrowser
 from packaging.version import Version
+from typing import Optional
 
 class UpdatePopup(QFrame):
     def __init__(
@@ -20,7 +21,7 @@ class UpdatePopup(QFrame):
         _layout.setContentsMargins(0, 0, 0, 0)
         _layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.latest_version: str = self.get_latest_version()
-        if Version(__version__) >= Version(self.latest_version):
+        if not self.latest_version or Version(__version__) >= Version(self.latest_version):
             self.setVisible(False)
         
         self.title_label = QLabel("Update available", self)
@@ -29,7 +30,7 @@ class UpdatePopup(QFrame):
         self.current_version_label = QLabel(f"Current version: {__version__}")
         self.current_version_label.setObjectName("HostIDLabel")
         
-        self.latest_version_label = QLabel(f"Latest version: {self.latest_version}", self)
+        self.latest_version_label = QLabel(f"Latest version: {self.latest_version if self.latest_version else __version__}", self)
         self.latest_version_label.setObjectName("HostIDLabel")
         
         self.dont_update_button = Button(self, "Don't update", w=125, btn_style="ButtonDelete")
@@ -55,16 +56,16 @@ class UpdatePopup(QFrame):
         self.updatePosition()
         return super().showEvent(event)
     
-    def get_latest_version(self) -> str:
+    def get_latest_version(self) -> Optional[str]:
         try:
             response = requests.get("https://api.github.com/repos/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/latest")
             return response.json()["tag_name"]
         except:
-            return __version__
+            return None
     
     def update_latest_version(self) -> None:
         self.latest_version = self.get_latest_version()
-        self.latest_version_label.setText(f"Latest version: {self.latest_version}")
+        self.latest_version_label.setText(f"Latest version: {self.latest_version if self.latest_version else __version__}")
     
     def open_browser(self) -> None:
         webbrowser.open("https://github.com/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/latest")

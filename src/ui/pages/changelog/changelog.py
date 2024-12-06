@@ -95,7 +95,9 @@ class PageChangelog(QWidget):
     
     def check_updates(self) -> None:
         self.update_popup.update_latest_version()
-        if Version(__version__) < Version(self.update_popup.latest_version):
+        if not self.update_popup.latest_version:
+            self.notif.send_notification("Could not retrieve data", "NotifFail")
+        elif Version(__version__) < Version(self.update_popup.latest_version):
             self.update_popup.setVisible(True)
         else:
             self.notif.send_notification("You are up to date!", "NotifSuccess")
