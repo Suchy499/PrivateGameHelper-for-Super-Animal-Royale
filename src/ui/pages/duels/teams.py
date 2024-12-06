@@ -97,8 +97,8 @@ class Teams(QWidget):
         _layout.addWidget(self.header)
         _layout.addWidget(self.scroll_area)
     
-        global_vars.SIGNAL_MANAGER.playersRefreshed.connect(self.load_players)
-        global_vars.SIGNAL_MANAGER.playerChangedTeams.connect(self.load_players)
+        glb.SIGNAL_MANAGER.playersRefreshed.connect(self.load_players)
+        glb.SIGNAL_MANAGER.playerChangedTeams.connect(self.load_players)
         
     def reset_players(self) -> None:
         for i in reversed(range(self.team_a_players_layout.count())):
@@ -122,7 +122,7 @@ class Teams(QWidget):
     def load_players(self) -> None:
         self.reset_players()
         self.saved_players = []
-        for player_item in global_vars.PLAYER_LIST:
+        for player_item in glb.PLAYER_LIST:
             player_object = Player(player_item, self)
             match player_item.team:
                 case 0:

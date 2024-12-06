@@ -10,7 +10,7 @@ class Player(QWidget):
         super().__init__(parent)
         
         self.player_item = playerItem
-        self.index = global_vars.PLAYER_LIST.index(playerItem)
+        self.index = glb.PLAYER_LIST.index(playerItem)
         
         self._layout = QHBoxLayout(self)
         self._layout.setContentsMargins(7, 10, 7, 10)
@@ -44,9 +44,9 @@ class Player(QWidget):
             self._layout.addWidget(self.right_button, alignment=Qt.AlignmentFlag.AlignRight)
         
     def move_left(self) -> None:
-        global_vars.PLAYER_LIST[self.index].team -= 1
-        global_vars.SIGNAL_MANAGER.playerChangedTeams.emit()
+        glb.PLAYER_LIST[self.index].team -= 1
+        glb.SIGNAL_MANAGER.playerChangedTeams.emit()
     
     def move_right(self) -> None:
-        global_vars.PLAYER_LIST[self.index].team += 1
-        global_vars.SIGNAL_MANAGER.playerChangedTeams.emit()
+        glb.PLAYER_LIST[self.index].team += 1
+        glb.SIGNAL_MANAGER.playerChangedTeams.emit()

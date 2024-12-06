@@ -36,7 +36,7 @@ class Weapons(QWidget):
         self.team_a_deselect_button.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.team_a_deselect_button.setContentsMargins(0, 0, 0, 0)
         self.team_a_deselect_button.setObjectName("PlayersHeaderRefresh")
-        self.team_a_deselect_button.clicked.connect(lambda: global_vars.SIGNAL_MANAGER.weaponSelectedAll.emit("a", False))
+        self.team_a_deselect_button.clicked.connect(lambda: glb.SIGNAL_MANAGER.weaponSelectedAll.emit("a", False))
         
         self.team_a_select_button = ClickableLabel(self)
         self.team_a_select_button.setToolTip("Enable all")
@@ -45,7 +45,7 @@ class Weapons(QWidget):
         self.team_a_select_button.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.team_a_select_button.setContentsMargins(0, 0, 0, 0)
         self.team_a_select_button.setObjectName("PlayersHeaderRefresh")
-        self.team_a_select_button.clicked.connect(lambda: global_vars.SIGNAL_MANAGER.weaponSelectedAll.emit("a", True))
+        self.team_a_select_button.clicked.connect(lambda: glb.SIGNAL_MANAGER.weaponSelectedAll.emit("a", True))
         
         self.team_a_container_layout.addWidget(self.team_a_label)
         self.team_a_container_layout.addStretch()
@@ -66,7 +66,7 @@ class Weapons(QWidget):
         self.team_b_deselect_button.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.team_b_deselect_button.setContentsMargins(0, 0, 0, 0)
         self.team_b_deselect_button.setObjectName("PlayersHeaderRefresh")
-        self.team_b_deselect_button.clicked.connect(lambda: global_vars.SIGNAL_MANAGER.weaponSelectedAll.emit("b", False))
+        self.team_b_deselect_button.clicked.connect(lambda: glb.SIGNAL_MANAGER.weaponSelectedAll.emit("b", False))
         
         self.team_b_select_button = ClickableLabel(self)
         self.team_b_select_button.setToolTip("Enable all")
@@ -75,7 +75,7 @@ class Weapons(QWidget):
         self.team_b_select_button.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.team_b_select_button.setContentsMargins(0, 0, 0, 0)
         self.team_b_select_button.setObjectName("PlayersHeaderRefresh")
-        self.team_b_select_button.clicked.connect(lambda: global_vars.SIGNAL_MANAGER.weaponSelectedAll.emit("b", True))
+        self.team_b_select_button.clicked.connect(lambda: glb.SIGNAL_MANAGER.weaponSelectedAll.emit("b", True))
         
         self.team_b_container_layout.addWidget(self.team_b_label)
         self.team_b_container_layout.addStretch()

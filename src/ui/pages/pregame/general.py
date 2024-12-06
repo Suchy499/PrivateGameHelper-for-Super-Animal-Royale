@@ -1,6 +1,6 @@
 from core import *
 from images import IMAGES
-from widgets import HLine, Button
+from widgets import HLine, Button, Notification
 
 class General(QWidget):
     def __init__(self, parent):
@@ -10,6 +10,8 @@ class General(QWidget):
         self._layout.setContentsMargins(0, 0, 0, 0)
         self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.line_height = 2
+        main_window = get_main_window()
+        self.notif: Notification = main_window.notif
         
         self.preset_label = QLabel(self, text="Preset")
         self.preset_label.setContentsMargins(0, 0, 0, 15)
@@ -86,28 +88,33 @@ class General(QWidget):
         self.name_edit.setText(settings["name"])
         self.edit_button.setVisible(True)
         self.delete_button.setVisible(True)
+        self.notif.send_notification("Preset has been loaded!")
     
     def reset_settings(self) -> None:
-        global_vars.PREGAME_SETTINGS["name"] = self.name_edit.text()
+        glb.PREGAME_SETTINGS["name"] = self.name_edit.text()
     
     def save_settings(self) -> None:
-        self.name_edit.setText(global_vars.PREGAME_SETTINGS["name"])
+        self.name_edit.setText(glb.PREGAME_SETTINGS["name"])
         self.edit_button.setVisible(True)
         self.delete_button.setVisible(True)
+        self.notif.send_notification("New preset has been saved!", "NotifSuccess")
         save_preset()
         
     def edit_settings(self) -> None:
         edit_preset()
+        self.notif.send_notification("Preset has been edited!", "NotifSuccess")
     
     def delete_settings(self) -> None:
         self.name_edit.setText("")
         self.edit_button.setVisible(False)
         self.delete_button.setVisible(False)
+        self.notif.send_notification("Preset has been deleted", "NotifWarning")
         delete_preset()
     
     def name_changed(self, new_name: str) -> None:
-        global_vars.PREGAME_SETTINGS["name"] = new_name
+        glb.PREGAME_SETTINGS["name"] = new_name
     
     def restore_defaults(self) -> None:
-        global_vars.SIGNAL_MANAGER.presetRestored.emit(global_vars.PREGAME_DEFAULT_SETTINGS)
+        glb.SIGNAL_MANAGER.presetRestored.emit(glb.PREGAME_DEFAULT_SETTINGS)
+        self.notif.send_notification("Settings restored to default")
         

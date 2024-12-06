@@ -1,6 +1,6 @@
 from core.qt_core import *
 from core.classes import *
-import core.globals as global_vars
+import core.globals as glb
 import json
 import os
 import time
@@ -15,6 +15,12 @@ from pynput.mouse import Button
 from functools import partial
 from typing import Literal, Callable, Any
     
+# Main Window
+def get_main_window() -> QMainWindow:
+    for window in QApplication.topLevelWidgets():
+        if window.inherits("QMainWindow") and window.metaObject().className() == "MainWindow":
+            return window
+            
 # Presets
 def read_presets() -> list[dict]:
     with open(os.path.join(os.path.dirname(__file__), "presets.json")) as f:
@@ -26,34 +32,34 @@ def save_presets(data: list[dict]) -> None:
 
 def edit_preset() -> None:
     presets_data: list[dict] = read_presets()
-    preset_index: int = find_dict_index(presets_data, "preset_id", global_vars.PREGAME_SETTINGS["preset_id"])
-    global_vars.PREGAME_SETTINGS["last_edited"] = time.time()
-    if global_vars.PREGAME_SETTINGS["name"] is None or global_vars.PREGAME_SETTINGS["name"] == "":
-        global_vars.PREGAME_SETTINGS["name"] = "Untitled"
-    presets_data[preset_index] = global_vars.PREGAME_SETTINGS
+    preset_index: int = find_dict_index(presets_data, "preset_id", glb.PREGAME_SETTINGS["preset_id"])
+    glb.PREGAME_SETTINGS["last_edited"] = time.time()
+    if glb.PREGAME_SETTINGS["name"] is None or glb.PREGAME_SETTINGS["name"] == "":
+        glb.PREGAME_SETTINGS["name"] = "Untitled"
+    presets_data[preset_index] = glb.PREGAME_SETTINGS
     save_presets(presets_data)
-    global_vars.SIGNAL_MANAGER.presetsChanged.emit()
+    glb.SIGNAL_MANAGER.presetsChanged.emit()
 
 def save_preset() -> None:
     presets_data: list[dict] = read_presets()
     if len(presets_data) >= 1:
-        global_vars.PREGAME_SETTINGS["preset_id"] = presets_data[-1]["preset_id"] + 1
+        glb.PREGAME_SETTINGS["preset_id"] = presets_data[-1]["preset_id"] + 1
     else:
-        global_vars.PREGAME_SETTINGS["preset_id"] = 0
-    global_vars.PREGAME_SETTINGS["last_edited"] = time.time()
-    if global_vars.PREGAME_SETTINGS["name"] is None or global_vars.PREGAME_SETTINGS["name"] == "":
-        global_vars.PREGAME_SETTINGS["name"] = "Untitled"
-    presets_data.append(global_vars.PREGAME_SETTINGS)
+        glb.PREGAME_SETTINGS["preset_id"] = 0
+    glb.PREGAME_SETTINGS["last_edited"] = time.time()
+    if glb.PREGAME_SETTINGS["name"] is None or glb.PREGAME_SETTINGS["name"] == "":
+        glb.PREGAME_SETTINGS["name"] = "Untitled"
+    presets_data.append(glb.PREGAME_SETTINGS)
     save_presets(presets_data)
-    global_vars.SIGNAL_MANAGER.presetsChanged.emit()
+    glb.SIGNAL_MANAGER.presetsChanged.emit()
 
 def delete_preset() -> None:
     presets_data: list[dict] = read_presets()
-    preset_index: int = find_dict_index(presets_data, "preset_id", global_vars.PREGAME_SETTINGS["preset_id"])
+    preset_index: int = find_dict_index(presets_data, "preset_id", glb.PREGAME_SETTINGS["preset_id"])
     presets_data.pop(preset_index)
     save_presets(presets_data)
-    global_vars.SIGNAL_MANAGER.presetsChanged.emit()
-    global_vars.ACTIVE_PRESET = None
+    glb.SIGNAL_MANAGER.presetsChanged.emit()
+    glb.ACTIVE_PRESET = None
 
 # SAR Keybinds
 def read_registry_key(key: str) -> Any:
@@ -178,23 +184,23 @@ def parse_hotkey(hotkey: str | None) -> int | str | None:
 def press_hotkey(hotkey: str | int) -> None:
     match hotkey:
         case "mouse0":
-            global_vars.MOUSE_CTL.click(Button.left)
+            glb.MOUSE_CTL.click(Button.left)
         case "mouse1":
-            global_vars.MOUSE_CTL.click(Button.right)
+            glb.MOUSE_CTL.click(Button.right)
         case "mouse2":
-            global_vars.MOUSE_CTL.click(Button.middle)
+            glb.MOUSE_CTL.click(Button.middle)
         case "mouse3":
-            global_vars.MOUSE_CTL.click(Button.x1)
+            glb.MOUSE_CTL.click(Button.x1)
         case "mouse4":
-            global_vars.MOUSE_CTL.click(Button.x2)
+            glb.MOUSE_CTL.click(Button.x2)
         case _:
             keyboard.send(hotkey)
 
 def refresh_hotkeys() -> None:
-    global_vars.OPEN_CHAT_BIND = parse_hotkey(read_registry_key("Open Chat_h2580809935")) or "enter"
-    global_vars.MELEE_BIND = parse_hotkey(read_registry_key("Melee Weapon_h3432856419")) or "3"
-    global_vars.THROWABLE_BIND = parse_hotkey(read_registry_key("Grenade_h3300402683")) or "4"
-    global_vars.USE_BIND = parse_hotkey(read_registry_key("Use / Pickup_h1560228861")) or "e"
+    glb.OPEN_CHAT_BIND = parse_hotkey(read_registry_key("Open Chat_h2580809935")) or "enter"
+    glb.MELEE_BIND = parse_hotkey(read_registry_key("Melee Weapon_h3432856419")) or "3"
+    glb.THROWABLE_BIND = parse_hotkey(read_registry_key("Grenade_h3300402683")) or "4"
+    glb.USE_BIND = parse_hotkey(read_registry_key("Use / Pickup_h1560228861")) or "e"
 
 refresh_hotkeys()
 
@@ -261,8 +267,8 @@ def close_chat(window: object | Literal["auto"] = "auto") -> None:
     bottom_position: int = window_top_left_y + window_height - bottom_offset
     
     bounding_box = (left_position, top_position, right_position, bottom_position)
-    time.sleep(global_vars.KEY_DELAY*2)
-    ocr_screen = global_vars.OCR_READER.read_screen(bounding_box)
+    time.sleep(glb.KEY_DELAY*2)
+    ocr_screen = glb.OCR_READER.read_screen(bounding_box)
     results = ocr_screen.as_string()
     if re.search("all|team|chat", results, re.IGNORECASE):
         keyboard.send("escape")
@@ -329,8 +335,8 @@ def close_pause_menu(window: object | Literal["auto"] = "auto") -> None:
     bottom_position: int = window_top_left_y + window_height - bottom_offset
     
     bounding_box = (left_position, top_position, right_position, bottom_position)
-    time.sleep(global_vars.KEY_DELAY*2)
-    ocr_screen = global_vars.OCR_READER.read_screen(bounding_box)
+    time.sleep(glb.KEY_DELAY*2)
+    ocr_screen = glb.OCR_READER.read_screen(bounding_box)
     results = ocr_screen.as_string()
     if re.search("paws|menu|game|not|paused", results, re.IGNORECASE):
         keyboard.send("escape")
@@ -358,42 +364,45 @@ def check_private_match(window: object) -> bool:
     box_bottom: int = box_top + box_height
     
     bounding_box = (box_left, box_top, box_right, box_bottom)
-    time.sleep(global_vars.KEY_DELAY*2)
-    ocr_screen = global_vars.OCR_READER.read_screen(bounding_box)
+    time.sleep(glb.KEY_DELAY*2)
+    ocr_screen = glb.OCR_READER.read_screen(bounding_box)
     results = ocr_screen.as_string()
     if re.search("priv|vate|match", results, re.IGNORECASE):
         return True
+    main_window = get_main_window()
+    notif = main_window.notif
+    notif.send_notification("Not in a private match", "NotifFail")
     return False
 
 # Queue
 def send_commands(*commands: str):
     for command in commands:
-        time.sleep(global_vars.KEY_DELAY)
+        time.sleep(glb.KEY_DELAY)
         pyperclip.copy(f"/{command}")
-        press_hotkey(global_vars.OPEN_CHAT_BIND)
-        time.sleep(global_vars.KEY_DELAY)
+        press_hotkey(glb.OPEN_CHAT_BIND)
+        time.sleep(glb.KEY_DELAY)
         keyboard.send("ctrl+v")
-        time.sleep(global_vars.KEY_DELAY)
+        time.sleep(glb.KEY_DELAY)
         keyboard.send("enter")
         
 def add_commands(*commands: str) -> None:
-    global_vars.WORK_THREAD.QUEUE.append(lambda: send_commands(*commands))
+    glb.WORK_THREAD.QUEUE.append(lambda: send_commands(*commands))
 
 def queue_append(command: Callable):
-    global_vars.WORK_THREAD.QUEUE.append(command)
+    glb.WORK_THREAD.QUEUE.append(command)
     
 def execute_queue() -> None:
-    global_vars.WORK_THREAD.start()
+    glb.WORK_THREAD.start()
 
 def clear_queue() -> None:
-    global_vars.WORK_THREAD.QUEUE = []
+    glb.WORK_THREAD.QUEUE = []
 
 # Buttons
 def get_match_id() -> None:
     window = open_window("Super Animal Royale")
     if not window:
         return
-    global_vars.WORK_THREAD.QUEUE = []
+    glb.WORK_THREAD.QUEUE = []
     queue_append(lambda: close_chat(window))
     add_commands("matchid")
     execute_queue()
@@ -402,9 +411,9 @@ def start_game() -> None:
     window = open_window("Super Animal Royale")
     if not window:
         return
-    global_vars.WORK_THREAD.QUEUE = []
+    glb.WORK_THREAD.QUEUE = []
     queue_append(lambda: close_chat(window))
-    if global_vars.PREGAME_SETTINGS["settings"]["bots"]:
+    if glb.PREGAME_SETTINGS["settings"]["bots"]:
         add_commands("start")
     else:
         add_commands("startp")
@@ -418,9 +427,9 @@ def apply_settings() -> None:
     if not check_private_match(window):
         return
     
-    global_vars.WORK_THREAD.QUEUE = []
+    glb.WORK_THREAD.QUEUE = []
     queue_append(lambda: close_chat(window))
-    settings: dict = global_vars.PREGAME_SETTINGS["settings"]
+    settings: dict = glb.PREGAME_SETTINGS["settings"]
     weights: dict = settings["gun_weights"]
     for key, value in settings.items():
         match key:
@@ -456,6 +465,9 @@ def find_dict_index(lst, key, value):
 
 def open_window(window_title: str) -> None | object:
     if len(pywinctl.getWindowsWithTitle(window_title, flags="IS")) == 0:
+        main_window = get_main_window()
+        notif = main_window.notif
+        notif.send_notification(f"{window_title} not detected", "NotifFail")
         return None
     window = pywinctl.getWindowsWithTitle(window_title, flags="IS")[0]
     window.activate()
@@ -466,9 +478,9 @@ def read_players() -> list:
     window = open_window("Super Animal Royale")
     if not window:
         return
-    global_vars.WORK_THREAD.QUEUE = []
+    glb.WORK_THREAD.QUEUE = []
     close_chat(window)
-    global_vars.PLAYER_LIST = []
+    glb.PLAYER_LIST = []
     send_commands("getplayers")
     time.sleep(0.5)
     clipboard: list[str] = pyperclip.paste().split("\n")
@@ -477,55 +489,61 @@ def read_players() -> list:
     for player in clipboard:
         player_id = int(player.split("\t")[0])
         name = player.split("\t")[1]
-        global_vars.PLAYER_LIST.append(PlayerItem(player_id, name))
-    global_vars.SIGNAL_MANAGER.playersRefreshed.emit()
-    return global_vars.PLAYER_LIST
+        glb.PLAYER_LIST.append(PlayerItem(player_id, name))
+    glb.SIGNAL_MANAGER.playersRefreshed.emit()
+    return glb.PLAYER_LIST
 
 def send_player_command(command: str) -> None:
-    if not global_vars.SELECTED_PLAYER:
+    if not glb.SELECTED_PLAYER:
+        main_window = get_main_window()
+        notif = main_window.notif
+        notif.send_notification(f"No player selected", "NotifFail")
         return
     window = open_window("Super Animal Royale")
     if not window:
         return
-    global_vars.WORK_THREAD.QUEUE = []
+    glb.WORK_THREAD.QUEUE = []
     queue_append(lambda: close_chat(window))
-    add_commands(f"{command} {global_vars.SELECTED_PLAYER.player_id}")
+    add_commands(f"{command} {glb.SELECTED_PLAYER.player_id}")
     execute_queue()
 
 # Teleport
 def teleport_player(x: int, y: int) -> None:
-    if not global_vars.SELECTED_PLAYER_TELE:
+    if not glb.SELECTED_PLAYER_TELE:
+        main_window = get_main_window()
+        notif = main_window.notif
+        notif.send_notification(f"No player selected", "NotifFail")
         return
     window = open_window("Super Animal Royale")
     if not window:
         return
-    global_vars.WORK_THREAD.QUEUE = []
+    glb.WORK_THREAD.QUEUE = []
     queue_append(lambda: close_chat(window))
-    if global_vars.SELECTED_PLAYER_TELE == "ALL":
+    if glb.SELECTED_PLAYER_TELE == "ALL":
         add_commands(f"tele all {x} {y}")
     else:
-        add_commands(f"tele {global_vars.SELECTED_PLAYER_TELE.player_id} {x} {y}")
+        add_commands(f"tele {glb.SELECTED_PLAYER_TELE.player_id} {x} {y}")
     execute_queue()
 
 def select_all_players() -> None:
-    global_vars.SELECTED_PLAYER_TELE = "ALL"
-    global_vars.SIGNAL_MANAGER.playerSelected.emit()
+    glb.SELECTED_PLAYER_TELE = "ALL"
+    glb.SIGNAL_MANAGER.playerSelected.emit()
 
 # Items
 def spawn_weapon(weapon_id: int) -> None:
     window = open_window("Super Animal Royale")
     if not window:
         return
-    global_vars.WORK_THREAD.QUEUE = []
+    glb.WORK_THREAD.QUEUE = []
     queue_append(lambda: close_chat(window))
-    add_commands(f"gun{weapon_id} {global_vars.SELECTED_RARITY}")
+    add_commands(f"gun{weapon_id} {glb.SELECTED_RARITY}")
     execute_queue()
 
 def spawn_ammo(amount: int, ammo_id: int) -> None:
     window = open_window("Super Animal Royale")
     if not window:
         return
-    global_vars.WORK_THREAD.QUEUE = []
+    glb.WORK_THREAD.QUEUE = []
     queue_append(lambda: close_chat(window))
     add_commands(f"ammo{ammo_id} {amount}")
     execute_queue()
@@ -534,7 +552,7 @@ def spawn_healing(amount: int, healing_type: Literal["juice", "tape"]) -> None:
     window = open_window("Super Animal Royale")
     if not window:
         return
-    global_vars.WORK_THREAD.QUEUE = []
+    glb.WORK_THREAD.QUEUE = []
     queue_append(lambda: close_chat(window))
     add_commands(f"{healing_type} {amount}")
     execute_queue()
@@ -543,7 +561,7 @@ def spawn_throwable(amount: int, throwable_type: Literal["banana", "nade", "zip"
     window = open_window("Super Animal Royale")
     if not window:
         return
-    global_vars.WORK_THREAD.QUEUE = []
+    glb.WORK_THREAD.QUEUE = []
     queue_append(lambda: close_chat(window))
     add_commands(f"{throwable_type} {amount}")
     execute_queue()
@@ -552,7 +570,7 @@ def spawn_equipment(command: str) -> None:
     window = open_window("Super Animal Royale")
     if not window:
         return
-    global_vars.WORK_THREAD.QUEUE = []
+    glb.WORK_THREAD.QUEUE = []
     queue_append(lambda: close_chat(window))
     add_commands(command)
     execute_queue()
@@ -565,7 +583,7 @@ def get_teams() -> tuple[list, list, list]:
     a = []
     b = []
     spec = []
-    for player in global_vars.PLAYER_LIST:
+    for player in glb.PLAYER_LIST:
         match player.team:
             case 0:
                 a.append(player.player_id)
@@ -576,7 +594,7 @@ def get_teams() -> tuple[list, list, list]:
     return a, b, spec
 
 def spawn_ammo_duel(x: int, y: int, players: int) -> None:
-    send_commands(f"tele {global_vars.HOST_ID} {x} {y}")
+    send_commands(f"tele {glb.HOST_ID} {x} {y}")
     time.sleep(0.5)
     for _ in range(players):
         for i in range(6):
@@ -585,28 +603,28 @@ def spawn_ammo_duel(x: int, y: int, players: int) -> None:
     time.sleep(0.5)
 
 def spawn_powerups_duel(x: int, y: int, players: int) -> None:
-    send_commands(f"tele {global_vars.HOST_ID} {x} {y}")
+    send_commands(f"tele {glb.HOST_ID} {x} {y}")
     time.sleep(0.5)
     for _ in range(players):
         send_commands("util2", "util4")
     time.sleep(0.5)
 
 def spawn_throwables_duel(x: int, y: int, players: int) -> None:
-    send_commands(f"tele {global_vars.HOST_ID} {x} {y}")
+    send_commands(f"tele {glb.HOST_ID} {x} {y}")
     time.sleep(0.5)
     for _ in range(players):
        send_commands("banana 10", "nade 4")
     time.sleep(0.5)
 
 def spawn_armor_duel(x: int, y: int, players: int) -> None:
-    send_commands(f"tele {global_vars.HOST_ID} {x} {y}")
+    send_commands(f"tele {glb.HOST_ID} {x} {y}")
     time.sleep(0.5)
     for _ in range(players):
        send_commands("armor3")
     time.sleep(0.5)
 
 def spawn_weapon_duel(x: int, y: int, weapon_id: int, players: int) -> None:
-    send_commands(f"tele {global_vars.HOST_ID} {x} {y}")
+    send_commands(f"tele {glb.HOST_ID} {x} {y}")
     time.sleep(0.5)
     for _ in range(players):
        send_commands(f"gun{weapon_id} 3")
@@ -637,7 +655,7 @@ def append_weapons(weapons_list: list[int], players: int, team: Literal["a", "b"
 
 def ghost_spectators(spec_list: list[int]) -> None:
     for player in spec_list:
-        if player != global_vars.HOST_ID:
+        if player != glb.HOST_ID:
             send_commands(f"ghost {player}")
 
 def teleport_players(x: int, y: int, team: list[int]) -> None:
@@ -659,13 +677,13 @@ def wait_time() -> None:
     queue_append(lambda: time.sleep(1))
 
 def spawn_bananas(amount: int) -> None:
-    time.sleep(global_vars.KEY_DELAY*40)
+    time.sleep(glb.KEY_DELAY*40)
     send_commands(f"banana {amount}")
-    time.sleep(global_vars.KEY_DELAY*80)
-    press_hotkey(global_vars.THROWABLE_BIND)
-    global_vars.BANANA_COUNT = 10
+    time.sleep(glb.KEY_DELAY*80)
+    press_hotkey(glb.THROWABLE_BIND)
+    glb.BANANA_COUNT = 10
     send_commands("tele all 511 391")
-    time.sleep(global_vars.KEY_DELAY*10)
+    time.sleep(glb.KEY_DELAY*10)
 
 def lay_banana(sar_handle, host_id: int, x_player: int, y_player: int, direction: Literal["N", "S", "E", "W"] = "N") -> None:
     sar_window_rect = sar_handle.getClientFrame()
@@ -694,23 +712,23 @@ def lay_banana(sar_handle, host_id: int, x_player: int, y_player: int, direction
             x_player += player_offset
     
     send_commands(f"tele {host_id} {x_player} {y_player}")
-    time.sleep(global_vars.KEY_DELAY*8)
-    if global_vars.BANANA_COUNT <= 0:
+    time.sleep(glb.KEY_DELAY*8)
+    if glb.BANANA_COUNT <= 0:
         spawn_bananas(10)
         send_commands(f"tele {host_id} {x_player} {y_player}")
     mouse_click(x_position, y_position)
-    global_vars.BANANA_COUNT -= 1
+    glb.BANANA_COUNT -= 1
     
 def start_duel() -> None:
     sar_handle = open_window("Super Animal Royale")
-    place_banana = partial(lay_banana, sar_handle, global_vars.HOST_ID)
+    place_banana = partial(lay_banana, sar_handle, glb.HOST_ID)
     if not sar_handle:
         return
     
     if not check_private_match(sar_handle):
         return
     
-    global_vars.WORK_THREAD.QUEUE = []
+    glb.WORK_THREAD.QUEUE = []
     team_a, team_b, team_spec = get_teams()
     team_a_len, team_b_len = len(team_a), len(team_b)
     if team_a_len > 4:
@@ -727,13 +745,13 @@ def start_duel() -> None:
     queue_append(lambda: time.sleep(0.2))
     add_commands("allitems", "emus", "hamballs", "gasoff")
     
-    if global_vars.DUELS_SETTINGS["no_pets"]:
+    if glb.DUELS_SETTINGS["no_pets"]:
         add_commands("pets")
     
-    if global_vars.DUELS_SETTINGS["onehits"]:
+    if glb.DUELS_SETTINGS["onehits"]:
         add_commands("onehits")
     
-    if global_vars.DUELS_SETTINGS["noroll"]:
+    if glb.DUELS_SETTINGS["noroll"]:
         add_commands("noroll")
         
     add_commands(
@@ -741,7 +759,7 @@ def start_duel() -> None:
         "yell Welcome to duels!",
         "yell Please jump out of the eagle as soon as possible",
         "yell So you can be teleported to weapon selection",
-        f"yell Selected map: {global_vars.SELECTED_MAP_DUELS}"
+        f"yell Selected map: {glb.SELECTED_MAP_DUELS}"
     )
     queue_append(lambda: ghost_spectators(team_spec))
     
@@ -750,42 +768,42 @@ def start_duel() -> None:
     queue_append(lambda: time.sleep(0.5))
     queue_append(lambda: close_chat(sar_handle))
     queue_append(lambda: time.sleep(0.5))
-    queue_append(lambda: press_hotkey(global_vars.USE_BIND))
+    queue_append(lambda: press_hotkey(glb.USE_BIND))
     queue_append(lambda: spawn_ammo_duel(705, 1335, team_a_len))
     queue_append(lambda: spawn_ammo_duel(3845, 1535, team_b_len))
     
-    if global_vars.DUELS_SETTINGS["throwables"]:
+    if glb.DUELS_SETTINGS["throwables"]:
         queue_append(lambda: spawn_throwables_duel(735, 1335, team_a_len))
         queue_append(lambda: spawn_throwables_duel(3875, 1545, team_b_len))
     
-    if global_vars.DUELS_SETTINGS["armor"]:
+    if glb.DUELS_SETTINGS["armor"]:
         queue_append(lambda: spawn_armor_duel(755, 1335, team_a_len))
         queue_append(lambda: spawn_armor_duel(3895, 1545, team_b_len))
         
-    if global_vars.DUELS_SETTINGS["powerups"]:
+    if glb.DUELS_SETTINGS["powerups"]:
         queue_append(lambda: spawn_powerups_duel(775, 1335, team_a_len))
         queue_append(lambda: spawn_powerups_duel(3915, 1545, team_b_len))
         
-    if global_vars.DUELS_SETTINGS["weapons"]:
+    if glb.DUELS_SETTINGS["weapons"]:
         team_a_weapons = []
         team_b_weapons = []
 
-        for weapon_id, state in global_vars.DUELS_A_WEAPONS.items():
+        for weapon_id, state in glb.DUELS_A_WEAPONS.items():
             if state:
                 team_a_weapons.append(weapon_id)
 
-        for weapon_id, state in global_vars.DUELS_B_WEAPONS.items():
+        for weapon_id, state in glb.DUELS_B_WEAPONS.items():
             if state:
                 team_b_weapons.append(weapon_id)
         
         append_weapons(team_a_weapons, team_a_len, "a")
         append_weapons(team_b_weapons, team_b_len, "b")
     
-    if global_vars.DUELS_SETTINGS["boundaries"]:
-        global_vars.BANANA_COUNT = 0
+    if glb.DUELS_SETTINGS["boundaries"]:
+        glb.BANANA_COUNT = 0
         queue_append(lambda: close_chat(sar_handle))
         queue_append(lambda: close_pause_menu(sar_handle))
-        match global_vars.SELECTED_MAP_DUELS:
+        match glb.SELECTED_MAP_DUELS:
             case "Bamboo Resort":
                 for x in range(2530, 2630, 30):
                     queue_append(partial(place_banana, x, 1760, "N"))
@@ -890,8 +908,8 @@ def start_duel() -> None:
                 queue_append(partial(place_banana, 2052, 3954, "N"))
                 queue_append(partial(place_banana, 2033, 3865, "W"))
             
-    if global_vars.HOST_ID in team_spec:
-        add_commands(f"kill {global_vars.HOST_ID}", f"ghost {global_vars.HOST_ID}")
+    if glb.HOST_ID in team_spec:
+        add_commands(f"kill {glb.HOST_ID}", f"ghost {glb.HOST_ID}")
     
     queue_append(lambda: teleport_players(715, 1310, team_a))
     queue_append(lambda: teleport_players(3855, 1535, team_b))
@@ -899,7 +917,7 @@ def start_duel() -> None:
     wait_time()
     add_commands("god all")
 
-    match global_vars.SELECTED_MAP_DUELS:
+    match glb.SELECTED_MAP_DUELS:
         case "Bamboo Resort":   
             queue_append(lambda: teleport_players(2430, 1830, team_a))
             queue_append(lambda: teleport_players(2725, 1830, team_b))
@@ -923,23 +941,23 @@ def start_duel() -> None:
 # Dodgeball
 def mouse_click(x: int, y: int) -> None:
     pyautogui.moveTo(x, y)
-    time.sleep(global_vars.KEY_DELAY*8)
+    time.sleep(glb.KEY_DELAY*8)
     pyautogui.click()
-    time.sleep(global_vars.KEY_DELAY*4)
+    time.sleep(glb.KEY_DELAY*4)
 
 def spawn_nade(x: int, y: int) -> None:
-    add_commands(f"tele {global_vars.HOST_ID} {x} {y}")
+    add_commands(f"tele {glb.HOST_ID} {x} {y}")
     queue_append(lambda: time.sleep(0.2))
     add_commands("nade")
 
 def spawn_zips(x: int, y: int, amount: int) -> None:
-    add_commands(f"tele {global_vars.HOST_ID} {x} {y}")
+    add_commands(f"tele {glb.HOST_ID} {x} {y}")
     queue_append(lambda: time.sleep(0.5))
-    queue_append(lambda: press_hotkey(global_vars.USE_BIND))
+    queue_append(lambda: press_hotkey(glb.USE_BIND))
     queue_append(lambda: time.sleep(8))
     add_commands(f"zip {amount}")
     queue_append(lambda: time.sleep(2))
-    queue_append(lambda: press_hotkey(global_vars.THROWABLE_BIND))
+    queue_append(lambda: press_hotkey(glb.THROWABLE_BIND))
 
 def lay_zip(sar_handle, x_player: int, y_player: int, x_mouse: int, y_mouse: int) -> None:
     sar_window_rect = sar_handle.getClientFrame()
@@ -955,9 +973,9 @@ def lay_zip(sar_handle, x_player: int, y_player: int, x_mouse: int, y_mouse: int
     click_y: int = window_top_left_y + y_mouse
     
     sar_handle.activate()
-    time.sleep(global_vars.KEY_DELAY*16)
-    send_commands(f"tele {global_vars.HOST_ID} {x_player} {y_player}")
-    press_hotkey(global_vars.THROWABLE_BIND)
+    time.sleep(glb.KEY_DELAY*16)
+    send_commands(f"tele {glb.HOST_ID} {x_player} {y_player}")
+    press_hotkey(glb.THROWABLE_BIND)
     mouse_click(click_x, click_y)
 
 def break_boxes(sar_handle, x_player: int, y_player: int, x_mouse: int, y_mouse: int) -> None:
@@ -974,13 +992,13 @@ def break_boxes(sar_handle, x_player: int, y_player: int, x_mouse: int, y_mouse:
     click_y: int = window_top_left_y + y_mouse
     
     sar_handle.activate()
-    time.sleep(global_vars.KEY_DELAY*16)
-    send_commands(f"tele {global_vars.HOST_ID} {x_player} {y_player}")
-    press_hotkey(global_vars.MELEE_BIND)
+    time.sleep(glb.KEY_DELAY*16)
+    send_commands(f"tele {glb.HOST_ID} {x_player} {y_player}")
+    press_hotkey(glb.MELEE_BIND)
     mouse_click(click_x, click_y)
 
 def teleport_host(x: int, y: int, zip_amount: int = 0) -> None:
-    send_commands(f"tele {global_vars.HOST_ID} {x} {y}")
+    send_commands(f"tele {glb.HOST_ID} {x} {y}")
     time.sleep(1)
     send_commands("gun13 2")
     if zip_amount != 0:
@@ -996,16 +1014,16 @@ def start_dodgeball() -> None:
     if not check_private_match(sar_handle):
         return
     
-    global_vars.WORK_THREAD.QUEUE = []
+    glb.WORK_THREAD.QUEUE = []
     team_a, team_b, team_spec = get_teams()
     
     try:
-        team_a.remove(global_vars.HOST_ID)
+        team_a.remove(glb.HOST_ID)
     except ValueError:
         pass
     
     try:
-        team_b.remove(global_vars.HOST_ID)
+        team_b.remove(glb.HOST_ID)
     except ValueError:
         pass
     
@@ -1013,13 +1031,13 @@ def start_dodgeball() -> None:
     queue_append(lambda: time.sleep(0.2))
     add_commands(
         "allitems", "emus", "hamballs", "gasoff", "ziplines",
-        f"dmg {global_vars.DODGEBALL_SETTINGS["damage"]}", "startp", "god all",
+        f"dmg {glb.DODGEBALL_SETTINGS["damage"]}", "startp", "god all",
         "yell Welcome to dodgeball!",
         "yell Remember to stay in the arena and don't hit players with",
         "yell anything other than grenades or you will be disqualified",
         "yell Please jump out of the eagle as soon as possible",
         "yell And of course good luck have fun gamers!",
-        f"yell Selected map: {global_vars.SELECTED_MAP_DODGEBALL}"
+        f"yell Selected map: {glb.SELECTED_MAP_DODGEBALL}"
     )
     
     queue_append(lambda: ghost_spectators(team_spec))
@@ -1029,10 +1047,10 @@ def start_dodgeball() -> None:
     queue_append(lambda: close_chat(sar_handle))
     queue_append(lambda: close_pause_menu(sar_handle))
     queue_append(lambda: time.sleep(0.5))
-    queue_append(lambda: press_hotkey(global_vars.USE_BIND))
+    queue_append(lambda: press_hotkey(glb.USE_BIND))
     queue_append(lambda: time.sleep(1))
     
-    match global_vars.SELECTED_MAP_DODGEBALL:
+    match glb.SELECTED_MAP_DODGEBALL:
         case "Bamboo Resort":
             spawn_zips(2575, 2047, 4)
             spawn_nade(2575, 2138)
@@ -1053,9 +1071,9 @@ def start_dodgeball() -> None:
         case "SAW Security":
             spawn_zips(3430, 1815, 3)
             
-            add_commands(f"tele {global_vars.HOST_ID} 3350 1816")
+            add_commands(f"tele {glb.HOST_ID} 3350 1816")
             queue_append(lambda: time.sleep(2))
-            queue_append(lambda: press_hotkey(global_vars.USE_BIND))
+            queue_append(lambda: press_hotkey(glb.USE_BIND))
             queue_append(lambda: time.sleep(2))
             
             spawn_nade(3430, 1877)
@@ -1206,17 +1224,17 @@ def start_dodgeball() -> None:
     
 # Keybinds
 def spawn_nade_setup(x: int, y: int) -> None:
-    if not global_vars.DODGEBALL_SETTINGS["hotkeys"]:
+    if not glb.DODGEBALL_SETTINGS["hotkeys"]:
         return
     
     if pywinctl.getActiveWindowTitle() == "Super Animal Royale":
         close_chat()
-        send_commands(f"tele {global_vars.HOST_ID} {x} {y}")
+        send_commands(f"tele {glb.HOST_ID} {x} {y}")
         time.sleep(0.5)
         send_commands("nade")
         
 def hr_and_zip_hotkey() -> None:
-    if not global_vars.DODGEBALL_SETTINGS["hotkeys"]:
+    if not glb.DODGEBALL_SETTINGS["hotkeys"]:
         return
     
     if pywinctl.getActiveWindowTitle() == "Super Animal Royale":
@@ -1225,16 +1243,16 @@ def hr_and_zip_hotkey() -> None:
         send_commands("gun13 2", "zip 4")
     
 def ghost_host_hotkey() -> None:
-    if not global_vars.DODGEBALL_SETTINGS["hotkeys"]:
+    if not glb.DODGEBALL_SETTINGS["hotkeys"]:
         return
     
     if pywinctl.getActiveWindowTitle() == "Super Animal Royale":
         close_chat()
         time.sleep(0.5)
-        send_commands(f"kill {global_vars.HOST_ID}", f"ghost {global_vars.HOST_ID}")
+        send_commands(f"kill {glb.HOST_ID}", f"ghost {glb.HOST_ID}")
 
 def spawn_grenade_hotkey() -> None:
-    if not global_vars.DODGEBALL_SETTINGS["hotkeys"]:
+    if not glb.DODGEBALL_SETTINGS["hotkeys"]:
         return
     
     if pywinctl.getActiveWindowTitle() == "Super Animal Royale":
@@ -1259,7 +1277,7 @@ def spawn_grenades_preset(x: int, y: int, offset: int, offset_direction: Literal
             raise ValueError("Invalid offset_direction, use 'x' or 'y'")
 
 def spawn_grenades_from_left_hotkey(amount: int) -> None:
-    if not global_vars.DODGEBALL_SETTINGS["hotkeys"]:
+    if not glb.DODGEBALL_SETTINGS["hotkeys"]:
         return
     
     if pywinctl.getActiveWindowTitle() != "Super Animal Royale":
@@ -1267,72 +1285,72 @@ def spawn_grenades_from_left_hotkey(amount: int) -> None:
     
     time.sleep(0.5)
     close_chat()
-    match global_vars.SELECTED_MAP_DODGEBALL:
+    match glb.SELECTED_MAP_DODGEBALL:
         case "Bamboo Resort":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(2519, 2560, 2126, 2207, amount)
                 spawn_grenades_random(2590, 2622, 2126, 2207, amount)
             else:
                 spawn_grenades_preset(2539, 2147, 20, "y", amount)
                 spawn_grenades_preset(2618, 2147, 20, "y", amount)
         case "SAW Security":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(3358, 3397, 1872, 1951, amount)
                 spawn_grenades_random(3461, 3500, 1872, 1951, amount)
             else:
                 spawn_grenades_preset(3380, 1893, 20, "y", amount)
                 spawn_grenades_preset(3479, 1893, 20, "y", amount)
         case "SAW Research Labs":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(2697, 2752, 2944, 3028, amount)
                 spawn_grenades_random(2762, 2817, 2944, 3028, amount)
             else:
                 spawn_grenades_preset(2719, 2965, 25, "y", amount)
                 spawn_grenades_preset(2793, 2965, 25, "y", amount)
         case "Welcome Center":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(488, 548, 540, 630, amount)
                 spawn_grenades_random(563, 609, 540, 630, amount)
             else:
                 spawn_grenades_preset(523, 549, 40, "y", amount)
                 spawn_grenades_preset(592, 549, 40, "y", amount)
         case "Penguin Palace":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(2111, 2167, 3848, 3923, amount)
                 spawn_grenades_random(2179, 2239, 3848, 3923, amount)
             else:
                 spawn_grenades_preset(2133, 3860, 24, "y", amount)
                 spawn_grenades_preset(2216, 3860, 24, "y", amount)
         case "Pyramid":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(1339, 1396, 2792, 2828, amount)
                 spawn_grenades_random(1410, 1471, 2792, 2828, amount)
             else:
                 spawn_grenades_preset(1365, 2796, 18, "y", amount)
                 spawn_grenades_preset(1441, 2796, 18, "y", amount)
         case "Emu Ranch":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(1835, 1887, 2572, 2599, amount)
                 spawn_grenades_random(1898, 1953, 2572, 2599, amount)
             else:
                 spawn_grenades_preset(1862, 2568, 15, "y", amount)
                 spawn_grenades_preset(1930, 2568, 15, "y", amount)
         case "Shooting Range":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(862, 918, 1071, 1123, amount)
                 spawn_grenades_random(944, 999, 1071, 1123, amount)
             else:
                 spawn_grenades_preset(890, 1080, 12, "y", amount)
                 spawn_grenades_preset(972, 1080, 12, "y", amount)
         case "Juice Factory":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(3376, 3497, 2707, 2746, amount)
                 spawn_grenades_random(3376, 3497, 2762, 2800, amount)
             else:
                 spawn_grenades_preset(3411, 2711, 22, "x", amount)
                 spawn_grenades_preset(3411, 2797, 22, "x", amount)
         case "Super Sea Land":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(4100, 4136, 570, 636, amount)
                 spawn_grenades_random(4148, 4182, 570, 636, amount)
             else:
@@ -1340,7 +1358,7 @@ def spawn_grenades_from_left_hotkey(amount: int) -> None:
                 spawn_grenades_preset(4161, 591, 15, "y", amount)
     
 def spawn_grenades_from_right_hotkey(amount: int) -> None:
-    if not global_vars.DODGEBALL_SETTINGS["hotkeys"]:
+    if not glb.DODGEBALL_SETTINGS["hotkeys"]:
         return
     
     if pywinctl.getActiveWindowTitle() != "Super Animal Royale":
@@ -1348,72 +1366,72 @@ def spawn_grenades_from_right_hotkey(amount: int) -> None:
     
     time.sleep(0.5)
     close_chat()
-    match global_vars.SELECTED_MAP_DODGEBALL:
+    match glb.SELECTED_MAP_DODGEBALL:
         case "Bamboo Resort":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(2590, 2622, 2126, 2207, amount)
                 spawn_grenades_random(2519, 2560, 2126, 2207, amount)
             else:
                 spawn_grenades_preset(2618, 2147, 20, "y", amount)
                 spawn_grenades_preset(2539, 2147, 20, "y", amount)
         case "SAW Security":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(3461, 3500, 1872, 1951, amount)
                 spawn_grenades_random(3358, 3397, 1872, 1951, amount)
             else:
                 spawn_grenades_preset(3479, 1893, 20, "y", amount)
                 spawn_grenades_preset(3380, 1893, 20, "y", amount)
         case "SAW Research Labs":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(2762, 2817, 2944, 3028, amount)
                 spawn_grenades_random(2697, 2752, 2944, 3028, amount)
             else:
                 spawn_grenades_preset(2793, 2965, 25, "y", amount)
                 spawn_grenades_preset(2719, 2965, 25, "y", amount)
         case "Welcome Center":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(563, 609, 540, 630, amount)
                 spawn_grenades_random(488, 548, 540, 630, amount)
             else:
                 spawn_grenades_preset(592, 549, 40, "y", amount)
                 spawn_grenades_preset(523, 549, 40, "y", amount)
         case "Penguin Palace":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(2179, 2239, 3848, 3923, amount)
                 spawn_grenades_random(2111, 2167, 3848, 3923, amount)
             else:
                 spawn_grenades_preset(2216, 3860, 24, "y", amount)
                 spawn_grenades_preset(2133, 3860, 24, "y", amount)
         case "Pyramid":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(1410, 1471, 2792, 2828, amount)
                 spawn_grenades_random(1339, 1396, 2792, 2828, amount)
             else:
                 spawn_grenades_preset(1441, 2796, 18, "y", amount)
                 spawn_grenades_preset(1365, 2796, 18, "y", amount)
         case "Emu Ranch":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(1898, 1953, 2572, 2599, amount)
                 spawn_grenades_random(1835, 1887, 2572, 2599, amount)
             else:
                 spawn_grenades_preset(1930, 2568, 15, "y", amount)
                 spawn_grenades_preset(1862, 2568, 15, "y", amount)
         case "Shooting Range":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(944, 999, 1071, 1123, amount)
                 spawn_grenades_random(862, 918, 1071, 1123, amount)
             else:
                 spawn_grenades_preset(972, 1080, 12, "y", amount)
                 spawn_grenades_preset(890, 1080, 12, "y", amount)
         case "Juice Factory":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(3376, 3497, 2762, 2800, amount)
                 spawn_grenades_random(3376, 3497, 2707, 2746, amount)
             else:
                 spawn_grenades_preset(3411, 2797, 22, "x", amount)
                 spawn_grenades_preset(3411, 2711, 22, "x", amount)
         case "Super Sea Land":
-            if global_vars.DODGEBALL_SETTINGS["random_nades"]:
+            if glb.DODGEBALL_SETTINGS["random_nades"]:
                 spawn_grenades_random(4148, 4182, 570, 636, amount)
                 spawn_grenades_random(4100, 4136, 570, 636, amount)
             else:
@@ -1424,14 +1442,14 @@ keyboard.add_hotkey("ctrl+alt+q", clear_queue)
 
 def update_hotkeys() -> None:
     keyboard.unhook_all_hotkeys()
-    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/SpawnHrAndZiplines", "Ctrl+Shift+S"), hr_and_zip_hotkey)
-    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/GhostHost", "Ctrl+Shift+K"), ghost_host_hotkey)
-    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/SpawnSingleNade", "Ctrl+Y"), spawn_grenade_hotkey)
-    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/SpawnOneNadeLeft", "Ctrl+1"), spawn_grenades_from_left_hotkey, args=(1,))
-    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/SpawnTwoNadesLeft", "Ctrl+2"), spawn_grenades_from_left_hotkey, args=(2,))
-    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/SpawnThreeNadesLeft", "Ctrl+3"), spawn_grenades_from_left_hotkey, args=(3,))
-    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/SpawnOneNadeRight", "Alt+1"), spawn_grenades_from_right_hotkey, args=(1,))
-    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/SpawnTwoNadesRight", "Alt+2"), spawn_grenades_from_right_hotkey, args=(2,))
-    keyboard.add_hotkey(global_vars.SETTINGS.value("Keybinds/SpawnThreeNadesRight", "Alt+3"), spawn_grenades_from_right_hotkey, args=(3,))
+    keyboard.add_hotkey(glb.SETTINGS.value("Keybinds/SpawnHrAndZiplines", "Ctrl+Shift+S"), hr_and_zip_hotkey)
+    keyboard.add_hotkey(glb.SETTINGS.value("Keybinds/GhostHost", "Ctrl+Shift+K"), ghost_host_hotkey)
+    keyboard.add_hotkey(glb.SETTINGS.value("Keybinds/SpawnSingleNade", "Ctrl+Y"), spawn_grenade_hotkey)
+    keyboard.add_hotkey(glb.SETTINGS.value("Keybinds/SpawnOneNadeLeft", "Ctrl+1"), spawn_grenades_from_left_hotkey, args=(1,))
+    keyboard.add_hotkey(glb.SETTINGS.value("Keybinds/SpawnTwoNadesLeft", "Ctrl+2"), spawn_grenades_from_left_hotkey, args=(2,))
+    keyboard.add_hotkey(glb.SETTINGS.value("Keybinds/SpawnThreeNadesLeft", "Ctrl+3"), spawn_grenades_from_left_hotkey, args=(3,))
+    keyboard.add_hotkey(glb.SETTINGS.value("Keybinds/SpawnOneNadeRight", "Alt+1"), spawn_grenades_from_right_hotkey, args=(1,))
+    keyboard.add_hotkey(glb.SETTINGS.value("Keybinds/SpawnTwoNadesRight", "Alt+2"), spawn_grenades_from_right_hotkey, args=(2,))
+    keyboard.add_hotkey(glb.SETTINGS.value("Keybinds/SpawnThreeNadesRight", "Alt+3"), spawn_grenades_from_right_hotkey, args=(3,))
     keyboard.add_hotkey("ctrl+alt+q", clear_queue)
     

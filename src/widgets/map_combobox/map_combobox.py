@@ -38,9 +38,9 @@ class MapComboBox(QWidget):
         """)
         self.combobox.currentTextChanged.connect(self.set_map)
         if self.mode == "duels":
-            global_vars.SIGNAL_MANAGER.duelsMapSelected.connect(self.change_map)
+            glb.SIGNAL_MANAGER.duelsMapSelected.connect(self.change_map)
         elif self.mode == "dodgeball":
-            global_vars.SIGNAL_MANAGER.dodgeballMapSelected.connect(self.change_map)
+            glb.SIGNAL_MANAGER.dodgeballMapSelected.connect(self.change_map)
         
         _layout.addWidget(label)
         _layout.addWidget(self.combobox)
@@ -53,13 +53,13 @@ class MapComboBox(QWidget):
     
     def set_map(self, text: str) -> None:
         if self.mode == "duels":
-            global_vars.SIGNAL_MANAGER.duelsMapSelected.emit(text)
+            glb.SIGNAL_MANAGER.duelsMapSelected.emit(text)
         elif self.mode == "dodgeball":
-            global_vars.SIGNAL_MANAGER.dodgeballMapSelected.emit(text)
+            glb.SIGNAL_MANAGER.dodgeballMapSelected.emit(text)
     
     def change_map(self, text: str) -> None:
         if self.mode == "duels":
-            global_vars.SELECTED_MAP_DUELS = text
+            glb.SELECTED_MAP_DUELS = text
         elif self.mode == "dodgeball":
-            global_vars.SELECTED_MAP_DODGEBALL = text
+            glb.SELECTED_MAP_DODGEBALL = text
         self.combobox.setCurrentText(text)

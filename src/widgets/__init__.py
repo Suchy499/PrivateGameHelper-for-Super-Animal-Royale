@@ -1,5 +1,6 @@
 from .sidebar import Sidebar
 from .hline import HLine
+from .vline import VLine
 from .toggle import Toggle, LabeledToggle
 from .labeled_slider import LabeledSlider
 from .title_bar import TitleBar
@@ -17,3 +18,5 @@ from .equipment_button import EquipmentButton
 from .map_combobox import MapComboBox
 from .weapon_select import WeaponSelect
 from .keybind_edit import KeybindEdit
+from .notification import Notification
+from .update_popup import UpdatePopup

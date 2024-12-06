@@ -19,6 +19,7 @@ from PySide6.QtWidgets import (
     QStyle,
     QToolTip,
     QComboBox,
+    QGraphicsOpacityEffect,
 )
 from PySide6.QtCore import (
     Qt, 
@@ -45,5 +46,5 @@ from PySide6.QtGui import (
     QMouseEvent,
     QRegularExpressionValidator,
     QKeySequence,
-    QKeyEvent
+    QKeyEvent,
 )

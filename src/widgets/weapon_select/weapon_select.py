@@ -1,4 +1,5 @@
 from core import *
+from typing import Literal
 
 class WeaponSelect(QPushButton):
     def __init__(
@@ -30,26 +31,26 @@ class WeaponSelect(QPushButton):
         self.setObjectName("WeaponButton")
         self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.clicked.connect(self.on_click)
-        global_vars.SIGNAL_MANAGER.weaponSelected.connect(self.change_state)
-        global_vars.SIGNAL_MANAGER.weaponSelectedAll.connect(self.selected_all)
+        glb.SIGNAL_MANAGER.weaponSelected.connect(self.change_state)
+        glb.SIGNAL_MANAGER.weaponSelectedAll.connect(self.selected_all)
     
     def on_click(self) -> None:
         self.selected = not self.selected
         match self.team:
             case "a":
-                global_vars.DUELS_A_WEAPONS[self.weapon_id] = self.selected
+                glb.DUELS_A_WEAPONS[self.weapon_id] = self.selected
             case "b":
-                global_vars.DUELS_B_WEAPONS[self.weapon_id] = self.selected
-        global_vars.SIGNAL_MANAGER.weaponSelected.emit(self.weapon_id)
+                glb.DUELS_B_WEAPONS[self.weapon_id] = self.selected
+        glb.SIGNAL_MANAGER.weaponSelected.emit(self.weapon_id)
     
     def change_state(self, weapon_id: int) -> None:
         if weapon_id != self.weapon_id:
             return
         match self.team:
             case "a":
-                self.selected = global_vars.DUELS_A_WEAPONS[self.weapon_id]
+                self.selected = glb.DUELS_A_WEAPONS[self.weapon_id]
             case "b":
-                self.selected = global_vars.DUELS_B_WEAPONS[self.weapon_id]
+                self.selected = glb.DUELS_B_WEAPONS[self.weapon_id]
         self.setIcon(self.pixmap_icon if self.selected else self.pixmap_icon_dim)
     
     def selected_all(self, team: str, selected: bool) -> None:
@@ -58,7 +59,7 @@ class WeaponSelect(QPushButton):
         self.selected = selected
         match self.team:
             case "a":
-                global_vars.DUELS_A_WEAPONS[self.weapon_id] = self.selected
+                glb.DUELS_A_WEAPONS[self.weapon_id] = self.selected
             case "b":
-                global_vars.DUELS_B_WEAPONS[self.weapon_id] = self.selected
+                glb.DUELS_B_WEAPONS[self.weapon_id] = self.selected
         self.setIcon(self.pixmap_icon if self.selected else self.pixmap_icon_dim)

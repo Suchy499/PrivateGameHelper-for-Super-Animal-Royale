@@ -15,7 +15,7 @@ class Player(QWidget):
         self._layout.setContentsMargins(7, 10, 7, 10)
         
         self.name_label = ClickableLabel(self, self.player_item.name)
-        if global_vars.SELECTED_PLAYER == self.player_item:
+        if glb.SELECTED_PLAYER == self.player_item:
             self.name_label.setObjectName("PlayerNameSelected")
         else:
             self.name_label.setObjectName("PlayerName")
@@ -26,5 +26,5 @@ class Player(QWidget):
         self._layout.addStretch()
     
     def set_active(self):
-        global_vars.SELECTED_PLAYER = self.player_item
-        global_vars.SIGNAL_MANAGER.playerSelected.emit()
+        glb.SELECTED_PLAYER = self.player_item
+        glb.SIGNAL_MANAGER.playerSelected.emit()

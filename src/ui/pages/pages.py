@@ -16,6 +16,7 @@ class Pages(QStackedWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
+        self.parent = parent
         self.home_page = PageHome(self)
         self.presets_page = PagePresets(self)
         self.pregame_page = PagePregame(self)

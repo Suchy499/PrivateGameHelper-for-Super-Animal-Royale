@@ -77,12 +77,12 @@ class Settings(QWidget):
         
         self.random_nades = LabeledToggle(self, text="Random nades", default_state=True)
         self.random_nades.setContentsMargins(0, 15, 0, 0)
-        self.random_nades.stateChanged.connect(lambda: global_vars.SIGNAL_MANAGER.dodgeballSettingChanged.emit("random_nades", self.random_nades.isChecked()))
+        self.random_nades.stateChanged.connect(lambda: glb.SIGNAL_MANAGER.dodgeballSettingChanged.emit("random_nades", self.random_nades.isChecked()))
         self.hotkeys = LabeledToggle(self, text="Hotkeys", default_state=True)
         self.hotkeys.setContentsMargins(0, 15, 0, 0)
-        self.hotkeys.stateChanged.connect(lambda: global_vars.SIGNAL_MANAGER.dodgeballSettingChanged.emit("hotkeys", self.hotkeys.isChecked()))
+        self.hotkeys.stateChanged.connect(lambda: glb.SIGNAL_MANAGER.dodgeballSettingChanged.emit("hotkeys", self.hotkeys.isChecked()))
         self.damage = LabeledSlider(self, text="Damage")
-        self.damage.valueChanged.connect(lambda: global_vars.SIGNAL_MANAGER.dodgeballDamageChanged.emit(self.damage.value()))
+        self.damage.valueChanged.connect(lambda: glb.SIGNAL_MANAGER.dodgeballDamageChanged.emit(self.damage.value()))
         
         self.settings_container_layout.addWidget(self.random_nades)
         self.settings_container_layout.addWidget(self.hotkeys)
@@ -106,20 +106,20 @@ class Settings(QWidget):
         self._layout.addSpacing(9)
         self._layout.addWidget(self.start_button, alignment=Qt.AlignmentFlag.AlignRight)
         
-        global_vars.SIGNAL_MANAGER.hostIdChanged.connect(self.host_id_changed)
-        global_vars.SIGNAL_MANAGER.dodgeballSettingChanged.connect(self.setting_changed)
-        global_vars.SIGNAL_MANAGER.dodgeballDamageChanged.connect(self.damage_changed)
+        glb.SIGNAL_MANAGER.hostIdChanged.connect(self.host_id_changed)
+        glb.SIGNAL_MANAGER.dodgeballSettingChanged.connect(self.setting_changed)
+        glb.SIGNAL_MANAGER.dodgeballDamageChanged.connect(self.damage_changed)
     
     def text_changed(self, text: str) -> None:
         host_id = int(text)
-        global_vars.HOST_ID = host_id
-        global_vars.SIGNAL_MANAGER.hostIdChanged.emit(host_id)
+        glb.HOST_ID = host_id
+        glb.SIGNAL_MANAGER.hostIdChanged.emit(host_id)
     
     def host_id_changed(self, host_id: int) -> None:
-        self.host_id_edit.setText(str(global_vars.HOST_ID))
+        self.host_id_edit.setText(str(glb.HOST_ID))
     
     def setting_changed(self, setting: str, value: bool) -> None:
-        global_vars.DODGEBALL_SETTINGS[setting] = value
+        glb.DODGEBALL_SETTINGS[setting] = value
         match setting:
             case "random_nades":
                 self.random_nades.setChecked(value)
@@ -127,5 +127,5 @@ class Settings(QWidget):
                 self.hotkeys.setChecked(value)
     
     def damage_changed(self, value: float) -> None:
-        global_vars.DODGEBALL_SETTINGS["damage"] = value
+        glb.DODGEBALL_SETTINGS["damage"] = value
         self.damage.setValue(value)

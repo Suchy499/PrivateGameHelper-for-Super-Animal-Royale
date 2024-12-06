@@ -22,7 +22,6 @@
 		<file>images/bow_color.png</file>
 		<file>images/cat_mine.png</file>
 		<file>images/changelog.png</file>
-		<file>images/check.png</file>
 		<file>images/claw_boots.png</file>
 		<file>images/close.png</file>
 		<file>images/commands.png</file>
@@ -41,6 +40,7 @@
 		<file>images/dualies_color.png</file>
 		<file>images/duels.png</file>
 		<file>images/emu.png</file>
+		<file>images/fail.png</file>
 		<file>images/gamepad.png</file>
 		<file>images/github.png</file>
 		<file>images/grenade.png</file>
@@ -94,6 +94,7 @@
 		<file>images/snorkel.png</file>
 		<file>images/sparrow_launcher.png</file>
 		<file>images/sparrow_launcher_color.png</file>
+		<file>images/success.png</file>
 		<file>images/superite_laser.png</file>
 		<file>images/superite_laser_color.png</file>
 		<file>images/tape.png</file>
@@ -103,6 +104,7 @@
 		<file>images/trash.png</file>
 		<file>images/twitch.png</file>
 		<file>images/twitter.png</file>
+		<file>images/warning.png</file>
 		<file>images/zipline.png</file>
 		<file>images/zipline_color.png</file>
 	</qresource>

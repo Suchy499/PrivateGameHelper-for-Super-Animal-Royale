@@ -15,13 +15,14 @@ class Button(QPushButton):
         self.page = page
         
         self.setObjectName("SidebarButton")
-        self.setFixedSize(150, 30)
+        self.setFixedHeight(30)
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         if self.icon is not None:
             self.icon_pixmap = QPixmap(self.icon).scaledToWidth(13, Qt.TransformationMode.SmoothTransformation)
             self.setIcon(self.icon_pixmap)
             self.setIconSize(self.icon_pixmap.size())
-        self.setText(f"   {self.text}")
+        self.setText(f"    {self.text}")
         self.clicked.connect(self.select)
         
     def select(self) -> None:

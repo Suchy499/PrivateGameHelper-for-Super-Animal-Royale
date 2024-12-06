@@ -198,4 +198,4 @@ class Settings(QWidget):
         self.hpm_slider.setValue(settings["highping"])
     
     def set_setting(self, setting: str, value: bool | int | float) -> None:
-        global_vars.PREGAME_SETTINGS["settings"][setting] = value
+        glb.PREGAME_SETTINGS["settings"][setting] = value

@@ -145,4 +145,4 @@ class SpawnRates(QWidget):
         self.zipline_slider.setValue(settings["grenadezipline"])
     
     def set_setting(self, setting: str, value: bool | int | float) -> None:
-        global_vars.PREGAME_SETTINGS["settings"]["gun_weights"][setting] = value
+        glb.PREGAME_SETTINGS["settings"]["gun_weights"][setting] = value

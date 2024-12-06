@@ -1,4 +1,5 @@
 from core import *
+from typing import Literal
 
 class ThrowableButton(QPushButton):
     def __init__(

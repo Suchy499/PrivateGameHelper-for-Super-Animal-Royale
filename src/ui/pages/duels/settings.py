@@ -66,13 +66,13 @@ class Settings(QWidget):
         self.items_container_layout.setContentsMargins(10, 0, 0, 0)
         
         self.weapons_toggle = LabeledToggle(self, text="Weapons", default_state=True)
-        self.weapons_toggle.stateChanged.connect(lambda: global_vars.SIGNAL_MANAGER.duelsSettingChanged.emit("weapons", self.weapons_toggle.isChecked()))
+        self.weapons_toggle.stateChanged.connect(lambda: glb.SIGNAL_MANAGER.duelsSettingChanged.emit("weapons", self.weapons_toggle.isChecked()))
         self.armor_toggle = LabeledToggle(self, text="Armor", default_state=True)
-        self.armor_toggle.stateChanged.connect(lambda: global_vars.SIGNAL_MANAGER.duelsSettingChanged.emit("armor", self.armor_toggle.isChecked()))
+        self.armor_toggle.stateChanged.connect(lambda: glb.SIGNAL_MANAGER.duelsSettingChanged.emit("armor", self.armor_toggle.isChecked()))
         self.powerups_toggle = LabeledToggle(self, text="Powerups", default_state=True)
-        self.powerups_toggle.stateChanged.connect(lambda: global_vars.SIGNAL_MANAGER.duelsSettingChanged.emit("powerups", self.powerups_toggle.isChecked()))
+        self.powerups_toggle.stateChanged.connect(lambda: glb.SIGNAL_MANAGER.duelsSettingChanged.emit("powerups", self.powerups_toggle.isChecked()))
         self.throwables_toggle = LabeledToggle(self, text="Throwables", default_state=True)
-        self.throwables_toggle.stateChanged.connect(lambda: global_vars.SIGNAL_MANAGER.duelsSettingChanged.emit("throwables", self.throwables_toggle.isChecked()))
+        self.throwables_toggle.stateChanged.connect(lambda: glb.SIGNAL_MANAGER.duelsSettingChanged.emit("throwables", self.throwables_toggle.isChecked()))
         
         self.items_container_layout.addWidget(self.weapons_toggle)
         self.items_container_layout.addWidget(self.armor_toggle)
@@ -92,13 +92,13 @@ class Settings(QWidget):
         self.misc_container_layout.setContentsMargins(10, 0, 0, 0)
         
         self.no_pets_toggle = LabeledToggle(self, text="No pets")
-        self.no_pets_toggle.stateChanged.connect(lambda: global_vars.SIGNAL_MANAGER.duelsSettingChanged.emit("no_pets", self.no_pets_toggle.isChecked()))
+        self.no_pets_toggle.stateChanged.connect(lambda: glb.SIGNAL_MANAGER.duelsSettingChanged.emit("no_pets", self.no_pets_toggle.isChecked()))
         self.ohk_toggle = LabeledToggle(self, text="One hit kills")
-        self.ohk_toggle.stateChanged.connect(lambda: global_vars.SIGNAL_MANAGER.duelsSettingChanged.emit("onehits", self.ohk_toggle.isChecked()))
+        self.ohk_toggle.stateChanged.connect(lambda: glb.SIGNAL_MANAGER.duelsSettingChanged.emit("onehits", self.ohk_toggle.isChecked()))
         self.no_jumprolls_toggle = LabeledToggle(self, text="No jumprolls")
-        self.no_jumprolls_toggle.stateChanged.connect(lambda: global_vars.SIGNAL_MANAGER.duelsSettingChanged.emit("noroll", self.no_jumprolls_toggle.isChecked()))
+        self.no_jumprolls_toggle.stateChanged.connect(lambda: glb.SIGNAL_MANAGER.duelsSettingChanged.emit("noroll", self.no_jumprolls_toggle.isChecked()))
         self.boundaries_toggle = LabeledToggle(self, text="Banan boundaries")
-        self.boundaries_toggle.stateChanged.connect(lambda: global_vars.SIGNAL_MANAGER.duelsSettingChanged.emit("boundaries", self.boundaries_toggle.isChecked()))
+        self.boundaries_toggle.stateChanged.connect(lambda: glb.SIGNAL_MANAGER.duelsSettingChanged.emit("boundaries", self.boundaries_toggle.isChecked()))
         
         self.misc_container_layout.addWidget(self.no_pets_toggle)
         self.misc_container_layout.addWidget(self.ohk_toggle)
@@ -128,19 +128,19 @@ class Settings(QWidget):
         self._layout.addSpacing(9)
         self._layout.addWidget(self.start_button, alignment=Qt.AlignmentFlag.AlignRight)
         
-        global_vars.SIGNAL_MANAGER.hostIdChanged.connect(self.host_id_changed)
-        global_vars.SIGNAL_MANAGER.duelsSettingChanged.connect(self.setting_changed)
+        glb.SIGNAL_MANAGER.hostIdChanged.connect(self.host_id_changed)
+        glb.SIGNAL_MANAGER.duelsSettingChanged.connect(self.setting_changed)
     
     def text_changed(self, text: str) -> None:
         host_id = int(text)
-        global_vars.HOST_ID = host_id
-        global_vars.SIGNAL_MANAGER.hostIdChanged.emit(host_id)
+        glb.HOST_ID = host_id
+        glb.SIGNAL_MANAGER.hostIdChanged.emit(host_id)
     
     def host_id_changed(self, host_id: int) -> None:
-        self.host_id_edit.setText(str(global_vars.HOST_ID))
+        self.host_id_edit.setText(str(glb.HOST_ID))
     
     def setting_changed(self, setting: str, value: bool) -> None:
-        global_vars.DUELS_SETTINGS[setting] = value
+        glb.DUELS_SETTINGS[setting] = value
         match setting:
             case "weapons":
                 self.weapons_toggle.setChecked(value)

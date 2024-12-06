@@ -15,7 +15,7 @@ class KeybindEdit(QLineEdit):
         self.setFixedWidth(width)
         self.setting_key = setting_key
         self.default_value = default_value
-        self.setText(global_vars.SETTINGS.value(f"Keybinds/{self.setting_key}", self.default_value))
+        self.setText(glb.SETTINGS.value(f"Keybinds/{self.setting_key}", self.default_value))
         
         self.textChanged.connect(self.save_text)
 
@@ -48,9 +48,9 @@ class KeybindEdit(QLineEdit):
         
     def save_text(self, text: str) -> None:
         if text == "" or 0 <= ord(text[0]) <= 31:
-            self.setText(global_vars.SETTINGS.value(f"Keybinds/{self.setting_key}", self.default_value))
+            self.setText(glb.SETTINGS.value(f"Keybinds/{self.setting_key}", self.default_value))
             return
     
-        global_vars.SETTINGS.setValue(f"Keybinds/{self.setting_key}", text)
-        global_vars.SETTINGS.sync()
+        glb.SETTINGS.setValue(f"Keybinds/{self.setting_key}", text)
+        glb.SETTINGS.sync()
         update_hotkeys()

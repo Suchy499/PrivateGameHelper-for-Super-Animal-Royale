@@ -1,7 +1,7 @@
 from core import *
 import styles
 from images import IMAGES
-from widgets import Sidebar, TitleBar, SizeGrip
+from widgets import Sidebar, TitleBar, SizeGrip, Notification, UpdatePopup
 from ui.pages import Pages
 
 try:
@@ -23,7 +23,7 @@ class MainWindow(QMainWindow):
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint, True)
         self.setStyleSheet(styles.default_style)
         
-        global_vars.SIGNAL_MANAGER.presetOpened.connect(lambda: self.setActivePage(self.pages.pregame_page, "Pregame"))
+        glb.SIGNAL_MANAGER.presetOpened.connect(lambda: self.setActivePage(self.pages.pregame_page, "Pregame"))
         
         self.content = QWidget(self)
         self.content.setObjectName("MainWindowContent")
@@ -32,6 +32,8 @@ class MainWindow(QMainWindow):
         _layout.setContentsMargins(0, 0, 0, 0)
         _layout.setSpacing(0)
         
+        self.notif = Notification(self.content)
+        self.update_popup = UpdatePopup(self.content)
         self.title_bar = TitleBar(self.content)
         self.sidebar = Sidebar(self.content)
         self.pages = Pages(self.content)
@@ -147,7 +149,7 @@ class MainWindow(QMainWindow):
         _layout.addWidget(self.title_bar, 0, 0, 1, -1)
         _layout.addWidget(self.sidebar, 1, 0)
         _layout.addWidget(self.pages, 1, 1)
-    
+        
     def changeEvent(self, event):
         if event.type() == QEvent.Type.WindowStateChange:
             self.title_bar.window_state_changed(self.windowState())
@@ -167,6 +169,8 @@ class MainWindow(QMainWindow):
         self.top_right_grip.setGeometry(self.width() - 10, -5, 15, 15)
         self.bottom_left_grip.setGeometry(-5, self.height() - 10, 15, 15)
         self.bottom_right_grip.setGeometry(self.width() - 10, self.height() - 10, 15, 15)
+        self.notif.updatePosition()
+        self.update_popup.updatePosition()
     
     def setActivePage(self, page, btn_text):
         self.pages.setCurrentWidget(page)

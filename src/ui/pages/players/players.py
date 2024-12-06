@@ -48,6 +48,7 @@ class PagePlayers(QWidget):
         self.buttons = QWidget(self)
         self.buttons_layout = QHBoxLayout(self.buttons)
         self.buttons_layout.setAlignment(Qt.AlignmentFlag.AlignRight)
+        self.buttons_layout.setContentsMargins(9, 9, 9, 0)
         self.buttons_layout.setSpacing(10)
         self.button_admin = Button(self.buttons, "Admin")
         self.button_god = Button(self.buttons, "God")
