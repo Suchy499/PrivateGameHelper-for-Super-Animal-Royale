@@ -55,26 +55,26 @@ class Sidebar(QFrame):
         self.animation.start()
         
     def setup_buttons(self, btn_list: list[dict]) -> None:
-        self.buttons = {}
+        self.buttons = []
         for index, btn in enumerate(btn_list):
             if btn["show_top"]:
                 if btn["category"] != btn_list[index-1]["category"] and index > 0:
                     line = HLine(self, h=1)
                     line.setObjectName("SidebarLine")
                     self._layout.addWidget(line)
-                button = Button(self, btn["icon"], btn["text"], btn["page"])
+                button = Button(self, btn["icon"], btn["text"], btn["page"], "SidebarButton")
                 if btn["active"]:
-                    button.select()
+                    button.select("SidebarButton")
                 self._layout.addWidget(button)
-                self.buttons[btn["text"]] = button
+                self.buttons.append(button)
         self._layout.addStretch()
         for index, btn in enumerate(btn_list):
             if not btn["show_top"]:
-                button = Button(self, btn["icon"], btn["text"], btn["page"])
+                button = Button(self, btn["icon"], btn["text"], btn["page"], "SidebarButton")
                 if btn["active"]:
-                    button.select()
+                    button.select("SidebarButton")
                 self._layout.addWidget(button)
-                self.buttons[btn["text"]] = button
+                self.buttons.append(button)
                 try:
                     if btn["category"] != btn_list[index+1]["category"]:
                         line = HLine(self, h=1)
@@ -84,6 +84,11 @@ class Sidebar(QFrame):
                     pass
         
     def deselect_all(self) -> None:
-        for btn in self.buttons.values():
+        for btn in self.buttons:
             btn.deselect()
     
+    def keyPressEvent(self, arg__1):
+        return
+
+    def keyReleaseEvent(self, e):
+        return

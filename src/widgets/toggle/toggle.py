@@ -74,3 +74,9 @@ class Toggle(QCheckBox):
             p.drawEllipse(self._position, 3, 22, 22)
 
         p.end()
+    
+    def keyPressEvent(self, arg__1):
+        return
+
+    def keyReleaseEvent(self, e):
+        return

@@ -25,9 +25,6 @@ class MapWidget(QLabel):
         self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
         self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         
-        main_window = get_main_window()
-        self.notif = main_window.notif
-        
     def scaledPixmap(self) -> QPixmap:
         scaled = self._pixmap.scaled(
             self.size(),
@@ -52,7 +49,7 @@ class MapWidget(QLabel):
                 teleport_player(x, y)
             case Qt.MouseButton.RightButton:
                 pyperclip.copy(f"{x} {y}")
-                self.notif.send_notification("Coordinates copied to clipboard")
+                send_notification("Coordinates copied to clipboard")
             case _:
                 pass
         return super().mouseReleaseEvent(ev)
@@ -68,3 +65,9 @@ class MapWidget(QLabel):
         x = int(ev.position().x() * scale)
         y = int((width - ev.position().y()) * scale)
         return x, y
+    
+    def keyPressEvent(self, arg__1):
+        return
+
+    def keyReleaseEvent(self, e):
+        return

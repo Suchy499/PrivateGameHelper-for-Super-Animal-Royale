@@ -63,3 +63,9 @@ class MapComboBox(QWidget):
         elif self.mode == "dodgeball":
             glb.SELECTED_MAP_DODGEBALL = text
         self.combobox.setCurrentText(text)
+    
+    def keyPressEvent(self, arg__1):
+        return
+
+    def keyReleaseEvent(self, e):
+        return

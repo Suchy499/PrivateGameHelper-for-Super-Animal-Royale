@@ -56,3 +56,8 @@ class LabeledToggle(QWidget):
     def setObjectName(self, name) -> None:
         self.label.setObjectName(name)
     
+    def keyPressEvent(self, arg__1):
+        return
+
+    def keyReleaseEvent(self, e):
+        return

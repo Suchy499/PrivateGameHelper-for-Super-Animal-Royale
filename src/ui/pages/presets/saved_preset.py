@@ -69,4 +69,9 @@ class SavedPreset(QWidget):
 
     def set_active(self):
         glb.ACTIVE_PRESET = self.id
-        glb.SIGNAL_MANAGER.presetOpened.emit(self.preset)
+        match self.window().metaObject().className():
+            case "MainWindow":
+                parent = "SidebarButton"
+            case "Overlay":
+                parent = "OverlayButton"
+        glb.SIGNAL_MANAGER.presetOpened.emit(self.preset, parent)

@@ -24,3 +24,9 @@ class AmmoButton(QPushButton):
     def spawn_ammo(self) -> None:
         ammo_amount = self.parent_widget.ammo_amount.value()
         spawn_ammo(ammo_amount, self.ammo_id)
+    
+    def keyPressEvent(self, arg__1):
+        return
+
+    def keyReleaseEvent(self, e):
+        return

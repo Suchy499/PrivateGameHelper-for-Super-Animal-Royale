@@ -162,3 +162,9 @@ class RarityButton(QPushButton):
                 font-family: Aptos;
             }}
         """)
+    
+    def keyPressEvent(self, arg__1):
+        return
+
+    def keyReleaseEvent(self, e):
+        return

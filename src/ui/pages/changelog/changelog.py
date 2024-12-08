@@ -1,6 +1,6 @@
 from core import *
 from core._version import __version__
-from widgets import HLine, Button, Notification, UpdatePopup
+from widgets import HLine, Button
 from packaging.version import Version
 import requests
 
@@ -12,9 +12,6 @@ class PageChangelog(QWidget):
         _layout.setContentsMargins(9, 9, 9, 22)
         _layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.line_height: int = 2
-        main_window = get_main_window()
-        self.notif: Notification = main_window.notif
-        self.update_popup: UpdatePopup = main_window.update_popup
         
         self.changelog_label = QLabel("Changelog", self)
         self.changelog_label.setObjectName("PlayersHeaderName")
@@ -94,10 +91,10 @@ class PageChangelog(QWidget):
                 self.content_layout.addSpacing(30)
     
     def check_updates(self) -> None:
-        self.update_popup.update_latest_version()
-        if not self.update_popup.latest_version:
-            self.notif.send_notification("Could not retrieve data", "NotifFail")
-        elif Version(__version__) < Version(self.update_popup.latest_version):
-            self.update_popup.setVisible(True)
+        latest_version = update_latest_version()
+        if not latest_version:
+            send_notification("Could not retrieve data", "NotifFail")
+        elif Version(__version__) < Version(latest_version):
+            show_update()
         else:
-            self.notif.send_notification("You are up to date!", "NotifSuccess")
+            send_notification("You are up to date!", "NotifSuccess")

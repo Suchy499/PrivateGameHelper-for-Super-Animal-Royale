@@ -5,7 +5,21 @@ class SpawnRates(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
-        self._layout = QVBoxLayout(self)
+        _layout = QVBoxLayout(self)
+        _layout.setContentsMargins(0, 0, 0, 0)
+        
+        self.scroll_area = QScrollArea(self)
+        self.scroll_area.setObjectName("ScrollArea")
+        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.scroll_area.setFrameShape(QFrame.Shape.NoFrame)
+        self.scroll_area.setWidgetResizable(True)
+        self.content_area = QWidget(self)
+        self.content_area.setObjectName("Content")
+        self.scroll_area.setWidget(self.content_area)
+        _layout.addWidget(self.scroll_area)
+        
+        self._layout = QVBoxLayout(self.content_area)
         self._layout.setContentsMargins(0, 0, 0, 0)
         self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.line_height = 2
@@ -117,6 +131,8 @@ class SpawnRates(QWidget):
         
         self._layout.addWidget(self.spawn_rates_label)
         self._layout.addWidget(self.spawn_rates_settings)
+        
+        glb.SIGNAL_MANAGER.presetSettingChanged.connect(self.setting_changed)
     
     def load_settings(self, settings: dict) -> None:
         self.pistol_slider.setValue(settings["gunpistol"])
@@ -146,3 +162,30 @@ class SpawnRates(QWidget):
     
     def set_setting(self, setting: str, value: bool | int | float) -> None:
         glb.PREGAME_SETTINGS["settings"]["gun_weights"][setting] = value
+        glb.SIGNAL_MANAGER.presetSettingChanged.emit()
+    
+    def setting_changed(self) -> None:
+        self.pistol_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gunpistol"])
+        self.magnum_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gunmagnum"])
+        self.deagle_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gundeagle"])
+        self.silenced_pistol_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gunsilencedpistol"])
+        self.shotgun_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gunshotgun"])
+        self.jag7_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gunjag7"])
+        self.smg_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gunsmg"])
+        self.tommy_gun_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gunthomas"])
+        self.ak_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gunak"])
+        self.m16_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gunm16"])
+        self.dart_gun_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gundart"])
+        self.dartfly_gun_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gundartepic"])
+        self.hunting_rifle_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gunhuntingrifle"])
+        self.sniper_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gunsniper"])
+        self.superite_laser_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gunlaser"])
+        self.minigun_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gunminigun"])
+        self.bow_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gunbow"])
+        self.sparrow_launcher_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["guncrossbow"])
+        self.bcg_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["gunegglauncher"])
+        self.grenade_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["grenadefrag"])
+        self.banana_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["grenadebanana"])
+        self.skunk_bomb_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["grenadeskunk"])
+        self.cat_mine_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["grenadecatmine"])
+        self.zipline_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["grenadezipline"])

@@ -10,6 +10,7 @@ WORK_THREAD: QThread = WorkThread()
 SETTINGS: QSettings = QSettings("Suchy499", "Private Game Helper")
 MOUSE_CTL: Controller = Controller()
 OCR_READER: Reader = Reader.create_quality_reader()
+PLAYERS_TIMER: QTimer = QTimer()
 OPEN_CHAT_BIND: str | int = "enter"
 MELEE_BIND: str | int = "3"
 THROWABLE_BIND: str | int = "4"

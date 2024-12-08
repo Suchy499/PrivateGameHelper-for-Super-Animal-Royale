@@ -35,3 +35,9 @@ class Button(ClickableLabel):
     def deselect(self) -> None:
         self.setObjectName("NavbarButton")
         self.setStyleSheet(styles.default_style)
+    
+    def keyPressEvent(self, arg__1):
+        return
+
+    def keyReleaseEvent(self, e):
+        return

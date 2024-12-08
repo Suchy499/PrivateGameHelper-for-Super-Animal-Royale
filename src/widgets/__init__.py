@@ -1,9 +1,9 @@
-from .sidebar import Sidebar
+from .sidebar import Sidebar, OverlaySidebar
 from .hline import HLine
 from .vline import VLine
 from .toggle import Toggle, LabeledToggle
 from .labeled_slider import LabeledSlider
-from .title_bar import TitleBar
+from .title_bar import TitleBar, OverlayTitleBar
 from .size_grip import SizeGrip
 from .navbar import NavBar
 from .button import Button

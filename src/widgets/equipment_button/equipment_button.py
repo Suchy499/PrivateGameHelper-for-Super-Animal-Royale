@@ -47,3 +47,9 @@ class EquipmentButton(QPushButton):
             case "hamball":
                 command = "hamball"
         spawn_equipment(command)
+    
+    def keyPressEvent(self, arg__1):
+        return
+
+    def keyReleaseEvent(self, e):
+        return

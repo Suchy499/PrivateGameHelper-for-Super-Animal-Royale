@@ -70,3 +70,9 @@ class UpdatePopup(QFrame):
     def open_browser(self) -> None:
         webbrowser.open("https://github.com/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/latest")
         self.setVisible(False)
+    
+    def keyPressEvent(self, arg__1):
+        return
+
+    def keyReleaseEvent(self, e):
+        return

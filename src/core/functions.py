@@ -20,6 +20,11 @@ def get_main_window() -> QMainWindow:
     for window in QApplication.topLevelWidgets():
         if window.inherits("QMainWindow") and window.metaObject().className() == "MainWindow":
             return window
+
+def get_main_overlay() -> QWidget:
+    for window in QApplication.allWidgets():
+        if window.inherits("QFrame") and window.metaObject().className() == "OverlayCenter":
+            return window
             
 # Presets
 def read_presets() -> list[dict]:
@@ -38,7 +43,7 @@ def edit_preset() -> None:
         glb.PREGAME_SETTINGS["name"] = "Untitled"
     presets_data[preset_index] = glb.PREGAME_SETTINGS
     save_presets(presets_data)
-    glb.SIGNAL_MANAGER.presetsChanged.emit()
+    glb.SIGNAL_MANAGER.presetEdited.emit()
 
 def save_preset() -> None:
     presets_data: list[dict] = read_presets()
@@ -51,14 +56,14 @@ def save_preset() -> None:
         glb.PREGAME_SETTINGS["name"] = "Untitled"
     presets_data.append(glb.PREGAME_SETTINGS)
     save_presets(presets_data)
-    glb.SIGNAL_MANAGER.presetsChanged.emit()
+    glb.SIGNAL_MANAGER.presetSaved.emit()
 
 def delete_preset() -> None:
     presets_data: list[dict] = read_presets()
     preset_index: int = find_dict_index(presets_data, "preset_id", glb.PREGAME_SETTINGS["preset_id"])
     presets_data.pop(preset_index)
     save_presets(presets_data)
-    glb.SIGNAL_MANAGER.presetsChanged.emit()
+    glb.SIGNAL_MANAGER.presetDeleted.emit()
     glb.ACTIVE_PRESET = None
 
 # SAR Keybinds
@@ -340,40 +345,7 @@ def close_pause_menu(window: object | Literal["auto"] = "auto") -> None:
     results = ocr_screen.as_string()
     if re.search("paws|menu|game|not|paused", results, re.IGNORECASE):
         keyboard.send("escape")
-        
-def check_private_match(window: object) -> bool:
-    if window is None:
-        return
-    sar_window_rect = window.getClientFrame()
-    window_top_left_x, window_top_left_y = sar_window_rect[0], sar_window_rect[1]
-    window_width: int = sar_window_rect[2] - window_top_left_x
-    window_height: int = sar_window_rect[3] - window_top_left_y
-    
-    box_width: int = 500
-    box_height: int = 100
-    width_ratio: float = window_width / 1920
-    height_ratio: float = window_height / 1080
-    if width_ratio != 1:
-        box_width = int(box_width * width_ratio)
-    if height_ratio != 1:
-        box_height = int(box_height * height_ratio)
-    box_center_x, _ = window.center
-    box_left: int = box_center_x - box_width / 2
-    box_right: int = box_center_x + box_width / 2
-    box_top: int = window_top_left_y
-    box_bottom: int = box_top + box_height
-    
-    bounding_box = (box_left, box_top, box_right, box_bottom)
-    time.sleep(glb.KEY_DELAY*2)
-    ocr_screen = glb.OCR_READER.read_screen(bounding_box)
-    results = ocr_screen.as_string()
-    if re.search("priv|vate|match", results, re.IGNORECASE):
-        return True
-    main_window = get_main_window()
-    notif = main_window.notif
-    notif.send_notification("Not in a private match", "NotifFail")
-    return False
-
+       
 # Queue
 def send_commands(*commands: str):
     for command in commands:
@@ -424,9 +396,6 @@ def apply_settings() -> None:
     if not window:
         return
     
-    if not check_private_match(window):
-        return
-    
     glb.WORK_THREAD.QUEUE = []
     queue_append(lambda: close_chat(window))
     settings: dict = glb.PREGAME_SETTINGS["settings"]
@@ -465,39 +434,41 @@ def find_dict_index(lst, key, value):
 
 def open_window(window_title: str) -> None | object:
     if len(pywinctl.getWindowsWithTitle(window_title, flags="IS")) == 0:
-        main_window = get_main_window()
-        notif = main_window.notif
-        notif.send_notification(f"{window_title} not detected", "NotifFail")
+        send_notification(f"{window_title} not detected", "NotifFail")
         return None
     window = pywinctl.getWindowsWithTitle(window_title, flags="IS")[0]
     window.activate()
     return window
 
 # Players
-def read_players() -> list:
+def read_players() -> None:
     window = open_window("Super Animal Royale")
     if not window:
         return
     glb.WORK_THREAD.QUEUE = []
-    close_chat(window)
-    glb.PLAYER_LIST = []
-    send_commands("getplayers")
-    time.sleep(0.5)
-    clipboard: list[str] = pyperclip.paste().split("\n")
-    clipboard.remove("")
-    clipboard.pop(0)
-    for player in clipboard:
-        player_id = int(player.split("\t")[0])
-        name = player.split("\t")[1]
-        glb.PLAYER_LIST.append(PlayerItem(player_id, name))
-    glb.SIGNAL_MANAGER.playersRefreshed.emit()
-    return glb.PLAYER_LIST
+    add_commands("getplayers")
+    execute_queue()
+    glb.PLAYERS_TIMER.timeout.connect(save_players)
+    glb.PLAYERS_TIMER.start(1000)
+
+def save_players() -> None:
+    glb.PLAYERS_TIMER.stop()
+    try:
+        clipboard: list[str] = pyperclip.paste().split("\n")
+        clipboard.remove("")
+        clipboard.pop(0)
+        glb.PLAYER_LIST = []
+        for player in clipboard:
+            player_id = int(player.split("\t")[0])
+            name = player.split("\t")[1]
+            glb.PLAYER_LIST.append(PlayerItem(player_id, name))
+        glb.SIGNAL_MANAGER.playersRefreshed.emit()
+    except ValueError:
+        send_notification("Something went wrong. Try again", "NotifFail")
 
 def send_player_command(command: str) -> None:
     if not glb.SELECTED_PLAYER:
-        main_window = get_main_window()
-        notif = main_window.notif
-        notif.send_notification(f"No player selected", "NotifFail")
+        send_notification("No player selected", "NotifFail")
         return
     window = open_window("Super Animal Royale")
     if not window:
@@ -510,9 +481,7 @@ def send_player_command(command: str) -> None:
 # Teleport
 def teleport_player(x: int, y: int) -> None:
     if not glb.SELECTED_PLAYER_TELE:
-        main_window = get_main_window()
-        notif = main_window.notif
-        notif.send_notification(f"No player selected", "NotifFail")
+        send_notification("No player selected", "NotifFail")
         return
     window = open_window("Super Animal Royale")
     if not window:
@@ -722,10 +691,8 @@ def lay_banana(sar_handle, host_id: int, x_player: int, y_player: int, direction
 def start_duel() -> None:
     sar_handle = open_window("Super Animal Royale")
     place_banana = partial(lay_banana, sar_handle, glb.HOST_ID)
+    overlay = get_main_overlay()
     if not sar_handle:
-        return
-    
-    if not check_private_match(sar_handle):
         return
     
     glb.WORK_THREAD.QUEUE = []
@@ -741,6 +708,7 @@ def start_duel() -> None:
     elif team_b_len == 0:
         team_b_len = 1
     
+    queue_append(overlay.close_overlay)
     queue_append(lambda: close_chat(sar_handle))
     queue_append(lambda: time.sleep(0.2))
     add_commands("allitems", "emus", "hamballs", "gasoff")
@@ -1008,10 +976,8 @@ def start_dodgeball() -> None:
     sar_handle = open_window("Super Animal Royale")
     lay_zip_prep = partial(lay_zip, sar_handle)
     break_boxes_prep = partial(break_boxes, sar_handle)
+    overlay = get_main_overlay()
     if not sar_handle:
-        return
-    
-    if not check_private_match(sar_handle):
         return
     
     glb.WORK_THREAD.QUEUE = []
@@ -1027,6 +993,7 @@ def start_dodgeball() -> None:
     except ValueError:
         pass
     
+    queue_append(overlay.close_overlay)
     queue_append(lambda: close_chat(sar_handle))
     queue_append(lambda: time.sleep(0.2))
     add_commands(
@@ -1453,3 +1420,26 @@ def update_hotkeys() -> None:
     keyboard.add_hotkey(glb.SETTINGS.value("Keybinds/SpawnThreeNadesRight", "Alt+3"), spawn_grenades_from_right_hotkey, args=(3,))
     keyboard.add_hotkey("ctrl+alt+q", clear_queue)
     
+# Notifications
+def send_notification(text: str, notif_type: Literal["NotifInfo", "NotifWarning", "NotifSuccess", "NotifFail"] = "NotifInfo") -> None:
+    main_window = get_main_window().notif
+    overlay = get_main_overlay().notif
+    
+    main_window.send_notification(text, notif_type)
+    overlay.send_notification(text, notif_type)
+
+def update_latest_version() -> str | None:
+    main_window = get_main_window().update_popup
+    overlay = get_main_overlay().update_popup
+    
+    main_window.update_latest_version()
+    overlay.update_latest_version()
+    
+    return main_window.latest_version
+
+def show_update() -> None:
+    main_window = get_main_window().update_popup
+    overlay = get_main_overlay().update_popup
+    
+    main_window.setVisible(True)
+    overlay.setVisible(True)

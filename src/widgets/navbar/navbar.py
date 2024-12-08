@@ -26,3 +26,9 @@ class NavBar(QWidget):
     def deselect_all(self) -> None:
         for btn in self.buttons:
             btn.deselect()
+    
+    def keyPressEvent(self, arg__1):
+        return
+
+    def keyReleaseEvent(self, e):
+        return

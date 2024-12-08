@@ -1,5 +1,8 @@
 from core.qt_core import *
 from dataclasses import dataclass
+import time
+from typing import Callable, Any, Optional
+import win32gui
 
 class WorkThread(QThread):
     QUEUE: list = []
@@ -11,11 +14,41 @@ class WorkThread(QThread):
                 command()
             except IndexError:
                 break
+            
+class OverlayThread(QThread):
+    def __init__(self, parent: QWidget, name: str):
+        super().__init__(parent)
+        self.name = name
+        self.overlay = parent
+        
+    def run(self):
+        last_size: tuple[int, int, int, int] = (0, 0, 0, 0)
+        while True:
+            time.sleep(0.5)
+            if (size := self.get_window_size(self.name)) is None:
+                break
+            if size != last_size:
+                last_size = size
+                self.overlay.setGeometry(*size)
+    
+    def get_window_size(self, name) -> Optional[tuple[int, int, int, int]]:
+        if hwnd := win32gui.FindWindow(None, name):
+            x, y, right, bottom = win32gui.GetWindowRect(hwnd)
+            width = right - x
+            height = bottom - y
+            return x, y, width, height
+        return None
+
 
 class SignalManager(QObject):
-    presetOpened = Signal(dict)
-    presetsChanged = Signal()
+    pageChanged = Signal(QWidget, str)
+    presetOpened = Signal(dict, str)
+    presetDeleted = Signal()
+    presetEdited = Signal()
+    presetSaved = Signal()
     presetRestored = Signal(dict)
+    presetNameChanged = Signal(str)
+    presetSettingChanged = Signal()
     playersRefreshed = Signal()
     playerSelected = Signal()
     raritySelected = Signal()
@@ -28,6 +61,7 @@ class SignalManager(QObject):
     duelsSettingChanged = Signal(str, bool)
     dodgeballSettingChanged = Signal(str, bool)
     dodgeballDamageChanged = Signal(float)
+    overlayClosed = Signal()
 
 @dataclass
 class PlayerItem:

@@ -42,7 +42,7 @@ class TitleBar(QFrame):
         self.close_pixmap = QPixmap(IMAGES["close"]).scaledToHeight(24, Qt.TransformationMode.SmoothTransformation)
         self.close_button.setIcon(self.close_pixmap)
         self.close_button.setFixedSize(self.close_pixmap.size())
-        self.close_button.clicked.connect(self.window().close)
+        self.close_button.clicked.connect(QApplication.exit)
         self._layout.addWidget(self.title)
         self._layout.addStretch()
         self._layout.addWidget(self.minimize_button)

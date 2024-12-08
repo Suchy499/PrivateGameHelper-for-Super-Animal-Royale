@@ -25,3 +25,9 @@ class ThrowableButton(QPushButton):
     def spawn_throwables(self) -> None:
         amount = self.parent_widget.throwables_amount.value()
         spawn_throwable(amount, self.throwable_type)
+    
+    def keyPressEvent(self, arg__1):
+        return
+
+    def keyReleaseEvent(self, e):
+        return

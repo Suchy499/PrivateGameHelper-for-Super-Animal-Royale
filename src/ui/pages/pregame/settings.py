@@ -11,7 +11,7 @@ class Settings(QWidget):
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setObjectName("ScrollArea")
         self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         self.scroll_area.setFrameShape(QFrame.Shape.NoFrame)
         self.scroll_area.setWidgetResizable(True)
         self.content_area = QWidget(self)
@@ -175,6 +175,8 @@ class Settings(QWidget):
         self._layout.addSpacing(10)
         self._layout.addWidget(self.misc_label)
         self._layout.addWidget(self.misc_settings)
+        
+        glb.SIGNAL_MANAGER.presetSettingChanged.connect(self.setting_changed)
     
     def load_settings(self, settings: dict) -> None:
         self.all_items_toggle.setChecked(settings["allitems"])
@@ -199,3 +201,26 @@ class Settings(QWidget):
     
     def set_setting(self, setting: str, value: bool | int | float) -> None:
         glb.PREGAME_SETTINGS["settings"][setting] = value
+        glb.SIGNAL_MANAGER.presetSettingChanged.emit()
+    
+    def setting_changed(self) -> None:
+        self.all_items_toggle.setChecked(glb.PREGAME_SETTINGS["settings"]["allitems"])
+        self.guns_toggle.setChecked(glb.PREGAME_SETTINGS["settings"]["guns"])
+        self.armor_toggle.setChecked(glb.PREGAME_SETTINGS["settings"]["armors"])
+        self.throwables_toggle.setChecked(glb.PREGAME_SETTINGS["settings"]["throwables"])
+        self.powerups_toggle.setChecked(glb.PREGAME_SETTINGS["settings"]["powerups"])
+        self.emus_toggle.setChecked(glb.PREGAME_SETTINGS["settings"]["emus"])
+        self.hamballs_toggle.setChecked(glb.PREGAME_SETTINGS["settings"]["hamballs"])
+        self.ziplines_toggle.setChecked(glb.PREGAME_SETTINGS["settings"]["ziplines"])
+        self.gas_toggle.setChecked(glb.PREGAME_SETTINGS["settings"]["gasoff"])
+        self.moles_toggle.setChecked(glb.PREGAME_SETTINGS["settings"]["moles"])
+        self.pets_toggle.setChecked(glb.PREGAME_SETTINGS["settings"]["pets"])
+        self.onehits_toggle.setChecked(glb.PREGAME_SETTINGS["settings"]["onehits"])
+        self.no_rolls_toggle.setChecked(glb.PREGAME_SETTINGS["settings"]["noroll"])
+        self.bots_toggle.setChecked(glb.PREGAME_SETTINGS["settings"]["bots"])
+        self.gas_speed_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gasspeed"])
+        self.gas_damage_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gasdmg"])
+        self.damage_slider.setValue(glb.PREGAME_SETTINGS["settings"]["dmg"])
+        self.bullet_speed_slider.setValue(glb.PREGAME_SETTINGS["settings"]["bulletspeed"])
+        self.hpm_slider.setValue(glb.PREGAME_SETTINGS["settings"]["highping"])
+    

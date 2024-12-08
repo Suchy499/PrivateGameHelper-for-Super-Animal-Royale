@@ -10,8 +10,6 @@ class General(QWidget):
         self._layout.setContentsMargins(0, 0, 0, 0)
         self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.line_height = 2
-        main_window = get_main_window()
-        self.notif: Notification = main_window.notif
         
         self.preset_label = QLabel(self, text="Preset")
         self.preset_label.setContentsMargins(0, 0, 0, 15)
@@ -25,7 +23,7 @@ class General(QWidget):
         self.name_edit.setFixedWidth(221)
         self.name_edit.setObjectName("LineEdit")
         self.name_edit.setContentsMargins(9, 0, 0, 0)
-        self.name_edit.textChanged.connect(self.name_changed)
+        self.name_edit.textChanged.connect(self.name_edited)
         
         self.preset_buttons = QWidget(self)
         self.preset_buttons_layout = QHBoxLayout(self.preset_buttons)
@@ -35,18 +33,18 @@ class General(QWidget):
         
         self.new_icon = QPixmap(IMAGES["save"]).scaledToHeight(13, Qt.TransformationMode.SmoothTransformation)
         self.new_button = Button(self.preset_buttons, " New", self.new_icon)
-        self.new_button.clicked.connect(self.save_settings)
+        self.new_button.clicked.connect(save_preset)
         self.preset_buttons_layout.addWidget(self.new_button)
         
         self.edit_icon = QPixmap(IMAGES["pencil"]).scaledToHeight(13, Qt.TransformationMode.SmoothTransformation)
         self.edit_button = Button(self.preset_buttons, " Edit", self.edit_icon)
-        self.edit_button.clicked.connect(self.edit_settings)
+        self.edit_button.clicked.connect(edit_preset)
         self.edit_button.setVisible(False)
         self.preset_buttons_layout.addWidget(self.edit_button)
         
         self.delete_icon = QPixmap(IMAGES["trash"]).scaledToHeight(13, Qt.TransformationMode.SmoothTransformation)
         self.delete_button = Button(self.preset_buttons, " Delete", self.delete_icon, btn_style="ButtonDelete")
-        self.delete_button.clicked.connect(self.delete_settings)
+        self.delete_button.clicked.connect(delete_preset)
         self.delete_button.setVisible(False)
         self.preset_buttons_layout.addWidget(self.delete_button)
         
@@ -61,7 +59,7 @@ class General(QWidget):
         self.control_buttons_layout.setSpacing(10)
         
         self.restore_defaults_button = Button(self.control_buttons, "Restore")
-        self.restore_defaults_button.clicked.connect(self.restore_defaults)
+        self.restore_defaults_button.clicked.connect(lambda: glb.SIGNAL_MANAGER.presetRestored.emit(glb.PREGAME_DEFAULT_SETTINGS))
         self.control_buttons_layout.addWidget(self.restore_defaults_button)
         
         self.match_id_button = Button(self.control_buttons, "Match ID")
@@ -83,12 +81,18 @@ class General(QWidget):
         self._layout.addWidget(self.preset_buttons)
         self._layout.addWidget(self.preset_hline)
         self._layout.addWidget(self.control_buttons)
+        
+        glb.SIGNAL_MANAGER.presetDeleted.connect(self.delete_settings)
+        glb.SIGNAL_MANAGER.presetNameChanged.connect(self.name_changed)
+        glb.SIGNAL_MANAGER.presetEdited.connect(self.edit_settings)
+        glb.SIGNAL_MANAGER.presetSaved.connect(self.save_settings)
+        glb.SIGNAL_MANAGER.presetRestored.connect(self.restore_defaults)
     
     def load_settings(self, settings: dict) -> None:
         self.name_edit.setText(settings["name"])
         self.edit_button.setVisible(True)
         self.delete_button.setVisible(True)
-        self.notif.send_notification("Preset has been loaded!")
+        send_notification("Preset has been loaded!")
     
     def reset_settings(self) -> None:
         glb.PREGAME_SETTINGS["name"] = self.name_edit.text()
@@ -97,24 +101,24 @@ class General(QWidget):
         self.name_edit.setText(glb.PREGAME_SETTINGS["name"])
         self.edit_button.setVisible(True)
         self.delete_button.setVisible(True)
-        self.notif.send_notification("New preset has been saved!", "NotifSuccess")
-        save_preset()
+        send_notification("New preset has been saved!", "NotifSuccess")
         
     def edit_settings(self) -> None:
-        edit_preset()
-        self.notif.send_notification("Preset has been edited!", "NotifSuccess")
+        send_notification("Preset has been edited!", "NotifSuccess")
     
     def delete_settings(self) -> None:
         self.name_edit.setText("")
         self.edit_button.setVisible(False)
         self.delete_button.setVisible(False)
-        self.notif.send_notification("Preset has been deleted", "NotifWarning")
-        delete_preset()
+        send_notification("Preset has been deleted", "NotifWarning")
+    
+    def name_edited(self, new_name: str) -> None:
+        glb.PREGAME_SETTINGS["name"] = new_name
+        glb.SIGNAL_MANAGER.presetNameChanged.emit(new_name)
     
     def name_changed(self, new_name: str) -> None:
-        glb.PREGAME_SETTINGS["name"] = new_name
+        self.name_edit.setText(new_name)
     
     def restore_defaults(self) -> None:
-        glb.SIGNAL_MANAGER.presetRestored.emit(glb.PREGAME_DEFAULT_SETTINGS)
-        self.notif.send_notification("Settings restored to default")
+        send_notification("Settings restored to default")
         

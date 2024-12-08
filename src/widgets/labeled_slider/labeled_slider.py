@@ -86,3 +86,9 @@ class LabeledSlider(QWidget):
     
     def wheelEvent(self, event):
         return
+
+    def keyPressEvent(self, arg__1):
+        return
+
+    def keyReleaseEvent(self, e):
+        return

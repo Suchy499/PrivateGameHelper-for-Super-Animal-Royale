@@ -30,3 +30,9 @@ class Button(QPushButton):
 
         if self.command is not None:
             self.clicked.connect(lambda: send_other_command(self.command))
+            
+    def keyPressEvent(self, arg__1):
+        return
+
+    def keyReleaseEvent(self, e):
+        return

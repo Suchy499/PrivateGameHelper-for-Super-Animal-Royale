@@ -63,3 +63,9 @@ class WeaponSelect(QPushButton):
             case "b":
                 glb.DUELS_B_WEAPONS[self.weapon_id] = self.selected
         self.setIcon(self.pixmap_icon if self.selected else self.pixmap_icon_dim)
+    
+    def keyPressEvent(self, arg__1):
+        return
+
+    def keyReleaseEvent(self, e):
+        return

@@ -29,4 +29,9 @@ class HealingButton(QPushButton):
             case "tape":
                 amount = self.parent_widget.tape_amount.value()
         spawn_healing(amount, self.healing_type)
-        
+    
+    def keyPressEvent(self, arg__1):
+        return
+
+    def keyReleaseEvent(self, e):
+        return

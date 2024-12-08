@@ -19,3 +19,9 @@ class WeaponButton(QPushButton):
         self.setObjectName("WeaponButton")
         self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.clicked.connect(lambda: spawn_weapon(self.weapon_id))
+    
+    def keyPressEvent(self, arg__1):
+        return
+
+    def keyReleaseEvent(self, e):
+        return
