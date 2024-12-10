@@ -1,0 +1,715 @@
+#MainWindowContent {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 #161733, stop:1 #332757);
+    border-radius: 20px;
+    border: 2px solid #332757;
+}
+
+#TitleBar {
+    background: rgba(0, 0, 0, 20);
+}
+
+#Title {
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: center;
+}
+
+#TitleButton {
+    border: 0;
+    background: transparent;
+}
+
+#TitleButton:hover {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#TitleButton:pressed {
+    background: rgba(128, 128, 128, 0.6);
+}
+
+#TitleButtonClose {
+    border: 0;
+    background: transparent;
+}
+
+#TitleButtonClose:hover {
+    background: rgba(232, 17, 35, 0.4);
+}
+
+#TitleButtonClose:pressed {
+    background: rgba(232, 17, 35, 0.6);
+}
+
+#Sidebar {
+    background: rgba(0, 0, 0, 20);
+}
+
+#SidebarButton {
+    background: rgba(0, 0, 0, 0);
+    image-position: left;
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: left;
+    padding-left: 19px;
+    border: none;
+    border-radius: 8px;
+}
+
+#SidebarButton:hover {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#SidebarButton:pressed {
+    background: rgba(128, 128, 128, 0.6);
+}
+
+#SidebarButtonActive {
+    background: rgba(128, 128, 128, 0.2);
+    image-position: left;
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: left;
+    padding-left: 19px;
+    border: none;
+    border-radius: 8px;
+}
+
+#SidebarButtonActive:hover {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#SidebarButtonActive:pressed {
+    background: rgba(128, 128, 128, 0.6);
+}
+
+#SidebarLine {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#DivLine {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#NameLabel {
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 50px;
+    color: white;
+    text-align: center;
+}
+
+#ScrollArea {
+    background: transparent;
+}
+
+#Content {
+    background: transparent;
+}
+
+QScrollBar:vertical {
+    border: none;
+    background: rgba(0, 0, 0, 0);
+    width: 14px;
+    margin: 15px 0 15px 0;
+    border-radius: 0px;
+}
+
+QScrollBar::handle:vertical {	
+    background-color: rgba(129, 126, 120, 0.4);
+    min-height: 30px;
+    border-radius: 7px;
+}
+
+QScrollBar::handle:vertical:hover{	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::handle:vertical:pressed {	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::sub-line:vertical {
+    border: none;
+    background-color: rgba(129, 126, 120, 0.4);
+    height: 15px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical:hover {	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::sub-line:vertical:pressed {	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::add-line:vertical {
+    border: none;
+    background-color: rgba(129, 126, 120, 0.4);
+    height: 15px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::add-line:vertical:hover {	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::add-line:vertical:pressed {	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+    background: none;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+QScrollBar:horizontal {
+    border: none;
+    background: rgba(0, 0, 0, 0);
+    height: 14px;
+    margin: 0 15px 0 15px;
+    border-radius: 0px;
+}
+
+QScrollBar::handle:horizontal {	
+    background-color: rgba(129, 126, 120, 0.4);
+    min-width: 30px;
+    border-radius: 7px;
+}
+
+QScrollBar::handle:horizontal:hover{	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::handle:horizontal:pressed {	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::sub-line:horizontal {
+    border: none;
+    background-color: rgba(129, 126, 120, 0.4);
+    width: 15px;
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+    subcontrol-position: left;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:horizontal:hover {	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::sub-line:horizontal:pressed {	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::add-line:horizontal {
+    border: none;
+    background-color: rgba(129, 126, 120, 0.4);
+    width: 15px;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+    subcontrol-position: right;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::add-line:horizontal:hover {	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::add-line:horizontal:pressed {	
+    background-color: rgba(129, 126, 120, 1);
+}
+
+QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
+    background: none;
+}
+
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
+}
+
+#PresetsHeaderName, #PlayersHeaderName {
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 24px;
+    color: white;
+}
+
+#PregameHeaderName, #ItemsHeaderName {
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 24px;
+    color: white;
+    margin-bottom: 10px;
+}
+
+#LabeledToggle, #PresetNameLabel, #SliderLabel, #ComboBoxLabel, #HostIDLabel, #ChangelogDescription {
+    background: transparent;
+    font-family: Aptos;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 13px;
+    color: white;
+}
+
+#PlayersHeaderRefresh {
+    border-radius: 8px;
+}
+
+#PlayersHeaderRefresh:hover {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#PlayersHeaderRefresh:pressed {
+    background: rgba(128, 128, 128, 0.6);
+}
+
+#SavedPresetName, #SavedPresetEdited, #PlayerName {
+    background: transparent;
+    font-family: Aptos;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 13px;
+    text-align: left;
+    color: white;
+    border: 2px solid transparent;
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+}
+
+#PlayerNameTeams {
+    background: transparent;
+    font-family: Aptos;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 13px;
+    text-align: left;
+    color: white;
+    border: 2px solid transparent;
+}
+
+#SavedPresetName:hover, #PlayerName:hover {
+    border: 2px solid rgba(128, 128, 128, 0.4);
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+}
+
+#SavedPresetName:pressed, #PlayerName:pressed {
+    border: 2px solid rgba(128, 128, 128, 0.6);
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+}
+
+#SavedPresetNameActive, #PlayerNameSelected {
+    background: transparent;
+    font-family: Aptos;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 13px;
+    text-align: left;
+    color: white;
+    border: 2px solid rgba(128, 128, 128, 0.8);
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+}
+
+#Slider {
+    margin: 0px; 
+}
+
+#Slider::groove:horizontal {
+    border-radius: 10px;
+    height: 20px;
+	margin: 0px;
+	background-color: "#595b5e";
+}
+
+#Slider::handle:horizontal {
+    border: none;
+    height: 16px;
+    width: 16px;
+    margin: 2px;
+	border-radius: 8px;
+    background-color: "#568af2";
+}
+
+#Slider::handle:horizontal:hover {
+    background-color: "#6c99f4";
+}
+
+#Slider::handle:horizontal:pressed {
+    background-color: "#3f6fd1";
+}
+
+#Slider::groove:vertical {
+    border-radius: 10px;
+    width: 20px;
+    margin: 0px;
+	background-color: "#595b5e";
+}
+
+#Slider::handle:vertical {
+	border: none;
+    height: 16px;
+    width: 16px;
+    margin: 2px;
+	border-radius: 8px;
+    background-color: "#568af2";
+}
+#Slider::handle:vertical:hover {
+    background-color: "#6c99f4";
+}
+
+#Slider::handle:vertical:pressed {
+    background-color: "#3f6fd1";
+}
+
+#SliderValue {
+    font-family: Aptos;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 13px;
+    color: white;
+}
+
+#NavbarButton {
+    background: rgba(0, 0, 0, 0);
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: center;
+    border: none;
+    border: 2px solid transparent;
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+}
+
+#NavbarButton:hover {
+    border: 2px solid rgba(128, 128, 128, 0.4);
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+}
+
+#NavbarButton:pressed {
+    border: 2px solid rgba(128, 128, 128, 0.6);
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+}
+
+#NavbarButtonActive {
+    background: rgba(0, 0, 0, 0);
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: center;
+    border: 2px solid rgba(128, 128, 128, 0.8);
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+}
+
+#LineEdit {
+	background-color: rgba(89, 91, 94, 0.6);
+	border-radius: 8px;
+	border: 2px solid transparent;
+	padding-left: 10px;
+    padding-right: 10px;
+	selection-color: white;
+	selection-background-color: rgb(86, 138, 242);
+    color: white;
+}
+
+#LineEdit:focus {
+	border: 2px solid rgb(86, 138, 242);
+    background-color: rgba(89, 91, 94, 0.4);
+}
+
+#ButtonDefault {
+    background: rgba(86, 138, 242, 0.6);
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+}
+
+#ButtonDefault:hover {
+    background: rgba(86, 138, 242, 0.8);
+}
+
+#ButtonDefault:pressed {
+    background: rgba(86, 138, 242, 1);
+}
+
+#ButtonDelete {
+    background: rgba(128, 128, 128, 0.6);
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+}
+
+#ButtonDelete:hover {
+    background: rgba(128, 128, 128, 0.8);
+}
+
+#ButtonDelete:pressed {
+    background: rgba(128, 128, 128, 1);
+}
+
+#TeleportMouseTip {
+    font-family: Aptos;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+}
+
+QToolTip {
+    background: rgba(128, 128, 128, 0.6);
+    font-family: Aptos;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+#WeaponButton, #AmmoButton, #HealingButton, #ThrowableButton, #EquipmentButton, #TeamsButton {
+    background: none;
+    border: none;
+    border-radius: 8px;
+}
+
+#WeaponButton:hover, #AmmoButton:hover, #HealingButton:hover, #ThrowableButton:hover, #EquipmentButton:hover, #TeamsButton:hover {
+    background: rgba(128, 128, 128, 0.2);
+    border: none;
+}
+
+#WeaponButton:pressed, #AmmoButton:pressed, #HealingButton:pressed, #ThrowableButton:pressed, #EquipmentButton:pressed, #TeamsButton:pressed  {
+    background: rgba(128, 128, 128, 0.4);
+    border: none;
+}
+
+#MapSelection {
+	background-color: rgba(89, 91, 94, 0.6);
+	border-radius: 8px;
+	padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+}
+
+#MapSelectionView {
+	background-color: rgb(89, 91, 94);
+	border-radius: 8px;
+	padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+}
+
+#MapSelectionView::item:focus {
+    background-color: rgba(128, 128, 128, 0.4);
+}
+
+#NotifWidget {
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(8, 0, 21, 213), stop:1 rgba(21, 0, 44, 213));
+    border: 2px solid rgba(44, 25, 112, 192);
+    border-radius: 20px;
+}
+
+#NotifInfo {
+    font-family: Aptos;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 13px;
+    color: white;
+}
+
+#NotifWarning {
+    font-family: Aptos;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 13px;
+    color: #ffc048;
+}
+
+#NotifSuccess {
+    font-family: Aptos;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 13px;
+    color: #2ad352;
+}
+
+#NotifFail {
+    font-family: Aptos;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 13px;
+    color: #f44336;
+}
+
+#UpdatePopup {
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(8, 0, 21, 213), stop:1 rgba(21, 0, 44, 213));
+    border: 2px solid rgba(44, 25, 112, 192);
+    border-radius: 8px;
+}
+
+#OverlayCenter {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
+    border-radius: 16px;
+    border: 1px solid red;
+}
+
+#OverlayLeft {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-bottom: 1px solid red;
+    border-top: 1px solid red;
+    border-right: 1px solid red;
+    border-left: 0;
+}
+
+#OverlayRight {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    border-bottom: 1px solid red;
+    border-top: 1px solid red;
+    border-left: 1px solid red;
+    border-right: 0;
+}
+
+#OverlayTop {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-bottom: 1px solid red;
+    border-left: 1px solid red;
+    border-right: 1px solid red;
+    border-top: 0;
+}
+
+#OverlayBottom {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-top: 1px solid red;
+    border-left: 1px solid red;
+    border-right: 1px solid red;
+    border-bottom: 0;
+}
+
+#OverlayExpandButtonRight {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
+    border-radius: 16px;
+    border: 1px solid red;
+    padding-right: 13px;
+}
+
+#OverlayExpandButtonLeft {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
+    border-radius: 16px;
+    border: 1px solid red;
+    padding-left: 15px;
+}
+
+#OverlayExpandButtonTop {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
+    border-radius: 16px;
+    border: 1px solid red;
+    padding-top: 14px;
+}
+
+#OverlayExpandButtonBottom {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
+    border-radius: 16px;
+    border: 1px solid red;
+    padding-bottom: 13px;
+}
+
+#OverlayButton {
+    background: rgba(0, 0, 0, 0);
+    border: none;
+    border-radius: 8px;
+}
+
+#OverlayButton:hover {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#OverlayButton:pressed {
+    background: rgba(128, 128, 128, 0.6);
+}
+
+#OverlayButtonActive {
+    background: rgba(128, 128, 128, 0.2);
+    border: none;
+    border-radius: 8px;
+}
+
+#OverlayButtonActive:hover {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#OverlayButtonActive:pressed {
+    background: rgba(128, 128, 128, 0.6);
+}
+
+#ThemesContainer QRadioButton::indicator {
+    width: 76px;
+    height: 76px;
+    background: none;
+    border: 2px solid red;
+    border-radius: 40px;
+}
+
+#ThemesContainer QRadioButton::indicator:checked {
+    border: 2px solid green;
+}
+
+#ThemePurple {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 #161733, stop:1 #332757);
+    border-radius: 40px;
+}
+
+#ThemeBlue {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(0, 4, 44, 255), stop:1 rgba(65, 77, 76, 255));
+    border-radius: 40px;
+}
+
+#ThemeOverlayDark {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(8, 0, 21, 255), stop:1 rgba(21, 0, 44, 255));
+    border-radius: 40px;
+}
+
+#ThemeOverlayPurple {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 #161733, stop:1 #332757);
+    border-radius: 40px;
+}

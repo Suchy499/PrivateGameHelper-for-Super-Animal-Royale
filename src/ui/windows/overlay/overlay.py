@@ -1,5 +1,5 @@
 from core import *
-from styles import default_style
+from styles import OverlayStyle
 from .overlay_right import OverlayRight
 from .overlay_left import OverlayLeft
 from .overlay_top import OverlayTop
@@ -7,7 +7,7 @@ from .overlay_bottom import OverlayBottom
 from .overlay_center import OverlayCenter
 from images import IMAGES
 import win32gui
-from typing import Optional, Callable, Any
+from typing import Optional
 import win32con
 
 class Overlay(QWidget):
@@ -18,12 +18,8 @@ class Overlay(QWidget):
         self.setWindowTitle("Private Game Helper Overlay")
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint, True)
-        self.setStyleSheet(default_style)
-        
-        if not glb.SETTINGS.value("Overlay/Enabled", 1):
-            self.setVisible(False)
-        
-        self.selected_position = glb.SETTINGS.value("Overlay/Position", 1)
+        self.setWindowFlag(Qt.WindowType.SplashScreen, True)
+        self.setStyleSheet(OverlayStyle.getValue(glb.SETTINGS.value("OverlayStyle", 0)))
         
         self.layout_ = QGridLayout(self)
         self.layout_.setContentsMargins(0, 0, 0, 0)
@@ -185,7 +181,9 @@ class Overlay(QWidget):
         self.top_overlay.sidebar.setup_buttons(_btn_list)
         self.bottom_overlay.sidebar.setup_buttons(_btn_list)
         
-        self.select_position(self.selected_position)
+        self.select_position()
+        glb.SIGNAL_MANAGER.settingChanged.connect(self.select_position)
+        glb.SIGNAL_MANAGER.overlayStyleChanged.connect(self.update_style)
     
     def resizeEvent(self, event):
         center_w = self.width() // 1.5
@@ -206,7 +204,8 @@ class Overlay(QWidget):
             if win32gui.GetWindowLong(self.handle, win32con.GWL_HWNDPARENT) != hwnd:
                 win32gui.SetWindowLong(self.handle, win32con.GWL_HWNDPARENT, hwnd)
             self.setGeometry(x, y, w, h)
-            self.setVisible(True)
+            if glb.SETTINGS.value("DisplayMode", 0) != 1:
+                self.setVisible(True)
         else:
             self.setVisible(False)
     
@@ -220,26 +219,28 @@ class Overlay(QWidget):
     def keyReleaseEvent(self, e):
         return
     
-    def select_position(self, position: Literal[1, 2, 3 ,4]):
-        match position:
-            case 1:
-                self.left_overlay.setVisible(True)
+    def select_position(self):
+        match glb.SETTINGS.value("OverlayPosition", 0):
+            case 0:
+                self.right_overlay.setVisible(True)
                 self.bottom_overlay.setVisible(False)
                 self.left_overlay.setVisible(False)
+                self.top_overlay.setVisible(False)
+            case 1:
+                self.right_overlay.setVisible(False)
+                self.bottom_overlay.setVisible(False)
+                self.left_overlay.setVisible(True)
                 self.top_overlay.setVisible(False)
             case 2:
-                self.left_overlay.setVisible(False)
-                self.bottom_overlay.setVisible(False)
-                self.left_overlay.setVisible(True)
-                self.top_overlay.setVisible(False)
-            case 3:
-                self.left_overlay.setVisible(False)
+                self.right_overlay.setVisible(False)
                 self.bottom_overlay.setVisible(True)
                 self.left_overlay.setVisible(False)
                 self.top_overlay.setVisible(False)
-            case 4:
-                self.left_overlay.setVisible(False)
+            case 3:
+                self.right_overlay.setVisible(False)
                 self.bottom_overlay.setVisible(False)
                 self.left_overlay.setVisible(False)
                 self.top_overlay.setVisible(True)
                 
+    def update_style(self) -> None:
+        self.setStyleSheet(OverlayStyle.getValue(glb.SETTINGS.value("OverlayStyle", 0)))

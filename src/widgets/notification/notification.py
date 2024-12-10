@@ -1,8 +1,8 @@
-from core.qt_core import *
+from core import *
 from typing import Literal
 from widgets import VLine
 from images import IMAGES
-from styles import default_style
+from styles import AppStyle, OverlayStyle
 
 class Notification(QFrame):
     def __init__(
@@ -110,10 +110,14 @@ class Notification(QFrame):
     
     def send_notification(
         self, 
+        parent: Literal["MainWindow", "Overlay"] = "MainWindow",
         text: str = "", 
         notif_type: Literal["NotifInfo", "NotifWarning", "NotifSuccess", "NotifFail"] = "NotifInfo"
     ):
         self.setText(text)
         self.setType(notif_type)
-        self.setStyleSheet(default_style)
+        if parent == "MainWindow":
+            self.setStyleSheet(AppStyle.getValue(glb.SETTINGS.value("AppStyle", 0)))
+        else:
+            self.setStyleSheet(OverlayStyle.getValue(glb.SETTINGS.value("OverlayStyle", 0)))
         self.play_animation()

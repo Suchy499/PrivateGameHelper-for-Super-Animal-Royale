@@ -62,6 +62,10 @@ class SignalManager(QObject):
     dodgeballSettingChanged = Signal(str, bool)
     dodgeballDamageChanged = Signal(float)
     overlayClosed = Signal()
+    settingChanged = Signal()
+    appStyleChanged = Signal()
+    overlayStyleChanged = Signal()
+    appIconChanged = Signal()
 
 @dataclass
 class PlayerItem:

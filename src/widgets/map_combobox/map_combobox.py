@@ -1,5 +1,4 @@
 from core import *
-from images import rc_images
 from typing import Literal
 
 class MapComboBox(QWidget):

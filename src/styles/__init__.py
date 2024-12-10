@@ -1,1 +1,1 @@
-from .styles import default_style, blue
+from .styles import AppStyle, OverlayStyle

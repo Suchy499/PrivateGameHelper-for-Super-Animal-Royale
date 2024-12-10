@@ -1,5 +1,5 @@
 from core import *
-import styles
+from styles import AppStyle, OverlayStyle
 from typing import Literal
 
 class Button(QPushButton):
@@ -56,7 +56,10 @@ class Button(QPushButton):
             return
         self.parentWidget().deselect_all()
         self.setObjectName(f"{self.style_name}Active")
-        self.setStyleSheet(styles.default_style)
+        if self.style_name == "SidebarButton":
+            self.setStyleSheet(AppStyle.getValue(glb.SETTINGS.value("AppStyle", 0)))
+        elif self.style_name == "OverlayButton":
+            self.setStyleSheet(OverlayStyle.getValue(glb.SETTINGS.value("OverlayStyle", 0)))
         if self.page and self.page.parentWidget().currentWidget() != self.page:
             self.page.parentWidget().setCurrentWidget(self.page)
         if self.overlay and not self.overlay.isVisible() and parent == "OverlayButton":
@@ -66,7 +69,10 @@ class Button(QPushButton):
         
     def deselect(self) -> None:
         self.setObjectName(self.style_name)
-        self.setStyleSheet(styles.default_style)
+        if self.style_name == "SidebarButton":
+            self.setStyleSheet(AppStyle.getValue(glb.SETTINGS.value("AppStyle", 0)))
+        elif self.style_name == "OverlayButton":
+            self.setStyleSheet(OverlayStyle.getValue(glb.SETTINGS.value("OverlayStyle", 0)))
     
     def keyPressEvent(self, arg__1):
         return

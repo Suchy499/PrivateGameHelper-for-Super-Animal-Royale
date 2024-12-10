@@ -1,11 +1,9 @@
 from core import *
-import styles
+from styles import AppStyle
 from images import IMAGES
 from widgets import Sidebar, TitleBar, SizeGrip, Notification, UpdatePopup
 from ui.pages import Pages
 from ui.windows.overlay import Overlay
-import win32gui
-import win32con
 
 try:
     from ctypes import windll
@@ -21,10 +19,10 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(1265, 620)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.setWindowTitle("Private Game Helper")
-        self.setWindowIcon(QIcon(IMAGES["icon"]))
+        self.setWindowIcon(QIcon(IMAGES[f"icon_{glb.SETTINGS.value("AppIcon", 0)}"]))
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint, True)
-        self.setStyleSheet(styles.default_style)
+        self.setStyleSheet(AppStyle.getValue(glb.SETTINGS.value("AppStyle", 0)))
         
         self.content = QWidget(self)
         self.content.setObjectName("MainWindowContent")
@@ -153,6 +151,20 @@ class MainWindow(QMainWindow):
         
         self.overlay = Overlay()
         self.overlay.show()
+        update_hotkeys()
+        
+        self.tray_icon = QSystemTrayIcon(self.windowIcon(), self)
+        self.tray_icon.setToolTip("Private Game Helper")
+        
+        self.tray_menu = QMenu("Tray Menu")
+        self.tray_menu.addAction("Open App", self.open_app)
+        self.tray_menu.addAction("Exit", QApplication.exit)
+        self.tray_icon.setContextMenu(self.tray_menu)
+        self.tray_icon.show()
+        
+        glb.SIGNAL_MANAGER.settingChanged.connect(self.change_display_mode)
+        glb.SIGNAL_MANAGER.appStyleChanged.connect(self.update_style)
+        glb.SIGNAL_MANAGER.appIconChanged.connect(self.update_icon)
         
     def changeEvent(self, event):
         if event.type() == QEvent.Type.WindowStateChange:
@@ -175,3 +187,39 @@ class MainWindow(QMainWindow):
         self.bottom_right_grip.setGeometry(self.width() - 10, self.height() - 10, 15, 15)
         self.notif.updatePosition()
         self.update_popup.updatePosition()
+    
+    def change_display_mode(self) -> None:
+        match glb.SETTINGS.value("DisplayMode", 0):
+            case 0:
+                if not self.isVisible():
+                    self.show()
+                if not self.overlay.isVisible():
+                    self.overlay.show()
+            case 1:
+                if not self.isVisible():
+                    self.show()
+                if self.overlay.isVisible():
+                    self.overlay.hide()
+            case 2:
+                if self.isVisible():
+                    self.hide()
+                    self.tray_icon.showMessage("Private Game Helper", "Moved to Tray", msecs=5000)
+                if not self.overlay.isVisible():
+                    self.overlay.show()
+    
+    def update_style(self) -> None:
+        self.setStyleSheet(AppStyle.getValue(glb.SETTINGS.value("AppStyle", 0)))
+    
+    def update_icon(self) -> None:
+        self.setWindowIcon(QIcon(IMAGES[f"icon_{glb.SETTINGS.value("AppIcon", 0)}"]))
+        self.tray_icon.setIcon(self.windowIcon())
+    
+    def open_app(self) -> None:
+        match glb.SETTINGS.value("DisplayMode", 0):
+            case 0:
+                self.setWindowState(Qt.WindowState.WindowActive)
+            case 1:
+                self.setWindowState(Qt.WindowState.WindowActive)
+            case 2:
+                self.show()
+                self.setWindowState(Qt.WindowState.WindowActive)

@@ -2,7 +2,6 @@ from core import *
 from .button import Button
 from widgets.hline import HLine
 from widgets.vline import VLine
-from typing import Literal
 
 class OverlaySidebar(QFrame):
     def __init__(

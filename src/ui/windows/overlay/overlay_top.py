@@ -26,6 +26,9 @@ class OverlayTop(QWidget):
         self.expand_button.setIcon(self.top_arrow)
         self.expand_button.clicked.connect(self.toggle_animation)
         
+        self.expand_button.keyPressEvent = self.keyPressEvent
+        self.expand_button.keyReleaseEvent = self.keyReleaseEvent
+        
         self.overlay_content = QFrame(self)
         self.overlay_content.setFixedSize(self.width(), self.height()-self.button_container.height())
         self.overlay_content.setObjectName("OverlayTop")

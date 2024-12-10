@@ -1,5 +1,4 @@
 from core import *
-import styles
 from widgets import ClickableLabel
 import datetime
 
@@ -10,7 +9,6 @@ class SavedPreset(QWidget):
         preset: dict
     ):
         super().__init__(parent)
-        self.setStyleSheet(styles.default_style)
         self.preset = preset
         self.id = self.preset["preset_id"]
         self.name = self.preset["name"]

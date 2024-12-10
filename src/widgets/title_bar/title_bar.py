@@ -1,4 +1,4 @@
-from core.qt_core import *
+from core import *
 from images import IMAGES
 
 class TitleBar(QFrame):
@@ -11,6 +11,7 @@ class TitleBar(QFrame):
         self.setFixedHeight(32)
         self.setObjectName("TitleBar")
         self.initial_pos = None
+        self.main_window = get_main_window()
         
         self._layout = QHBoxLayout(self)
         self._layout.setContentsMargins(20, 0, 9, 0)
@@ -23,7 +24,7 @@ class TitleBar(QFrame):
         self.minimize_pixmap = QPixmap(IMAGES["minimize"]).scaledToHeight(24, Qt.TransformationMode.SmoothTransformation)
         self.minimize_button.setIcon(self.minimize_pixmap)
         self.minimize_button.setFixedSize(self.minimize_pixmap.size())
-        self.minimize_button.clicked.connect(self.window().showMinimized)
+        self.minimize_button.clicked.connect(self.minimize)
         self.maximize_button = QToolButton(self)
         self.maximize_button.setObjectName("TitleButton")
         self.maximize_pixmap = QPixmap(IMAGES["maximize"]).scaledToHeight(24, Qt.TransformationMode.SmoothTransformation)
@@ -88,3 +89,8 @@ class TitleBar(QFrame):
         super().mouseReleaseEvent(event)
         event.accept()
     
+    def minimize(self):
+        if glb.SETTINGS.value("DisplayMode", 0) == 2:
+            self.main_window.change_display_mode()
+        else:
+            self.window().showMinimized()

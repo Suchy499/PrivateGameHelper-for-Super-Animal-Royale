@@ -211,6 +211,8 @@ refresh_hotkeys()
 
 # OCR
 def close_chat(window: object | Literal["auto"] = "auto") -> None:
+    if not glb.SETTINGS.value("OcrEnabled", 1):
+        return
     if window == "auto":
         window = open_window("Super Animal Royale")
     if window is None:
@@ -279,6 +281,8 @@ def close_chat(window: object | Literal["auto"] = "auto") -> None:
         keyboard.send("escape")
 
 def close_pause_menu(window: object | Literal["auto"] = "auto") -> None:
+    if not glb.SETTINGS.value("OcrEnabled", 1):
+        return
     if window == "auto":
         window = open_window("Super Animal Royale")
     if window is None:
@@ -348,14 +352,23 @@ def close_pause_menu(window: object | Literal["auto"] = "auto") -> None:
        
 # Queue
 def send_commands(*commands: str):
-    for command in commands:
-        time.sleep(glb.KEY_DELAY)
-        pyperclip.copy(f"/{command}")
-        press_hotkey(glb.OPEN_CHAT_BIND)
-        time.sleep(glb.KEY_DELAY)
-        keyboard.send("ctrl+v")
-        time.sleep(glb.KEY_DELAY)
-        keyboard.send("enter")
+    if glb.SETTINGS.value("ClipboardEnabled", 1) == 1:
+        for command in commands:
+            time.sleep(glb.KEY_DELAY)
+            pyperclip.copy(f"/{command}")
+            press_hotkey(glb.OPEN_CHAT_BIND)
+            time.sleep(glb.KEY_DELAY)
+            keyboard.send("ctrl+v")
+            time.sleep(glb.KEY_DELAY)
+            keyboard.send("enter")
+    else:
+        for command in commands:
+            time.sleep(glb.KEY_DELAY)
+            press_hotkey(glb.OPEN_CHAT_BIND)
+            time.sleep(glb.KEY_DELAY)
+            pyautogui.write(f"/{command}")
+            time.sleep(glb.KEY_DELAY)
+            pyautogui.press("enter")
         
 def add_commands(*commands: str) -> None:
     glb.WORK_THREAD.QUEUE.append(lambda: send_commands(*commands))
@@ -1405,10 +1418,11 @@ def spawn_grenades_from_right_hotkey(amount: int) -> None:
                 spawn_grenades_preset(4161, 591, 15, "y", amount)
                 spawn_grenades_preset(4114, 591, 15, "y", amount)
 
-keyboard.add_hotkey("ctrl+alt+q", clear_queue)
-
 def update_hotkeys() -> None:
-    keyboard.unhook_all_hotkeys()
+    try:
+        keyboard.unhook_all_hotkeys()
+    except AttributeError:
+        pass
     keyboard.add_hotkey(glb.SETTINGS.value("Keybinds/SpawnHrAndZiplines", "Ctrl+Shift+S"), hr_and_zip_hotkey)
     keyboard.add_hotkey(glb.SETTINGS.value("Keybinds/GhostHost", "Ctrl+Shift+K"), ghost_host_hotkey)
     keyboard.add_hotkey(glb.SETTINGS.value("Keybinds/SpawnSingleNade", "Ctrl+Y"), spawn_grenade_hotkey)
@@ -1418,15 +1432,15 @@ def update_hotkeys() -> None:
     keyboard.add_hotkey(glb.SETTINGS.value("Keybinds/SpawnOneNadeRight", "Alt+1"), spawn_grenades_from_right_hotkey, args=(1,))
     keyboard.add_hotkey(glb.SETTINGS.value("Keybinds/SpawnTwoNadesRight", "Alt+2"), spawn_grenades_from_right_hotkey, args=(2,))
     keyboard.add_hotkey(glb.SETTINGS.value("Keybinds/SpawnThreeNadesRight", "Alt+3"), spawn_grenades_from_right_hotkey, args=(3,))
-    keyboard.add_hotkey("ctrl+alt+q", clear_queue)
+    keyboard.add_hotkey(glb.SETTINGS.value("Keybinds/Abort", "Alt+Shift+Q"), clear_queue)
     
 # Notifications
 def send_notification(text: str, notif_type: Literal["NotifInfo", "NotifWarning", "NotifSuccess", "NotifFail"] = "NotifInfo") -> None:
     main_window = get_main_window().notif
     overlay = get_main_overlay().notif
     
-    main_window.send_notification(text, notif_type)
-    overlay.send_notification(text, notif_type)
+    main_window.send_notification("MainWindow",text, notif_type)
+    overlay.send_notification("Overlay", text, notif_type)
 
 def update_latest_version() -> str | None:
     main_window = get_main_window().update_popup

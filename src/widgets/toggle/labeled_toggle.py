@@ -61,3 +61,7 @@ class LabeledToggle(QWidget):
 
     def keyReleaseEvent(self, e):
         return
+    
+    def setToolTip(self, arg__1):
+        self.toggle.setToolTip(arg__1)
+        return super().setToolTip(arg__1)

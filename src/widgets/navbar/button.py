@@ -1,6 +1,6 @@
-from core.qt_core import *
+from core import *
 from widgets.clickable_label import ClickableLabel
-import styles
+from styles import AppStyle
 
 class Button(ClickableLabel):
     def __init__(
@@ -28,13 +28,13 @@ class Button(ClickableLabel):
     def select(self) -> None:
         self.parentWidget().deselect_all()
         self.setObjectName("NavbarButtonActive")
-        self.setStyleSheet(styles.default_style)
+        self.setStyleSheet(AppStyle.getValue(glb.SETTINGS.value("AppStyle", 0)))
         if self.page:
             self.page.parentWidget().setCurrentWidget(self.page)
         
     def deselect(self) -> None:
         self.setObjectName("NavbarButton")
-        self.setStyleSheet(styles.default_style)
+        self.setStyleSheet(AppStyle.getValue(glb.SETTINGS.value("AppStyle", 0)))
     
     def keyPressEvent(self, arg__1):
         return

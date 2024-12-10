@@ -1,4 +1,4 @@
-from core.qt_core import *
+from core import *
 from images import IMAGES
 
 class PageHome(QWidget):
@@ -9,7 +9,7 @@ class PageHome(QWidget):
         _layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         _layout.setContentsMargins(9, 9, 9, 9)
         
-        self.icon = QPixmap(IMAGES["icon"])
+        self.icon = QPixmap(IMAGES[f"icon_{glb.SETTINGS.value("AppIcon", 0)}"])
         self.icon_label = QLabel(self)
         self.icon_label.setPixmap(self.icon)
         self.icon_label.setMinimumSize(self.icon.size())
@@ -22,3 +22,8 @@ class PageHome(QWidget):
         
         _layout.addWidget(self.icon_label)
         _layout.addWidget(self.name_label)
+        
+        glb.SIGNAL_MANAGER.appIconChanged.connect(self.update_icon)
+    
+    def update_icon(self) -> None:
+        self.icon_label.setPixmap(QPixmap(IMAGES[f"icon_{glb.SETTINGS.value("AppIcon", 0)}"]))
