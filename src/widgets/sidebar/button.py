@@ -37,7 +37,7 @@ class Button(QPushButton):
             self.setIcon(self.icon_pixmap)
             self.setIconSize(self.icon_pixmap.size())
         if self.text != "":
-            self.setText(f"    {self.text}")
+            self.setText(f"     {self.text}")
         self.clicked.connect(lambda: glb.SIGNAL_MANAGER.pageChanged.emit(self.page, self.style_name))
     
         glb.SIGNAL_MANAGER.pageChanged.connect(self.recieve_signal)

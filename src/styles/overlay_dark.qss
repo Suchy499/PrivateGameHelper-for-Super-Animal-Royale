@@ -9,7 +9,7 @@
 }
 
 #Title {
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-size: 13px;
     color: white;
@@ -49,7 +49,7 @@
 #SidebarButton {
     background: rgba(0, 0, 0, 0);
     image-position: left;
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-size: 13px;
     color: white;
@@ -70,7 +70,7 @@
 #SidebarButtonActive {
     background: rgba(128, 128, 128, 0.2);
     image-position: left;
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-size: 13px;
     color: white;
@@ -94,14 +94,6 @@
 
 #DivLine {
     background: rgba(128, 128, 128, 0.4);
-}
-
-#NameLabel {
-    font-family: Aptos;
-    font-weight: bold;
-    font-size: 50px;
-    color: white;
-    text-align: center;
 }
 
 #ScrollArea {
@@ -245,14 +237,14 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 }
 
 #PresetsHeaderName, #PlayersHeaderName {
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-size: 24px;
     color: white;
 }
 
 #PregameHeaderName, #ItemsHeaderName {
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-size: 24px;
     color: white;
@@ -261,7 +253,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 
 #LabeledToggle, #PresetNameLabel, #SliderLabel, #ComboBoxLabel, #HostIDLabel, #ChangelogDescription {
     background: transparent;
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-style: italic;
     font-size: 13px;
@@ -282,7 +274,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 
 #SavedPresetName, #SavedPresetEdited, #PlayerName {
     background: transparent;
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-style: italic;
     font-size: 13px;
@@ -296,7 +288,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 
 #PlayerNameTeams {
     background: transparent;
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-style: italic;
     font-size: 13px;
@@ -321,7 +313,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 
 #SavedPresetNameActive, #PlayerNameSelected {
     background: transparent;
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-style: italic;
     font-size: 13px;
@@ -385,7 +377,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 }
 
 #SliderValue {
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-style: italic;
     font-size: 13px;
@@ -394,7 +386,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 
 #NavbarButton {
     background: rgba(0, 0, 0, 0);
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-size: 13px;
     color: white;
@@ -422,7 +414,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 
 #NavbarButtonActive {
     background: rgba(0, 0, 0, 0);
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-size: 13px;
     color: white;
@@ -451,7 +443,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 
 #ButtonDefault {
     background: rgba(86, 138, 242, 0.6);
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-size: 13px;
     color: white;
@@ -469,7 +461,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 
 #ButtonDelete {
     background: rgba(128, 128, 128, 0.6);
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-size: 13px;
     color: white;
@@ -486,7 +478,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 }
 
 #TeleportMouseTip {
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-size: 13px;
     color: white;
@@ -494,7 +486,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 
 QToolTip {
     background: rgba(128, 128, 128, 0.6);
-    font-family: Aptos;
+    font-family: Rubik;
     color: white;
     font-weight: bold;
     border-radius: 6px;
@@ -543,7 +535,7 @@ QToolTip {
 }
 
 #NotifInfo {
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-style: italic;
     font-size: 13px;
@@ -551,7 +543,7 @@ QToolTip {
 }
 
 #NotifWarning {
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-style: italic;
     font-size: 13px;
@@ -559,7 +551,7 @@ QToolTip {
 }
 
 #NotifSuccess {
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-style: italic;
     font-size: 13px;
@@ -567,7 +559,7 @@ QToolTip {
 }
 
 #NotifFail {
-    font-family: Aptos;
+    font-family: Rubik;
     font-weight: bold;
     font-style: italic;
     font-size: 13px;

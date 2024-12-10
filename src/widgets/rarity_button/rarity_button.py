@@ -66,7 +66,7 @@ class RarityButton(QPushButton):
                 border-radius: 8px;
                 color: {self._color};
                 font-weight: bold;
-                font-family: Aptos;
+                font-family: Rubik;
             }}
             
             #RarityButton:hover {{
@@ -80,7 +80,7 @@ class RarityButton(QPushButton):
                 border-radius: 8px;
                 color: {self._color};
                 font-weight: bold;
-                font-family: Aptos;
+                font-family: Rubik;
             }}
         """)
     
@@ -145,7 +145,7 @@ class RarityButton(QPushButton):
                 border-radius: 8px;
                 color: {self._color};
                 font-weight: bold;
-                font-family: Aptos;
+                font-family: Rubik;
             }}
             
             #RarityButton:hover {{
@@ -159,7 +159,7 @@ class RarityButton(QPushButton):
                 border-radius: 8px;
                 color: {self._color};
                 font-weight: bold;
-                font-family: Aptos;
+                font-family: Rubik;
             }}
         """)
     

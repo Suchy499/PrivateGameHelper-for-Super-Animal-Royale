@@ -11,7 +11,7 @@ class Sidebar(QFrame):
         super().__init__(parent)
         
         self._max_width = 160
-        self._min_width = 61
+        self._min_width = 60
         self.setObjectName("Sidebar")
         self.setMaximumSize(self._max_width, 9999)
         self.setMinimumSize(self._min_width, 0)
@@ -23,7 +23,7 @@ class Sidebar(QFrame):
         
         self.hide_pixmap = QPixmap(IMAGES["left_arrow"]).scaledToWidth(13, Qt.TransformationMode.SmoothTransformation)
         self.show_pixmap = QPixmap(IMAGES["right_arrow"]).scaledToWidth(13, Qt.TransformationMode.SmoothTransformation)
-        self.expand_button = QPushButton(text="    Hide", parent=self)
+        self.expand_button = QPushButton(text="     Hide", parent=self)
         self.expand_button.setObjectName("SidebarButton")
         self.expand_button.setFixedHeight(30)
         self.expand_button.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
