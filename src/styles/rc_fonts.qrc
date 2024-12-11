@@ -1,0 +1,8 @@
+<!DOCTYPE RCC><RCC version="1.0">
+	<qresource>
+		<file>fonts/Rubik-Regular.ttf</file>
+		<file>fonts/Rubik-Bold.ttf</file>
+		<file>fonts/Rubik-BoldItalic.ttf</file>
+		<file>fonts/Rubik-Italic.ttf</file>
+	</qresource>
+</RCC>

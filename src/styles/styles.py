@@ -1,16 +1,17 @@
+from core.qt_core import *
 import os
 from enum import StrEnum
 
-with open(rf"{os.path.dirname(__file__)}\purple.qss", "r") as f:
+with open(rf"{os.path.dirname(__file__)}\styles\purple.qss", "r") as f:
     purple: str = f.read()
 
-with open(rf"{os.path.dirname(__file__)}\blue.qss", "r") as f:
+with open(rf"{os.path.dirname(__file__)}\styles\blue.qss", "r") as f:
     blue: str = f.read()
     
-with open(rf"{os.path.dirname(__file__)}\overlay_dark.qss", "r") as f:
+with open(rf"{os.path.dirname(__file__)}\styles\overlay_dark.qss", "r") as f:
     overlay_dark: str = f.read()
     
-with open(rf"{os.path.dirname(__file__)}\overlay_purple.qss", "r") as f:
+with open(rf"{os.path.dirname(__file__)}\styles\overlay_purple.qss", "r") as f:
     overlay_purple: str = f.read()
 
 class AppStyle(StrEnum):

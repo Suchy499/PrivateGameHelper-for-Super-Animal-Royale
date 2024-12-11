@@ -1,5 +1,5 @@
 from core import *
-from widgets import Logo
+from images import IMAGES
 
 class PageHome(QWidget):
     def __init__(self, parent):
@@ -10,7 +10,9 @@ class PageHome(QWidget):
         _layout.setContentsMargins(9, 9, 9, 9)
         _layout.setSpacing(10)
         
-        self.logo = Logo(self)
+        self.logo_pixmap = QPixmap(IMAGES["logo"]).scaledToHeight(400, Qt.TransformationMode.SmoothTransformation)
+        self.logo = QLabel(self)
+        self.logo.setPixmap(self.logo_pixmap)
         
         _layout.addWidget(self.logo)
         

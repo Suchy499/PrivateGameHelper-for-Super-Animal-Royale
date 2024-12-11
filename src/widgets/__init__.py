@@ -22,4 +22,3 @@ from .notification import Notification
 from .update_popup import UpdatePopup
 from .settings_combobox import SettingsComboBox
 from .flow_layout import FlowLayout
-from .logo import Logo

@@ -52,4 +52,5 @@ from PySide6.QtGui import (
     QRegularExpressionValidator,
     QKeySequence,
     QKeyEvent,
+    QFontDatabase,
 )
