@@ -10,9 +10,22 @@ class PageHome(QWidget):
         _layout.setContentsMargins(9, 9, 9, 9)
         _layout.setSpacing(10)
         
-        self.logo_pixmap = QPixmap(IMAGES["logo"]).scaledToHeight(400, Qt.TransformationMode.SmoothTransformation)
+        self.logo_pixmap = QPixmap(IMAGES["logo"])
+        self.logo_pixmap_initial = self.logo_pixmap.scaledToWidth(400, Qt.TransformationMode.SmoothTransformation)
         self.logo = QLabel(self)
-        self.logo.setPixmap(self.logo_pixmap)
+        self.logo.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.logo.setPixmap(self.logo_pixmap_initial)
         
         _layout.addWidget(self.logo)
         
+    def scaledPixmap(self) -> QPixmap:
+        scaled = self.logo_pixmap.scaled(
+            self.width() - self.width() / 6,
+            self.height() - self.height() / 6,
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation
+        )
+        return scaled
+    
+    def resizeEvent(self, event) -> None:
+        self.logo.setPixmap(self.scaledPixmap())

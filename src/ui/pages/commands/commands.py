@@ -37,6 +37,21 @@ class PageCommands(QWidget):
         self.score_button = Button(self.info_container, "/score", w=125, command="score")
         self.getpid_button = Button(self.info_container, "/getpid", w=125, command="getpid")
         
+        self.getplayers_button.setToolTip(
+            "Copies a list of all players in the match.\n"
+            "After running the command, can be pasted into notepad.\n"
+            "At the end of a match, you can use this command to grab the stats of the players."
+        )
+        
+        self.score_button.setToolTip(
+            "Copies the stats (placement, kills and time survived) of all players in the match.\n"
+            "After running the command, can be pasted into notepad."
+        )
+        
+        self.getpid_button.setToolTip(
+            "Shows your in-game player id #."
+        )
+        
         self.info_container_layout.addWidget(self.getplayers_button)
         self.info_container_layout.addWidget(self.score_button)
         self.info_container_layout.addWidget(self.getpid_button)
@@ -58,6 +73,24 @@ class PageCommands(QWidget):
         self.rain_off_button = Button(self.environment_container, "/rainoff", w=125, command="rainoff")
         self.gas_start_button = Button(self.environment_container, "/gasstart", w=125, command="gasstart")
         
+        self.night_button.setToolTip(
+            "Toggles the night mode."
+        )
+        
+        self.rain_button.setToolTip(
+            "Forces a rain weather event."
+        )
+        
+        self.rain_off_button.setToolTip(
+            "Disables rain for entirity of a match.\n"
+            "Won't work if it's already raining in-game."
+        )
+        
+        self.gas_start_button.setToolTip(
+            "Makes the first skunk gas timer start right away.\n"
+            "(if in lobby, it just means it'll start right when the eagle starts)"
+        )
+        
         self.environment_container_layout.addWidget(self.night_button)
         self.environment_container_layout.addWidget(self.rain_button)
         self.environment_container_layout.addWidget(self.rain_off_button)
@@ -77,6 +110,14 @@ class PageCommands(QWidget):
         
         self.boss_button = Button(self.svr_container, "/boss", w=125, command="boss")
         self.no_boss_button = Button(self.svr_container, "/noboss", w=125, command="noboss")
+        
+        self.boss_button.setToolTip(
+            "Spawns a Giant Star-nosed Mole."
+        )
+        
+        self.no_boss_button.setToolTip(
+            "Toggle to enable or disable Giant Star-nosed Mole from arriving."
+        )
         
         self.svr_container_layout.addWidget(self.boss_button)
         self.svr_container_layout.addWidget(self.no_boss_button)
@@ -101,6 +142,34 @@ class PageCommands(QWidget):
         self.fast_bullets_button = Button(self.mystery_container, "Fast Bullets", w=125, command="mystery 5")
         self.one_hit_kill_button = Button(self.mystery_container, "One Hit Kill", w=125, command="mystery 6")
         
+        self.shotgun_sniper_button.setToolTip(
+            "In Mystery Mode, selects the \"Shotguns & Snipers\" game mode."
+        )
+        
+        self.wild_west_button.setToolTip(
+            "In Mystery Mode, selects the \"Wild West\" game mode."
+        )
+        
+        self.slow_bullets_button.setToolTip(
+            "In Mystery Mode, selects the \"Slow Bullets\" game mode."
+        )
+        
+        self.bananarama_button.setToolTip(
+            "In Mystery Mode, selects the \"Bananarama\" game mode."
+        )
+        
+        self.handguns_only_button.setToolTip(
+            "In Mystery Mode, selects the \"Handguns Only\" game mode."
+        )
+        
+        self.fast_bullets_button.setToolTip(
+            "In Mystery Mode, selects the \"Fast Bullets\" game mode."
+        )
+        
+        self.one_hit_kill_button.setToolTip(
+            "In Mystery Mode, selects the \"One Hit Kill\" game mode."
+        )
+        
         self.mystery_container_layout.addWidget(self.shotgun_sniper_button)
         self.mystery_container_layout.addWidget(self.wild_west_button)
         self.mystery_container_layout.addWidget(self.slow_bullets_button)
@@ -123,6 +192,15 @@ class PageCommands(QWidget):
         
         self.flight_button = Button(self.misc_container, "/flight", w=125, command="flight")
         self.soccer_button = Button(self.misc_container, "/soccer", w=125, command="soccer")
+        
+        self.flight_button.setToolTip(
+            "Can be used to regenerate the Eagle flight path.\n"
+            "Must run before the game timer has started."
+        )
+        
+        self.soccer_button.setToolTip(
+            "Spawns a Fox Ball (only 1 at a time)."
+        )
         
         self.misc_container_layout.addWidget(self.flight_button)
         self.misc_container_layout.addWidget(self.soccer_button)

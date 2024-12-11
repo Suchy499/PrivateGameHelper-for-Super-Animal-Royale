@@ -53,6 +53,7 @@ class PageAbout(QWidget):
         self.kofi.setObjectName("WeaponButton")
         self.kofi.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.kofi.clicked.connect(lambda: webbrowser.open("https://ko-fi.com/suchy499"))
+        self.kofi.setToolTip("Ko-fi")
         
         self.coffee_layout.addWidget(self.coffee)
         self.coffee_layout.addWidget(self.kofi)
@@ -73,6 +74,7 @@ class PageAbout(QWidget):
         self.discord.setObjectName("WeaponButton")
         self.discord.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.discord.clicked.connect(lambda: webbrowser.open("https://discord.com/users/484740625137139733"))
+        self.discord.setToolTip("Discord")
         
         self.twitter_icon = QPixmap(IMAGES["twitter"]).scaled(self.icon_size, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.twitter = QPushButton(self, icon=self.twitter_icon)
@@ -82,6 +84,7 @@ class PageAbout(QWidget):
         self.twitter.setObjectName("WeaponButton")
         self.twitter.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.twitter.clicked.connect(lambda: webbrowser.open("https://twitter.com/Suchy4992"))
+        self.twitter.setToolTip("Twitter")
         
         self.github_icon = QPixmap(IMAGES["github"]).scaled(self.icon_size, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.github = QPushButton(self, icon=self.github_icon)
@@ -91,6 +94,7 @@ class PageAbout(QWidget):
         self.github.setObjectName("WeaponButton")
         self.github.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.github.clicked.connect(lambda: webbrowser.open("https://github.com/Suchy499"))
+        self.github.setToolTip("Github")
         
         self.twitch_icon = QPixmap(IMAGES["twitch"]).scaled(self.icon_size, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         self.twitch = QPushButton(self, icon=self.twitch_icon)
@@ -100,6 +104,7 @@ class PageAbout(QWidget):
         self.twitch.setObjectName("WeaponButton")
         self.twitch.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.twitch.clicked.connect(lambda: webbrowser.open("https://www.twitch.tv/suchy4992"))
+        self.twitch.setToolTip("Twitch")
         
         self.socials_layout.addWidget(self.socials, 0, 0, 1, 4)
         self.socials_layout.addWidget(self.discord, 1, 0, 1, 1)

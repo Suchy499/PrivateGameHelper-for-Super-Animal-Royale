@@ -78,6 +78,47 @@ class PagePlayers(QWidget):
         self.buttons_layout.addWidget(self.button_rebel)
         self.buttons_layout.addWidget(self.button_infect)
         
+        self.button_admin.setToolTip(
+            "Makes the selected player a \"helper admin\" which allows them to use all of the admin commands except the kick command on the primary admin.\n"
+            "Repeating the command on the same player will revoke their helper admin status."
+        )
+        
+        self.button_god.setToolTip(
+            "Gives the selected player god-mode, making them immune to player damage.\n"
+            "Selecting all will enable god-mode for all players."
+        )
+        
+        self.button_kill.setToolTip(
+            "Kills the selected player. Selecting all will kill all players.\n"
+            "Only works on players who have finished parachuting."
+        )
+        
+        self.button_ghost.setToolTip(
+            "Turns the selected player into a spectator ghost.\n"
+            "Can be ran in the lobby, or in-game after death only."
+        )
+        
+        self.button_kick.setToolTip(
+            "Kicks the selected player from the game.\n"
+            "Player cannot rejoin until next match."
+        )
+        
+        self.button_getpos.setToolTip(
+            "Displays position of the selected player."
+        )
+        
+        self.button_saw.setToolTip(
+            "In SvR, changes the team of the selected player to S.A.W. Security Forces."
+        )
+        
+        self.button_rebel.setToolTip(
+            "In SvR, changes the team of the selected player to Super Animal Super Resistance."
+        )
+        
+        self.button_infect.setToolTip(
+            "In The Bwoking Dead, infects the selected player."
+        )
+        
         _layout.addWidget(self.header)
         _layout.addWidget(self.horizontal_line)
         _layout.addWidget(self.scroll_area)

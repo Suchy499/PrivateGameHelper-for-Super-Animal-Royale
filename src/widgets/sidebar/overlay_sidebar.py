@@ -34,7 +34,8 @@ class OverlaySidebar(QFrame):
                     line = HLine(self, h=1) if self.orientation == Qt.Orientation.Vertical else VLine(self, w=1)
                     line.setObjectName("SidebarLine")
                     self._layout.addWidget(line)
-                button = Button(self, btn["icon"], btn["text"], btn["page"], f"OverlayButton", self.orientation)
+                button = Button(self, btn["icon"], "", btn["page"], f"OverlayButton", self.orientation)
+                button.setToolTip(btn["tooltip"])
                 if btn["active"]:
                     button.select("OverlayButton")
                 self._layout.addWidget(button)
@@ -42,7 +43,8 @@ class OverlaySidebar(QFrame):
         self._layout.addStretch()
         for index, btn in enumerate(btn_list):
             if not btn["show_top"]:
-                button = Button(self, btn["icon"], btn["text"], btn["page"], f"OverlayButton", self.orientation)
+                button = Button(self, btn["icon"], "", btn["page"], f"OverlayButton", self.orientation)
+                button.setToolTip(btn["tooltip"])
                 if btn["active"]:
                     button.select("OverlayButton")
                 self._layout.addWidget(button)

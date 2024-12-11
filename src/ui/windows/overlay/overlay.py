@@ -80,7 +80,7 @@ class Overlay(QWidget):
         _btn_list = [
             {
                 "icon": IMAGES["home"],
-                "text": "",
+                "tooltip": "Home",
                 "category": "home",
                 "show_top": True,
                 "page": self.center_overlay.pages.home_page,
@@ -88,7 +88,7 @@ class Overlay(QWidget):
             },
             {
                 "icon": IMAGES["presets"],
-                "text": "",
+                "tooltip": "Presets",
                 "category": "pregame_setup",
                 "show_top": True,
                 "page": self.center_overlay.pages.presets_page,
@@ -96,7 +96,7 @@ class Overlay(QWidget):
             },
             {
                 "icon": IMAGES["pregame"],
-                "text": "",
+                "tooltip": "Pregame",
                 "category": "pregame_setup",
                 "show_top": True,
                 "page": self.center_overlay.pages.pregame_page,
@@ -104,7 +104,7 @@ class Overlay(QWidget):
             },
             {
                 "icon": IMAGES["players"],
-                "text": "",
+                "tooltip": "Players",
                 "category": "players",
                 "show_top": True,
                 "page": self.center_overlay.pages.players_page,
@@ -112,7 +112,7 @@ class Overlay(QWidget):
             },
             {
                 "icon": IMAGES["teleport"],
-                "text": "",
+                "tooltip": "Teleport",
                 "category": "players",
                 "show_top": True,
                 "page": self.center_overlay.pages.teleport_page,
@@ -120,7 +120,7 @@ class Overlay(QWidget):
             },
             {
                 "icon": IMAGES["banana"],
-                "text": "",
+                "tooltip": "Items",
                 "category": "commands",
                 "show_top": True,
                 "page": self.center_overlay.pages.items_page,
@@ -128,7 +128,7 @@ class Overlay(QWidget):
             },
             {
                 "icon": IMAGES["commands"],
-                "text": "",
+                "tooltip": "Commands",
                 "category": "commands",
                 "show_top": True,
                 "page": self.center_overlay.pages.commands_page,
@@ -136,7 +136,7 @@ class Overlay(QWidget):
             },
             {
                 "icon": IMAGES["duels"],
-                "text": "",
+                "tooltip": "Duels",
                 "category": "gamemodes",
                 "show_top": True,
                 "page": self.center_overlay.pages.duels_page,
@@ -144,7 +144,7 @@ class Overlay(QWidget):
             },
             {
                 "icon": IMAGES["dodgeball"],
-                "text": "",
+                "tooltip": "Dodgeball",
                 "category": "gamemodes",
                 "show_top": True,
                 "page": self.center_overlay.pages.dodgeball_page,
@@ -152,7 +152,7 @@ class Overlay(QWidget):
             },
             {
                 "icon": IMAGES["changelog"],
-                "text": "",
+                "tooltip": "Changelog",
                 "category": "info",
                 "show_top": False,
                 "page": self.center_overlay.pages.changelog_page,
@@ -160,7 +160,7 @@ class Overlay(QWidget):
             },
             {
                 "icon": IMAGES["info"],
-                "text": "",
+                "tooltip": "About",
                 "category": "info",
                 "show_top": False,
                 "page": self.center_overlay.pages.about_page,
@@ -168,7 +168,7 @@ class Overlay(QWidget):
             },
             {
                 "icon": IMAGES["settings"],
-                "text": "",
+                "tooltip": "Settings",
                 "category": "settings",
                 "show_top": False,
                 "page": self.center_overlay.pages.settings_page,
