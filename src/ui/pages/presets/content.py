@@ -16,6 +16,8 @@ class Content(QWidget):
         glb.SIGNAL_MANAGER.presetDeleted.connect(self.load_presets)
         glb.SIGNAL_MANAGER.presetEdited.connect(self.load_presets)
         glb.SIGNAL_MANAGER.presetSaved.connect(self.load_presets)
+        glb.SIGNAL_MANAGER.appStyleChanged.connect(self.load_presets)
+        glb.SIGNAL_MANAGER.overlayStyleChanged.connect(self.load_presets)
     
     def reset_presets(self) -> None:
         for i in reversed(range(self._layout.count())):

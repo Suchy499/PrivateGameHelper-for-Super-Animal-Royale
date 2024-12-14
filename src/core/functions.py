@@ -56,6 +56,7 @@ def save_preset() -> None:
         glb.PREGAME_SETTINGS["name"] = "Untitled"
     presets_data.append(glb.PREGAME_SETTINGS)
     save_presets(presets_data)
+    glb.ACTIVE_PRESET = glb.PREGAME_SETTINGS["preset_id"]
     glb.SIGNAL_MANAGER.presetSaved.emit()
 
 def delete_preset() -> None:
@@ -994,6 +995,7 @@ def start_dodgeball() -> None:
         return
     
     glb.WORK_THREAD.QUEUE = []
+    glb.DODGEBALL_STARTED = True
     team_a, team_b, team_spec = get_teams()
     
     try:
@@ -1217,28 +1219,55 @@ def hr_and_zip_hotkey() -> None:
     if not glb.DODGEBALL_SETTINGS["hotkeys"]:
         return
     
-    if pywinctl.getActiveWindowTitle() == "Super Animal Royale":
-        close_chat()
-        time.sleep(0.5)
-        send_commands("gun13 2", "zip 4")
+    if not glb.DODGEBALL_STARTED:
+        return
+    
+    if pywinctl.getActiveWindowTitle() != "Super Animal Royale" and pywinctl.getActiveWindowTitle() != "Private Game Helper Overlay":
+        return
+    
+    if pywinctl.getActiveWindowTitle() == "Private Game Helper Overlay":
+        if not open_window("Super Animal Royale"):
+            return
+    
+    close_chat()
+    time.sleep(0.5)
+    send_commands("gun13 2", "zip 4")
     
 def ghost_host_hotkey() -> None:
     if not glb.DODGEBALL_SETTINGS["hotkeys"]:
         return
     
-    if pywinctl.getActiveWindowTitle() == "Super Animal Royale":
-        close_chat()
-        time.sleep(0.5)
-        send_commands(f"kill {glb.HOST_ID}", f"ghost {glb.HOST_ID}")
+    if not glb.DODGEBALL_STARTED:
+        return
+    
+    if pywinctl.getActiveWindowTitle() != "Super Animal Royale" and pywinctl.getActiveWindowTitle() != "Private Game Helper Overlay":
+        return
+    
+    if pywinctl.getActiveWindowTitle() == "Private Game Helper Overlay":
+        if not open_window("Super Animal Royale"):
+            return
+        
+    close_chat()
+    time.sleep(0.5)
+    send_commands(f"kill {glb.HOST_ID}", f"ghost {glb.HOST_ID}")
 
 def spawn_grenade_hotkey() -> None:
     if not glb.DODGEBALL_SETTINGS["hotkeys"]:
         return
     
-    if pywinctl.getActiveWindowTitle() == "Super Animal Royale":
-        close_chat()
-        time.sleep(0.5)
-        send_commands("nade")
+    if not glb.DODGEBALL_STARTED:
+        return
+    
+    if pywinctl.getActiveWindowTitle() != "Super Animal Royale" and pywinctl.getActiveWindowTitle() != "Private Game Helper Overlay":
+        return
+    
+    if pywinctl.getActiveWindowTitle() == "Private Game Helper Overlay":
+        if not open_window("Super Animal Royale"):
+            return
+    
+    close_chat()
+    time.sleep(0.5)
+    send_commands("nade")
 
 def spawn_grenades_random(x_start: int, x_end: int, y_start: int, y_end: int, amount: int) -> None:
     for _ in range(amount):
@@ -1260,8 +1289,15 @@ def spawn_grenades_from_left_hotkey(amount: int) -> None:
     if not glb.DODGEBALL_SETTINGS["hotkeys"]:
         return
     
-    if pywinctl.getActiveWindowTitle() != "Super Animal Royale":
+    if not glb.DODGEBALL_STARTED:
         return
+    
+    if pywinctl.getActiveWindowTitle() != "Super Animal Royale" and pywinctl.getActiveWindowTitle() != "Private Game Helper Overlay":
+        return
+    
+    if pywinctl.getActiveWindowTitle() == "Private Game Helper Overlay":
+        if not open_window("Super Animal Royale"):
+            return
     
     time.sleep(0.5)
     close_chat()
@@ -1341,8 +1377,15 @@ def spawn_grenades_from_right_hotkey(amount: int) -> None:
     if not glb.DODGEBALL_SETTINGS["hotkeys"]:
         return
     
-    if pywinctl.getActiveWindowTitle() != "Super Animal Royale":
+    if not glb.DODGEBALL_STARTED:
         return
+    
+    if pywinctl.getActiveWindowTitle() != "Super Animal Royale" and pywinctl.getActiveWindowTitle() != "Private Game Helper Overlay":
+        return
+    
+    if pywinctl.getActiveWindowTitle() == "Private Game Helper Overlay":
+        if not open_window("Super Animal Royale"):
+            return
     
     time.sleep(0.5)
     close_chat()

@@ -1,0 +1,102 @@
+#MainWindowContent {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgb(8, 0, 21), stop:1 rgb(21, 0, 44));
+    border-radius: 20px;
+    border: 2px solid red;
+}
+
+#Overlay {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(8, 0, 21, 213), stop:1 rgba(21, 0, 44, 213));
+    border: 2px solid red;
+}
+
+#OverlayExpandButton {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(8, 0, 21, 213), stop:1 rgba(21, 0, 44, 213));
+    border-radius: 16px;
+    border: 2px solid red;
+}
+
+#Button {
+    background: rgb(153, 0, 0);
+    border: 2px solid rgb(102, 0, 0);
+    font-family: Rubik;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+}
+
+#Button:hover {
+    background: rgb(128, 0, 0);
+}
+
+#Button:pressed {
+    background: rgb(102, 0, 0);
+}
+
+#LineEdit {
+    background: rgba(255, 255, 255, 0.15);
+	border-radius: 8px;
+    border: 2px solid rgb(102, 0, 0);
+	padding-left: 10px;
+    padding-right: 10px;
+	selection-color: white;
+	selection-background-color: rgb(153, 0, 0);
+    color: white;
+}
+
+#LineEdit:focus {
+	border: 2px solid rgb(153, 0, 0);
+}
+
+#Toggle:checked {
+    background: rgb(153, 0, 0);
+    border: 2px solid rgb(102, 0, 0);
+}
+
+#Slider::handle {
+    background: rgb(128, 0, 0);
+}
+
+#Slider::handle:hover {
+    background: rgb(115, 0, 0);
+}
+
+#Slider::handle:pressed {
+    background: rgb(102, 0, 0);
+}
+
+#NotifWidget {
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(8, 0, 21, 213), stop:1 rgba(77, 0, 0, 213));
+    border: 2px solid rgb(102, 0, 0);
+    border-radius: 20px;
+}
+
+#UpdatePopup {
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(8, 0, 21, 213), stop:1 rgba(77, 0, 0, 213));
+    border: 2px solid rgb(102, 0, 0);
+    border-radius: 8px;
+}
+
+#MapSelection {
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgb(102, 0, 0);
+	border-radius: 8px;
+	padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+}
+
+#MapSelectionView {
+    background: rgb(50, 38, 65);
+    border: 2px solid rgb(102, 0, 0);
+	border-radius: 8px;
+	padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+}
+
+#Slider::groove, #Toggle:unchecked {
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgb(102, 0, 0);
+}

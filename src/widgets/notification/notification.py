@@ -2,7 +2,7 @@ from core import *
 from typing import Literal
 from widgets import VLine
 from images import IMAGES
-from styles import AppStyle, OverlayStyle
+from styles import Style
 
 class Notification(QFrame):
     def __init__(
@@ -117,7 +117,7 @@ class Notification(QFrame):
         self.setText(text)
         self.setType(notif_type)
         if parent == "MainWindow":
-            self.setStyleSheet(AppStyle.getValue(glb.SETTINGS.value("AppStyle", 0)))
+            self.setStyleSheet(Style.getValue(glb.SETTINGS.value("AppStyle", 0)))
         else:
-            self.setStyleSheet(OverlayStyle.getValue(glb.SETTINGS.value("OverlayStyle", 0)))
+            self.setStyleSheet(Style.getValue(glb.SETTINGS.value("OverlayStyle", 0)))
         self.play_animation()

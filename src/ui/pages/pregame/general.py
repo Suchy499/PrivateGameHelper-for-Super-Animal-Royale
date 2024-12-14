@@ -1,6 +1,6 @@
 from core import *
 from images import IMAGES
-from widgets import HLine, Button, Notification
+from widgets import HLine, Button
 
 class General(QWidget):
     def __init__(self, parent):
@@ -15,15 +15,22 @@ class General(QWidget):
         self.preset_label.setContentsMargins(0, 0, 0, 15)
         self.preset_label.setObjectName("PregameHeaderName")
         
+        self.preset_name_container = QWidget(self)
+        self.preset_name_layout = QVBoxLayout(self.preset_name_container)
+        self.preset_name_layout.setContentsMargins(9, 0, 0, 0)
+        
         self.name_label = QLabel(self, text="Name")
         self.name_label.setObjectName("PresetNameLabel")
-        self.name_label.setContentsMargins(9, 0, 0, 0)
+        self.name_label.setContentsMargins(0, 0, 0, 0)
         
         self.name_edit = QLineEdit(self)
         self.name_edit.setFixedWidth(221)
         self.name_edit.setObjectName("LineEdit")
-        self.name_edit.setContentsMargins(9, 0, 0, 0)
+        self.name_edit.setContentsMargins(0, 0, 0, 0)
         self.name_edit.textChanged.connect(self.name_edited)
+        
+        self.preset_name_layout.addWidget(self.name_label)
+        self.preset_name_layout.addWidget(self.name_edit)
         
         self.preset_buttons = QWidget(self)
         self.preset_buttons_layout = QHBoxLayout(self.preset_buttons)
@@ -75,8 +82,7 @@ class General(QWidget):
         self.control_buttons_layout.addWidget(self.start_button)
         
         self._layout.addWidget(self.preset_label)
-        self._layout.addWidget(self.name_label)
-        self._layout.addWidget(self.name_edit)
+        self._layout.addWidget(self.preset_name_container)
         self._layout.addSpacing(15)
         self._layout.addWidget(self.preset_buttons)
         self._layout.addWidget(self.preset_hline)

@@ -1,5 +1,5 @@
 from core import *
-from styles import OverlayStyle
+from styles import Style
 from .overlay_right import OverlayRight
 from .overlay_left import OverlayLeft
 from .overlay_top import OverlayTop
@@ -19,7 +19,7 @@ class Overlay(QWidget):
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint, True)
         self.setWindowFlag(Qt.WindowType.SplashScreen, True)
-        self.setStyleSheet(OverlayStyle.getValue(glb.SETTINGS.value("OverlayStyle", 0)))
+        self.setStyleSheet(Style.getValue(glb.SETTINGS.value("OverlayStyle", 0)))
         
         self.layout_ = QGridLayout(self)
         self.layout_.setContentsMargins(0, 0, 0, 0)
@@ -243,4 +243,4 @@ class Overlay(QWidget):
                 self.top_overlay.setVisible(True)
                 
     def update_style(self) -> None:
-        self.setStyleSheet(OverlayStyle.getValue(glb.SETTINGS.value("OverlayStyle", 0)))
+        self.setStyleSheet(Style.getValue(glb.SETTINGS.value("OverlayStyle", 0)))

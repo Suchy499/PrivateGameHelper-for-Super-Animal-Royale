@@ -1,6 +1,6 @@
 from core import *
 from widgets.clickable_label import ClickableLabel
-from styles import AppStyle
+from styles import Style
 
 class Button(ClickableLabel):
     def __init__(
@@ -27,14 +27,14 @@ class Button(ClickableLabel):
         
     def select(self) -> None:
         self.parentWidget().deselect_all()
-        self.setObjectName("NavbarButtonActive")
-        self.setStyleSheet(AppStyle.getValue(glb.SETTINGS.value("AppStyle", 0)))
+        self.setProperty("selected", "True")
+        self.setStyleSheet(Style.getValue(glb.SETTINGS.value("AppStyle", 0)))
         if self.page:
             self.page.parentWidget().setCurrentWidget(self.page)
         
     def deselect(self) -> None:
-        self.setObjectName("NavbarButton")
-        self.setStyleSheet(AppStyle.getValue(glb.SETTINGS.value("AppStyle", 0)))
+        self.setProperty("selected", "False")
+        self.setStyleSheet(Style.getValue(glb.SETTINGS.value("AppStyle", 0)))
     
     def keyPressEvent(self, arg__1):
         return

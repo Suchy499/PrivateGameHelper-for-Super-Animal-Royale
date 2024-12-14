@@ -1,5 +1,5 @@
 from core import *
-from styles import AppStyle, OverlayStyle
+from styles import Style
 from typing import Literal
 
 class Button(QPushButton):
@@ -42,6 +42,8 @@ class Button(QPushButton):
     
         glb.SIGNAL_MANAGER.pageChanged.connect(self.recieve_signal)
         glb.SIGNAL_MANAGER.presetOpened.connect(self.open_preset)
+        glb.SIGNAL_MANAGER.appStyleChanged.connect(self.style_changed)
+        glb.SIGNAL_MANAGER.overlayStyleChanged.connect(self.style_changed)
     
     def recieve_signal(self, page, parent) -> None:
         if page.metaObject().className() == self.page.metaObject().className():
@@ -55,11 +57,8 @@ class Button(QPushButton):
         if self.overlay and not self.overlay.isVisible() and parent == "SidebarButton":
             return
         self.parentWidget().deselect_all()
-        self.setObjectName(f"{self.style_name}Active")
-        if self.style_name == "SidebarButton":
-            self.setStyleSheet(AppStyle.getValue(glb.SETTINGS.value("AppStyle", 0)))
-        elif self.style_name == "OverlayButton":
-            self.setStyleSheet(OverlayStyle.getValue(glb.SETTINGS.value("OverlayStyle", 0)))
+        self.setProperty("selected", "True")
+        self.style_changed()
         if self.page and self.page.parentWidget().currentWidget() != self.page:
             self.page.parentWidget().setCurrentWidget(self.page)
         if self.overlay and not self.overlay.isVisible() and parent == "OverlayButton":
@@ -68,11 +67,14 @@ class Button(QPushButton):
             open_window("Super Animal Royale")
         
     def deselect(self) -> None:
-        self.setObjectName(self.style_name)
+        self.setProperty("selected", "False")
+        self.style_changed()
+    
+    def style_changed(self) -> None:
         if self.style_name == "SidebarButton":
-            self.setStyleSheet(AppStyle.getValue(glb.SETTINGS.value("AppStyle", 0)))
+            self.setStyleSheet(Style.getValue(glb.SETTINGS.value("AppStyle", 0)))
         elif self.style_name == "OverlayButton":
-            self.setStyleSheet(OverlayStyle.getValue(glb.SETTINGS.value("OverlayStyle", 0)))
+            self.setStyleSheet(Style.getValue(glb.SETTINGS.value("OverlayStyle", 0)))
     
     def keyPressEvent(self, arg__1):
         return

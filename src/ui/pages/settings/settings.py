@@ -106,15 +106,87 @@ class PageSettings(QWidget):
         self.purple_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.purple_theme.clicked.connect(lambda: self.select_app_style(0))
         
+        self.dark_theme = QRadioButton(self.app_themes_container)
+        self.dark_theme.setFixedSize(80, 80)
+        self.dark_theme.setObjectName("ThemeDark")
+        self.dark_theme.setToolTip("Dark")
+        self.dark_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.dark_theme.clicked.connect(lambda: self.select_app_style(1))
+        
         self.blue_theme = QRadioButton(self.app_themes_container)
         self.blue_theme.setFixedSize(80, 80)
         self.blue_theme.setObjectName("ThemeBlue")
         self.blue_theme.setToolTip("Blue")
         self.blue_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.blue_theme.clicked.connect(lambda: self.select_app_style(1))
+        self.blue_theme.clicked.connect(lambda: self.select_app_style(2))
+        
+        self.purple_sky_theme = QRadioButton(self.app_themes_container)
+        self.purple_sky_theme.setFixedSize(80, 80)
+        self.purple_sky_theme.setObjectName("ThemePurpleSky")
+        self.purple_sky_theme.setToolTip("Purple Sky")
+        self.purple_sky_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.purple_sky_theme.clicked.connect(lambda: self.select_app_style(3))
+        
+        self.cotton_candy_theme = QRadioButton(self.app_themes_container)
+        self.cotton_candy_theme.setFixedSize(80, 80)
+        self.cotton_candy_theme.setObjectName("ThemeCottonCandy")
+        self.cotton_candy_theme.setToolTip("Cotton Candy")
+        self.cotton_candy_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.cotton_candy_theme.clicked.connect(lambda: self.select_app_style(4))
+        
+        self.aqua_theme = QRadioButton(self.app_themes_container)
+        self.aqua_theme.setFixedSize(80, 80)
+        self.aqua_theme.setObjectName("ThemeAqua")
+        self.aqua_theme.setToolTip("Aqua")
+        self.aqua_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.aqua_theme.clicked.connect(lambda: self.select_app_style(5))
+        
+        self.nebula_theme = QRadioButton(self.app_themes_container)
+        self.nebula_theme.setFixedSize(80, 80)
+        self.nebula_theme.setObjectName("ThemeNebula")
+        self.nebula_theme.setToolTip("Nebula")
+        self.nebula_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.nebula_theme.clicked.connect(lambda: self.select_app_style(6))
+        
+        self.void_theme = QRadioButton(self.app_themes_container)
+        self.void_theme.setFixedSize(80, 80)
+        self.void_theme.setObjectName("ThemeVoid")
+        self.void_theme.setToolTip("Void")
+        self.void_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.void_theme.clicked.connect(lambda: self.select_app_style(7))
+        
+        self.sunrise_theme = QRadioButton(self.app_themes_container)
+        self.sunrise_theme.setFixedSize(80, 80)
+        self.sunrise_theme.setObjectName("ThemeSunrise")
+        self.sunrise_theme.setToolTip("Sunrise")
+        self.sunrise_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.sunrise_theme.clicked.connect(lambda: self.select_app_style(8))
+        
+        self.vaporwave_theme = QRadioButton(self.app_themes_container)
+        self.vaporwave_theme.setFixedSize(80, 80)
+        self.vaporwave_theme.setObjectName("ThemeVaporwave")
+        self.vaporwave_theme.setToolTip("Vaporwave")
+        self.vaporwave_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.vaporwave_theme.clicked.connect(lambda: self.select_app_style(9))
+        
+        self.black_and_white_theme = QRadioButton(self.app_themes_container)
+        self.black_and_white_theme.setFixedSize(80, 80)
+        self.black_and_white_theme.setObjectName("ThemeBlackAndWhite")
+        self.black_and_white_theme.setToolTip("Black And White")
+        self.black_and_white_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.black_and_white_theme.clicked.connect(lambda: self.select_app_style(10))
         
         self.app_themes_layout.addWidget(self.purple_theme)
+        self.app_themes_layout.addWidget(self.dark_theme)
         self.app_themes_layout.addWidget(self.blue_theme)
+        self.app_themes_layout.addWidget(self.purple_sky_theme)
+        self.app_themes_layout.addWidget(self.cotton_candy_theme)
+        self.app_themes_layout.addWidget(self.aqua_theme)
+        self.app_themes_layout.addWidget(self.nebula_theme)
+        self.app_themes_layout.addWidget(self.void_theme)
+        self.app_themes_layout.addWidget(self.sunrise_theme)
+        self.app_themes_layout.addWidget(self.vaporwave_theme)
+        self.app_themes_layout.addWidget(self.black_and_white_theme)
         
         self.overlay_theme_label = QLabel("Overlay theme", self)
         self.overlay_theme_label.setContentsMargins(10, 15, 0, 0)
@@ -129,20 +201,92 @@ class PageSettings(QWidget):
         
         self.overlay_purple_theme = QRadioButton(self.overlay_themes_container)
         self.overlay_purple_theme.setFixedSize(80, 80)
-        self.overlay_purple_theme.setObjectName("ThemeOverlayPurple")
+        self.overlay_purple_theme.setObjectName("ThemePurple")
         self.overlay_purple_theme.setToolTip("Purple")
         self.overlay_purple_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.overlay_purple_theme.clicked.connect(lambda: self.select_overlay_style(0))
         
         self.overlay_dark_theme = QRadioButton(self.overlay_themes_container)
         self.overlay_dark_theme.setFixedSize(80, 80)
-        self.overlay_dark_theme.setObjectName("ThemeOverlayDark")
+        self.overlay_dark_theme.setObjectName("ThemeDark")
         self.overlay_dark_theme.setToolTip("Dark")
         self.overlay_dark_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.overlay_dark_theme.clicked.connect(lambda: self.select_overlay_style(1))
         
+        self.overlay_blue_theme = QRadioButton(self.overlay_themes_container)
+        self.overlay_blue_theme.setFixedSize(80, 80)
+        self.overlay_blue_theme.setObjectName("ThemeBlue")
+        self.overlay_blue_theme.setToolTip("Blue")
+        self.overlay_blue_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.overlay_blue_theme.clicked.connect(lambda: self.select_overlay_style(2))
+        
+        self.overlay_purple_sky_theme = QRadioButton(self.overlay_themes_container)
+        self.overlay_purple_sky_theme.setFixedSize(80, 80)
+        self.overlay_purple_sky_theme.setObjectName("ThemePurpleSky")
+        self.overlay_purple_sky_theme.setToolTip("Purple Sky")
+        self.overlay_purple_sky_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.overlay_purple_sky_theme.clicked.connect(lambda: self.select_overlay_style(3))
+        
+        self.overlay_cotton_candy_theme = QRadioButton(self.overlay_themes_container)
+        self.overlay_cotton_candy_theme.setFixedSize(80, 80)
+        self.overlay_cotton_candy_theme.setObjectName("ThemeCottonCandy")
+        self.overlay_cotton_candy_theme.setToolTip("Cotton Candy")
+        self.overlay_cotton_candy_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.overlay_cotton_candy_theme.clicked.connect(lambda: self.select_overlay_style(4))
+        
+        self.overlay_aqua_theme = QRadioButton(self.overlay_themes_container)
+        self.overlay_aqua_theme.setFixedSize(80, 80)
+        self.overlay_aqua_theme.setObjectName("ThemeAqua")
+        self.overlay_aqua_theme.setToolTip("Aqua")
+        self.overlay_aqua_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.overlay_aqua_theme.clicked.connect(lambda: self.select_overlay_style(5))
+        
+        self.overlay_nebula_theme = QRadioButton(self.overlay_themes_container)
+        self.overlay_nebula_theme.setFixedSize(80, 80)
+        self.overlay_nebula_theme.setObjectName("ThemeNebula")
+        self.overlay_nebula_theme.setToolTip("Nebula")
+        self.overlay_nebula_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.overlay_nebula_theme.clicked.connect(lambda: self.select_overlay_style(6))
+        
+        self.overlay_void_theme = QRadioButton(self.overlay_themes_container)
+        self.overlay_void_theme.setFixedSize(80, 80)
+        self.overlay_void_theme.setObjectName("ThemeVoid")
+        self.overlay_void_theme.setToolTip("Void")
+        self.overlay_void_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.overlay_void_theme.clicked.connect(lambda: self.select_overlay_style(7))
+        
+        self.overlay_sunrise_theme = QRadioButton(self.overlay_themes_container)
+        self.overlay_sunrise_theme.setFixedSize(80, 80)
+        self.overlay_sunrise_theme.setObjectName("ThemeSunrise")
+        self.overlay_sunrise_theme.setToolTip("Sunrise")
+        self.overlay_sunrise_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.overlay_sunrise_theme.clicked.connect(lambda: self.select_overlay_style(8))
+        
+        self.overlay_vaporwave_theme = QRadioButton(self.overlay_themes_container)
+        self.overlay_vaporwave_theme.setFixedSize(80, 80)
+        self.overlay_vaporwave_theme.setObjectName("ThemeVaporwave")
+        self.overlay_vaporwave_theme.setToolTip("Vaporwave")
+        self.overlay_vaporwave_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.overlay_vaporwave_theme.clicked.connect(lambda: self.select_overlay_style(9))
+        
+        self.overlay_black_and_white_theme = QRadioButton(self.overlay_themes_container)
+        self.overlay_black_and_white_theme.setFixedSize(80, 80)
+        self.overlay_black_and_white_theme.setObjectName("ThemeBlackAndWhite")
+        self.overlay_black_and_white_theme.setToolTip("Black And White")
+        self.overlay_black_and_white_theme.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.overlay_black_and_white_theme.clicked.connect(lambda: self.select_overlay_style(10))
+        
         self.overlay_themes_layout.addWidget(self.overlay_purple_theme)
         self.overlay_themes_layout.addWidget(self.overlay_dark_theme)
+        self.overlay_themes_layout.addWidget(self.overlay_blue_theme)
+        self.overlay_themes_layout.addWidget(self.overlay_purple_sky_theme)
+        self.overlay_themes_layout.addWidget(self.overlay_cotton_candy_theme)
+        self.overlay_themes_layout.addWidget(self.overlay_aqua_theme)
+        self.overlay_themes_layout.addWidget(self.overlay_nebula_theme)
+        self.overlay_themes_layout.addWidget(self.overlay_void_theme)
+        self.overlay_themes_layout.addWidget(self.overlay_sunrise_theme)
+        self.overlay_themes_layout.addWidget(self.overlay_vaporwave_theme)
+        self.overlay_themes_layout.addWidget(self.overlay_black_and_white_theme)
         
         self.app_icon_label = QLabel("Icon", self)
         self.app_icon_label.setContentsMargins(10, 15, 0, 0)
@@ -234,7 +378,25 @@ class PageSettings(QWidget):
             case 0:
                 self.purple_theme.setChecked(True)
             case 1:
+                self.dark_theme.setChecked(True)
+            case 2:
                 self.blue_theme.setChecked(True)
+            case 3:
+                self.purple_sky_theme.setChecked(True)
+            case 4:
+                self.cotton_candy_theme.setChecked(True)
+            case 5:
+                self.aqua_theme.setChecked(True)
+            case 6:
+                self.nebula_theme.setChecked(True)
+            case 7:
+                self.void_theme.setChecked(True)
+            case 8:
+                self.sunrise_theme.setChecked(True)
+            case 9:
+                self.vaporwave_theme.setChecked(True)
+            case 10:
+                self.black_and_white_theme.setChecked(True)
     
     def select_overlay_style(self, index: int) -> None:
         glb.SETTINGS.setValue("OverlayStyle", index)
@@ -246,6 +408,24 @@ class PageSettings(QWidget):
                 self.overlay_purple_theme.setChecked(True)
             case 1:
                 self.overlay_dark_theme.setChecked(True)
+            case 2:
+                self.overlay_blue_theme.setChecked(True)
+            case 3:
+                self.overlay_purple_sky_theme.setChecked(True)
+            case 4:
+                self.overlay_cotton_candy_theme.setChecked(True)
+            case 5:
+                self.overlay_aqua_theme.setChecked(True)
+            case 6:
+                self.overlay_nebula_theme.setChecked(True)
+            case 7:
+                self.overlay_void_theme.setChecked(True)
+            case 8:
+                self.overlay_sunrise_theme.setChecked(True)
+            case 9:
+                self.overlay_vaporwave_theme.setChecked(True)
+            case 10:
+                self.overlay_black_and_white_theme.setChecked(True)
                 
     def select_app_icon(self, index: int) -> None:
         glb.SETTINGS.setValue("AppIcon", index)

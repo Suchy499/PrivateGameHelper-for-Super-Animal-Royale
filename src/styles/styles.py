@@ -1,31 +1,38 @@
-from core.qt_core import *
+from styles.qss_parser import dumps, load, dump
 import os
 from enum import StrEnum
+from copy import deepcopy
 
-with open(rf"{os.path.dirname(__file__)}\styles\purple.qss", "r") as f:
-    purple: str = f.read()
+STYLESHEETS: dict[str, dict] = {}
 
-with open(rf"{os.path.dirname(__file__)}\styles\blue.qss", "r") as f:
-    blue: str = f.read()
-    
-with open(rf"{os.path.dirname(__file__)}\styles\overlay_dark.qss", "r") as f:
-    overlay_dark: str = f.read()
-    
-with open(rf"{os.path.dirname(__file__)}\styles\overlay_purple.qss", "r") as f:
-    overlay_purple: str = f.read()
+for dirpath, dirnames, filenames in os.walk(os.path.join(os.path.dirname(__file__), "styles")):
+    for name in filenames:
+        STYLESHEETS[os.path.splitext(name)[0]] = load(os.path.join(dirpath, name))
 
-class AppStyle(StrEnum):
-    PURPLE = purple
-    BLUE = blue
+def merge_styles() -> str:
+    stylesheets_copy = deepcopy(STYLESHEETS)
+    base_template = stylesheets_copy["base"]
+    stylesheets_copy.pop("base")
+    for name, stylesheet in stylesheets_copy.items():
+        STYLESHEETS[name] = deepcopy(base_template)
+        for rule, properties in stylesheet.items():
+            STYLESHEETS[name][rule] = properties
+
+merge_styles()
+
+class Style(StrEnum):
+    PURPLE = dumps(STYLESHEETS["purple"])
+    DARK = dumps(STYLESHEETS["dark"])
+    BLUE = dumps(STYLESHEETS["blue"])
+    PURPLE_SKY = dumps(STYLESHEETS["purple_sky"])
+    COTTON_CANDY = dumps(STYLESHEETS["cotton_candy"])
+    AQUA = dumps(STYLESHEETS["aqua"])
+    NEBULA = dumps(STYLESHEETS["nebula"])
+    VOID = dumps(STYLESHEETS["void"])
+    SUNRISE = dumps(STYLESHEETS["sunrise"])
+    VAPORWAVE = dumps(STYLESHEETS["vaporwave"])
+    BLACK_AND_WHITE = dumps(STYLESHEETS["black_and_white"])
     
     @staticmethod
     def getValue(index):
-        return list(AppStyle)[index].value
-
-class OverlayStyle(StrEnum):
-    PURPLE = overlay_purple
-    DARK = overlay_dark
-    
-    @staticmethod
-    def getValue(index):
-        return list(OverlayStyle)[index].value
+        return list(Style)[index].value

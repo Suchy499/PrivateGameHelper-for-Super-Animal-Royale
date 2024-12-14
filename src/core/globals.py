@@ -23,6 +23,7 @@ SELECTED_RARITY: int = 0
 HOST_ID: int = 1
 SELECTED_MAP_DUELS: str = "Bamboo Resort"
 SELECTED_MAP_DODGEBALL: str = "Bamboo Resort"
+DODGEBALL_STARTED: bool = False
 PREGAME_SETTINGS: dict = {
     "preset_id": None,
     "name": None,

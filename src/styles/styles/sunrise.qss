@@ -1,0 +1,142 @@
+#MainWindowContent {
+    background: qlineargradient(spread:pad, x1:0.340222, y1:1, x2:0.467, y2:0.119318, stop:0 rgba(236, 185, 0, 255), stop:0.227778 rgba(141, 9, 99, 255), stop:0.488889 rgba(161, 44, 130, 255), stop:1 rgba(216, 141, 216, 255));
+    border-radius: 20px;
+    border: 2px solid rgb(216, 141, 216);
+}
+
+#Overlay {
+    background: qlineargradient(spread:pad, x1:0.340222, y1:1, x2:0.467, y2:0.119318, stop:0 rgba(236, 185, 0, 213), stop:0.227778 rgba(141, 9, 99, 213), stop:0.488889 rgba(161, 44, 130, 213), stop:1 rgba(216, 141, 216, 213));
+    border: 2px solid rgb(216, 141, 216);
+}
+
+#OverlayExpandButton {
+    background: qlineargradient(spread:pad, x1:0.340222, y1:1, x2:0.467, y2:0.119318, stop:0 rgba(236, 185, 0, 213), stop:0.227778 rgba(141, 9, 99, 213), stop:0.488889 rgba(161, 44, 130, 213), stop:1 rgba(216, 141, 216, 213));
+    border-radius: 16px;
+    border: 2px solid rgb(216, 141, 216);
+}
+
+#Button {
+    background: rgb(255, 153, 255);
+    border: 2px solid rgb(213, 128, 213);
+    font-family: Rubik;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+}
+
+#Button:hover {
+    background: rgb(234, 141 ,234);
+}
+
+#Button:pressed {
+    background: rgb(213, 128, 213);
+}
+
+#LineEdit {
+    background: rgba(0, 0, 0, 0.15);
+	border-radius: 8px;
+    border: 2px solid rgb(213, 128, 213);
+	padding-left: 10px;
+    padding-right: 10px;
+	selection-color: white;
+	selection-background-color: rgb(255, 153, 255);
+    color: white;
+}
+
+#LineEdit:focus {
+	border: 2px solid rgb(255, 153, 255);
+}
+
+#Toggle:checked {
+    background: rgb(255, 153, 255);
+    border: 2px solid rgb(213, 128, 213);
+}
+
+#Slider::handle {
+    background: rgb(255, 153, 255);
+}
+
+#Slider::handle:hover {
+    background: rgb(213, 128, 213);
+}
+
+#Slider::handle:pressed {
+    background: rgb(213, 128, 213);
+}
+
+#NotifWidget {
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(8, 0, 21, 213), stop:1 rgba(77, 37, 77, 213));
+    border: 2px solid rgb(213, 128, 213);
+    border-radius: 20px;
+}
+
+#UpdatePopup {
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(8, 0, 21, 213), stop:1 rgba(77, 37, 77, 213));
+    border: 2px solid rgb(213, 128, 213);
+    border-radius: 8px;
+}
+
+#OverlayButton:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+#OverlayButton:pressed {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+#OverlayButton[selected="True"] {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#OverlayButton[selected="True"]:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+#OverlayButton[selected="True"]:pressed {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+#SidebarButton:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+#SidebarButton:pressed {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+#SidebarButton[selected="True"] {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#SidebarButton[selected="True"]:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+#SidebarButton[selected="True"]:pressed {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+#MapSelection {
+    background: rgba(0, 0, 0, 0.15);
+    border: 2px solid rgb(213, 128, 213);
+	border-radius: 8px;
+	padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+}
+
+#MapSelectionView {
+    background: rgb(160, 77, 146);
+    border: 2px solid rgb(213, 128, 213);
+	border-radius: 8px;
+	padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+}
+
+#Slider::groove, #Toggle:unchecked {
+    background: rgba(0, 0, 0, 0.15);
+    border: 2px solid rgb(213, 128, 213);
+}

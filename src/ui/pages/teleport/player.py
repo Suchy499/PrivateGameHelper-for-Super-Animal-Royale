@@ -15,10 +15,11 @@ class Player(QWidget):
         self._layout.setContentsMargins(7, 10, 7, 10)
         
         self.name_label = ClickableLabel(self, self.player_item.name)
+        self.name_label.setObjectName("PlayerName")
         if glb.SELECTED_PLAYER_TELE == self.player_item or glb.SELECTED_PLAYER_TELE == "ALL":
-            self.name_label.setObjectName("PlayerNameSelected")
+            self.name_label.setProperty("selected", "True")
         else:
-            self.name_label.setObjectName("PlayerName")
+            self.name_label.setProperty("selected", "False")
         self.name_label.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.name_label.clicked.connect(self.set_active)
         

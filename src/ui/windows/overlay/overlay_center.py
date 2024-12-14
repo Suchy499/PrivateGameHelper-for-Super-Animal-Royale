@@ -6,7 +6,8 @@ class OverlayCenter(QFrame):
     def __init__(self, parent):
         super().__init__(parent)
         
-        self.setObjectName("OverlayCenter")
+        self.setObjectName("Overlay")
+        self.setProperty("side", "center")
         self.setVisible(False)
         
         _layout = QVBoxLayout(self)

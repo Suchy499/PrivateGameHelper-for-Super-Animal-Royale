@@ -1,1 +1,1 @@
-from .styles import AppStyle, OverlayStyle
+from .styles import Style

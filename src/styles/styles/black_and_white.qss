@@ -1,0 +1,124 @@
+#MainWindowContent {
+    background: rgb(0, 0, 0);
+    border-radius: 20px;
+    border: 2px solid rgb(255, 255, 255);
+}
+
+#Overlay {
+    background: rgba(0, 0, 0, 213);
+    border: 2px solid rgb(255, 255, 255);
+}
+
+#OverlayExpandButton {
+    background: rgba(0, 0, 0, 213);
+    border-radius: 16px;
+    border: 2px solid rgb(255, 255, 255);
+}
+
+#Button {
+    background: rgb(0, 0, 0);
+    border: 2px solid rgb(255, 255, 255);
+    font-family: Rubik;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+}
+
+#Button[style="ButtonDelete"] {
+    background: rgb(0, 0, 0);
+    border: 2px solid rgb(255, 255, 255);
+}
+
+#Button[style="ButtonDelete"]:hover {
+    background: rgb(64, 64, 64);
+}
+
+#Button[style="ButtonDelete"]:pressed {
+    background: rgb(128, 128, 128);
+}
+
+#Button:hover {
+    background: rgb(64, 64, 64);
+}
+
+#Button:pressed {
+    background: rgb(128, 128, 128);
+}
+
+#LineEdit {
+    background: rgb(0, 0, 0);
+	border-radius: 8px;
+    border: 2px solid rgb(255, 255, 255);
+	padding-left: 10px;
+    padding-right: 10px;
+	selection-color: white;
+	selection-background-color: rgb(255, 255, 255);
+    color: white;
+}
+
+#LineEdit:focus {
+	border: 2px solid rgb(255, 255, 255);
+}
+
+#Toggle:unchecked {
+    background: rgb(0, 0, 0);
+    border: 2px solid rgb(255, 255, 255);
+}
+
+#Toggle:checked {
+    background: rgb(0, 0, 0);
+    border: 2px solid rgb(255, 255, 255);
+}
+
+#Slider::groove {
+    background: rgb(0, 0, 0);
+    border: 2px solid rgb(255, 255, 255)
+}
+
+#Slider::handle {
+    background: rgb(255, 255, 255);
+}
+
+#Slider::handle:hover {
+    background: rgb(255, 255, 255);
+}
+
+#Slider::handle:pressed {
+    background: rgb(255, 255, 255);
+}
+
+#NotifWidget {
+    background: rgb(0, 0, 0);
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 20px;
+}
+
+#UpdatePopup {
+    background: rgb(0, 0, 0);
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 8px;
+}
+
+#MapSelection {
+    background: rgb(0, 0, 0);
+    border: 2px solid rgb(255, 255, 255);
+	border-radius: 8px;
+	padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+}
+
+#MapSelectionView {
+    background: rgb(0, 0, 0);
+    border: 2px solid rgb(255, 255, 255);
+	border-radius: 8px;
+	padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+}
+
+#MapSelectionView::item:focus {
+    background-color: rgb(0, 0, 0);
+}

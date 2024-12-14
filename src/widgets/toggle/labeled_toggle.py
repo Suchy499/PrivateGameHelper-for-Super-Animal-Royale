@@ -6,9 +6,6 @@ class LabeledToggle(QWidget):
         self,
         parent: QWidget | None = None,
         width: int = 200,
-        bg_color: str = "#595b5e", 
-        circle_color: str = "#DDD",
-        active_color: str = "#00BCFF",
         animation_curve: QEasingCurve = QEasingCurve.OutSine,
         animation_duration: int = 250,
         text: str = "",
@@ -20,9 +17,6 @@ class LabeledToggle(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
 
         self._width = width
-        self._bg_color = bg_color
-        self._circle_color = circle_color
-        self._active_color = active_color
         self._animation_curve = animation_curve
         self._animation_duration = animation_duration
         self._text = text
@@ -32,9 +26,6 @@ class LabeledToggle(QWidget):
         
         self.toggle = Toggle(
             parent = self,
-            bg_color = self._bg_color,
-            circle_color = self._circle_color,
-            active_color = self._active_color,
             animation_curve = self._animation_curve,
             animation_duration = self._animation_duration
         )

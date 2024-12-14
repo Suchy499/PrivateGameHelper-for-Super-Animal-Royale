@@ -1,34 +1,35 @@
-from core.qt_core import *
-
-# WIDGET BY: WANDERSON M.PIMENTA
+from core import *
+from styles import Style
 
 class Toggle(QCheckBox):
     def __init__(
         self,
         parent: QWidget | None = None,
         width: int = 50,
-        bg_color: str = "#595b5e", 
-        circle_color: str = "#DDD",
-        active_color: str = "#00BCFF",
         animation_curve: QEasingCurve = QEasingCurve.OutSine,
         animation_duration: int = 250,
         default_state: bool = False 
     ):
         super().__init__(parent)
         self.setFixedSize(width, 28)
+        self.setObjectName("Toggle")
         self.setCursor(Qt.PointingHandCursor)
         self._default_state = default_state
-
-        self._bg_color = bg_color
-        self._circle_color = circle_color
-        self._active_color = active_color
-
-        self._position = 3
+        self._position = 4
+        
+        self.circle = QLabel(self)
+        self.circle.setObjectName("ToggleCircle")
+        self.circle.setGeometry(self._position, 3, 22, 22)
+            
         self.animation = QPropertyAnimation(self, b"position")
         self.animation.setEasingCurve(animation_curve)
         self.animation.setDuration(animation_duration)
+        self.animation.valueChanged.connect(self.move_circle)
         self.stateChanged.connect(self.setup_animation)
         self.setChecked(self._default_state)
+        
+        glb.SIGNAL_MANAGER.appStyleChanged.connect(self.style_changed)
+        glb.SIGNAL_MANAGER.overlayStyleChanged.connect(self.style_changed)
 
     @Property(float)
     def position(self):
@@ -39,10 +40,9 @@ class Toggle(QCheckBox):
         self._position = pos
         self.update()
 
-    # START STOP ANIMATION
-    def setup_animation(self, value):
+    def setup_animation(self, state: bool):
         self.animation.stop()
-        if value:
+        if state:
             self.animation.setEndValue(self.width() - 26)
         else:
             self.animation.setEndValue(4)
@@ -50,30 +50,15 @@ class Toggle(QCheckBox):
     
     def hitButton(self, pos: QPoint):
         return self.contentsRect().contains(pos)
-
-    def paintEvent(self, e):
-        p = QPainter(self)
-        p.setRenderHint(QPainter.Antialiasing)
-        p.setFont(QFont("Segoe UI", 9))
-
-        # SET PEN
-        p.setPen(Qt.NoPen)
-
-        # DRAW RECT
-        rect = QRect(0, 0, self.width(), self.height())        
-
-        if not self.isChecked():
-            p.setBrush(QColor(self._bg_color))
-            p.drawRoundedRect(0,0,rect.width(), 28, 14, 14)
-            p.setBrush(QColor(self._circle_color))
-            p.drawEllipse(self._position, 3, 22, 22)
+    
+    def style_changed(self) -> None:
+        if self.window().metaObject().className() == "MainWindow":
+            self.setStyleSheet(Style.getValue(glb.SETTINGS.value("AppStyle", 0)))
         else:
-            p.setBrush(QColor(self._active_color))
-            p.drawRoundedRect(0,0,rect.width(), 28, 14, 14)
-            p.setBrush(QColor(self._circle_color))
-            p.drawEllipse(self._position, 3, 22, 22)
-
-        p.end()
+            self.setStyleSheet(Style.getValue(glb.SETTINGS.value("OverlayStyle", 0)))
+    
+    def move_circle(self, value) -> None:
+        self.circle.move(self._position, 3)
     
     def keyPressEvent(self, arg__1):
         return

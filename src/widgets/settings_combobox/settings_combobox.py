@@ -20,7 +20,7 @@ class SettingsComboBox(QWidget):
         label.setObjectName("ComboBoxLabel")
         
         self.combobox = QComboBox(self)
-        self.combobox.setFixedHeight(20)
+        self.combobox.setFixedHeight(24)
         self.combobox.setObjectName("MapSelection")
         self.combobox.view().setObjectName("MapSelectionView")
         self.combobox.view().window().setWindowFlags(Qt.WindowType.Popup | Qt.WindowType.FramelessWindowHint)

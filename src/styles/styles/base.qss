@@ -18,6 +18,7 @@
 
 #TitleButton {
     border: 0;
+    border-radius: 4px;
     background: transparent;
 }
 
@@ -31,6 +32,7 @@
 
 #TitleButtonClose {
     border: 0;
+    border-radius: 4px;
     background: transparent;
 }
 
@@ -75,24 +77,15 @@
     background: rgba(128, 128, 128, 0.6);
 }
 
-#SidebarButtonActive {
+#SidebarButton[selected="True"] {
     background: rgba(128, 128, 128, 0.2);
-    image-position: left;
-    font-family: Rubik;
-    font-weight: bold;
-    font-size: 13px;
-    color: white;
-    text-align: left;
-    padding-left: 19px;
-    border: none;
-    border-radius: 8px;
 }
 
-#SidebarButtonActive:hover {
+#SidebarButton[selected="True"]:hover {
     background: rgba(128, 128, 128, 0.4);
 }
 
-#SidebarButtonActive:pressed {
+#SidebarButton[selected="True"]:pressed {
     background: rgba(128, 128, 128, 0.6);
 }
 
@@ -170,11 +163,13 @@ QScrollBar::add-line:vertical:pressed {
     background-color: rgba(129, 126, 120, 1);
 }
 
-QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+QScrollBar::up-arrow:vertical, 
+QScrollBar::down-arrow:vertical {
     background: none;
 }
 
-QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+QScrollBar::add-page:vertical, 
+QScrollBar::sub-page:vertical {
     background: none;
 }
 
@@ -236,22 +231,26 @@ QScrollBar::add-line:horizontal:pressed {
     background-color: rgba(129, 126, 120, 1);
 }
 
-QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
+QScrollBar::left-arrow:horizontal, 
+QScrollBar::right-arrow:horizontal {
     background: none;
 }
 
-QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+QScrollBar::add-page:horizontal, 
+QScrollBar::sub-page:horizontal {
     background: none;
 }
 
-#PresetsHeaderName, #PlayersHeaderName {
+#PresetsHeaderName, 
+#PlayersHeaderName {
     font-family: Rubik;
     font-weight: bold;
     font-size: 24px;
     color: white;
 }
 
-#PregameHeaderName, #ItemsHeaderName {
+#PregameHeaderName, 
+#ItemsHeaderName {
     font-family: Rubik;
     font-weight: bold;
     font-size: 24px;
@@ -259,7 +258,12 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
     margin-bottom: 10px;
 }
 
-#LabeledToggle, #PresetNameLabel, #SliderLabel, #ComboBoxLabel, #HostIDLabel, #ChangelogDescription {
+#LabeledToggle, 
+#PresetNameLabel, 
+#SliderLabel, 
+#ComboBoxLabel, 
+#HostIDLabel, 
+#ChangelogDescription {
     background: transparent;
     font-family: Rubik;
     font-weight: bold;
@@ -280,7 +284,9 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
     background: rgba(128, 128, 128, 0.6);
 }
 
-#SavedPresetName, #SavedPresetEdited, #PlayerName {
+#SavedPresetName, 
+#SavedPresetEdited, 
+#PlayerName {
     background: transparent;
     font-family: Rubik;
     font-weight: bold;
@@ -305,83 +311,68 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
     border: 2px solid transparent;
 }
 
-#SavedPresetName:hover, #PlayerName:hover {
-    border: 2px solid rgba(128, 128, 128, 0.4);
-    border-top-style: none;
-    border-left-style: none;
-    border-right-style: none;
+#SavedPresetName:hover, 
+#PlayerName:hover {
+    border-bottom: 2px solid rgba(128, 128, 128, 0.4);
 }
 
-#SavedPresetName:pressed, #PlayerName:pressed {
-    border: 2px solid rgba(128, 128, 128, 0.6);
-    border-top-style: none;
-    border-left-style: none;
-    border-right-style: none;
+#SavedPresetName:pressed, 
+#PlayerName:pressed {
+    border-bottom: 2px solid rgba(128, 128, 128, 0.6);
 }
 
-#SavedPresetNameActive, #PlayerNameSelected {
-    background: transparent;
-    font-family: Rubik;
-    font-weight: bold;
-    font-style: italic;
-    font-size: 13px;
-    text-align: left;
-    color: white;
-    border: 2px solid rgba(128, 128, 128, 0.8);
-    border-top-style: none;
-    border-left-style: none;
-    border-right-style: none;
+#SavedPresetName[selected="True"], 
+#PlayerName[selected="True"] {
+    border-bottom: 2px solid rgba(128, 128, 128, 0.8);
 }
 
 #Slider {
     margin: 0px; 
 }
 
+#Slider::groove {
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgb(38, 63, 112);
+}
+
+#Slider::handle {
+    background: rgb(0, 188, 255);
+}
+
+#Slider::handle:hover {
+    background: rgb(0, 160, 218);
+}
+
+#Slider::handle:pressed {
+    background: rgb(0, 132, 180);
+}
+
 #Slider::groove:horizontal {
     border-radius: 10px;
-    height: 20px;
+    height: 16px;
 	margin: 0px;
-	background-color: "#595b5e";
 }
 
 #Slider::handle:horizontal {
     border: none;
-    height: 16px;
-    width: 16px;
+    height: 12px;
+    width: 12px;
     margin: 2px;
-	border-radius: 8px;
-    background-color: "#568af2";
-}
-
-#Slider::handle:horizontal:hover {
-    background-color: "#6c99f4";
-}
-
-#Slider::handle:horizontal:pressed {
-    background-color: "#3f6fd1";
+	border-radius: 6px;
 }
 
 #Slider::groove:vertical {
     border-radius: 10px;
-    width: 20px;
+    width: 16px;
     margin: 0px;
-	background-color: "#595b5e";
 }
 
 #Slider::handle:vertical {
 	border: none;
-    height: 16px;
-    width: 16px;
+    height: 12px;
+    width: 12px;
     margin: 2px;
-	border-radius: 8px;
-    background-color: "#568af2";
-}
-#Slider::handle:vertical:hover {
-    background-color: "#6c99f4";
-}
-
-#Slider::handle:vertical:pressed {
-    background-color: "#3f6fd1";
+	border-radius: 6px;
 }
 
 #SliderValue {
@@ -407,36 +398,21 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 }
 
 #NavbarButton:hover {
-    border: 2px solid rgba(128, 128, 128, 0.4);
-    border-top-style: none;
-    border-left-style: none;
-    border-right-style: none;
+    border-bottom: 2px solid rgba(128, 128, 128, 0.4);
 }
 
 #NavbarButton:pressed {
-    border: 2px solid rgba(128, 128, 128, 0.6);
-    border-top-style: none;
-    border-left-style: none;
-    border-right-style: none;
+    border-bottom: 2px solid rgba(128, 128, 128, 0.6);
 }
 
-#NavbarButtonActive {
-    background: rgba(0, 0, 0, 0);
-    font-family: Rubik;
-    font-weight: bold;
-    font-size: 13px;
-    color: white;
-    text-align: center;
-    border: 2px solid rgba(128, 128, 128, 0.8);
-    border-top-style: none;
-    border-left-style: none;
-    border-right-style: none;
+#NavbarButton[selected="True"] {
+    border-bottom: 2px solid rgba(128, 128, 128, 0.8);
 }
 
 #LineEdit {
-	background-color: rgba(89, 91, 94, 0.6);
+    background: rgba(255, 255, 255, 0.15);
 	border-radius: 8px;
-	border: 2px solid transparent;
+    border: 2px solid rgb(38, 63, 112);
 	padding-left: 10px;
     padding-right: 10px;
 	selection-color: white;
@@ -446,11 +422,11 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 
 #LineEdit:focus {
 	border: 2px solid rgb(86, 138, 242);
-    background-color: rgba(89, 91, 94, 0.4);
 }
 
-#ButtonDefault {
-    background: rgba(86, 138, 242, 0.6);
+#Button {
+    background: rgb(56, 91, 161);
+    border: 2px solid rgb(38, 63, 112);
     font-family: Rubik;
     font-weight: bold;
     font-size: 13px;
@@ -459,30 +435,25 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
     border-radius: 8px;
 }
 
-#ButtonDefault:hover {
-    background: rgba(86, 138, 242, 0.8);
+#Button:hover {
+    background: rgb(47, 77, 137);
 }
 
-#ButtonDefault:pressed {
-    background: rgba(86, 138, 242, 1);
+#Button:pressed {
+    background: rgb(38, 63, 112);
 }
 
-#ButtonDelete {
-    background: rgba(128, 128, 128, 0.6);
-    font-family: Rubik;
-    font-weight: bold;
-    font-size: 13px;
-    color: white;
-    text-align: center;
-    border-radius: 8px;
+#Button[style="ButtonDelete"] {
+    background: rgb(89, 91, 94);
+    border: 2px solid rgb(66, 66, 66);
 }
 
-#ButtonDelete:hover {
-    background: rgba(128, 128, 128, 0.8);
+#Button[style="ButtonDelete"]:hover {
+    background: rgb(78, 79, 80);
 }
 
-#ButtonDelete:pressed {
-    background: rgba(128, 128, 128, 1);
+#Button[style="ButtonDelete"]:pressed {
+    background: rgb(66, 66, 66);
 }
 
 #TeleportMouseTip {
@@ -500,24 +471,40 @@ QToolTip {
     border-radius: 6px;
 }
 
-#WeaponButton, #AmmoButton, #HealingButton, #ThrowableButton, #EquipmentButton, #TeamsButton {
+#WeaponButton, 
+#AmmoButton, 
+#HealingButton, 
+#ThrowableButton, 
+#EquipmentButton, 
+#TeamsButton {
     background: none;
     border: none;
     border-radius: 8px;
 }
 
-#WeaponButton:hover, #AmmoButton:hover, #HealingButton:hover, #ThrowableButton:hover, #EquipmentButton:hover, #TeamsButton:hover {
+#WeaponButton:hover, 
+#AmmoButton:hover, 
+#HealingButton:hover, 
+#ThrowableButton:hover,
+#EquipmentButton:hover, 
+#TeamsButton:hover {
     background: rgba(128, 128, 128, 0.2);
     border: none;
 }
 
-#WeaponButton:pressed, #AmmoButton:pressed, #HealingButton:pressed, #ThrowableButton:pressed, #EquipmentButton:pressed, #TeamsButton:pressed  {
+#WeaponButton:pressed, 
+#AmmoButton:pressed, 
+#HealingButton:pressed, 
+#ThrowableButton:pressed, 
+#EquipmentButton:pressed, 
+#TeamsButton:pressed  {
     background: rgba(128, 128, 128, 0.4);
     border: none;
 }
 
 #MapSelection {
-	background-color: rgba(89, 91, 94, 0.6);
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgb(38, 63, 112);
 	border-radius: 8px;
 	padding-left: 10px;
     padding-right: 10px;
@@ -525,7 +512,8 @@ QToolTip {
 }
 
 #MapSelectionView {
-	background-color: rgb(89, 91, 94);
+    background:rgb(69, 64, 96);
+    border: 2px solid rgb(38, 63, 112);
 	border-radius: 8px;
 	padding-left: 10px;
     padding-right: 10px;
@@ -533,12 +521,12 @@ QToolTip {
 }
 
 #MapSelectionView::item:focus {
-    background-color: rgba(128, 128, 128, 0.4);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 #NotifWidget {
-    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(8, 0, 21, 213), stop:1 rgba(21, 0, 44, 213));
-    border: 2px solid rgba(44, 25, 112, 192);
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(8, 0, 21, 213), stop:1 rgba(0, 23, 77, 213));
+    border: 2px solid #332757;
     border-radius: 20px;
 }
 
@@ -580,106 +568,28 @@ QToolTip {
     border-radius: 8px;
 }
 
-#OverlayCenter {
-    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
-    border-radius: 16px;
-    border: 1px solid red;
+QCheckBox::indicator {
+    background: transparent;
 }
 
-#OverlayLeft {
-    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
-    border-top-right-radius: 16px;
-    border-bottom-right-radius: 16px;
-    border-bottom: 1px solid red;
-    border-top: 1px solid red;
-    border-right: 1px solid red;
-    border-left: 0;
+#Toggle {
+    border-radius: 14px;
 }
 
-#OverlayRight {
-    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
-    border-top-left-radius: 16px;
-    border-bottom-left-radius: 16px;
-    border-bottom: 1px solid red;
-    border-top: 1px solid red;
-    border-left: 1px solid red;
-    border-right: 0;
+#Toggle:unchecked {
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgb(38, 63, 112);
 }
 
-#OverlayTop {
-    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
-    border-bottom-left-radius: 16px;
-    border-bottom-right-radius: 16px;
-    border-bottom: 1px solid red;
-    border-left: 1px solid red;
-    border-right: 1px solid red;
-    border-top: 0;
+#Toggle:checked {
+    background: #00BCFF;
+    border: 2px solid rgb(0, 132, 180);
 }
 
-#OverlayBottom {
-    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-    border-top: 1px solid red;
-    border-left: 1px solid red;
-    border-right: 1px solid red;
-    border-bottom: 0;
-}
-
-#OverlayExpandButtonRight {
-    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
-    border-radius: 16px;
-    border: 1px solid red;
-    padding-right: 13px;
-}
-
-#OverlayExpandButtonLeft {
-    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
-    border-radius: 16px;
-    border: 1px solid red;
-    padding-left: 15px;
-}
-
-#OverlayExpandButtonTop {
-    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
-    border-radius: 16px;
-    border: 1px solid red;
-    padding-top: 14px;
-}
-
-#OverlayExpandButtonBottom {
-    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
-    border-radius: 16px;
-    border: 1px solid red;
-    padding-bottom: 13px;
-}
-
-#OverlayButton {
-    background: rgba(0, 0, 0, 0);
-    border: none;
-    border-radius: 8px;
-}
-
-#OverlayButton:hover {
-    background: rgba(128, 128, 128, 0.4);
-}
-
-#OverlayButton:pressed {
-    background: rgba(128, 128, 128, 0.6);
-}
-
-#OverlayButtonActive {
-    background: rgba(128, 128, 128, 0.2);
-    border: none;
-    border-radius: 8px;
-}
-
-#OverlayButtonActive:hover {
-    background: rgba(128, 128, 128, 0.4);
-}
-
-#OverlayButtonActive:pressed {
-    background: rgba(128, 128, 128, 0.6);
+#ToggleCircle {
+    background: white;
+    border: 0;
+    border-radius: 11px;
 }
 
 #ThemesContainer QRadioButton::indicator {
@@ -699,17 +609,133 @@ QToolTip {
     border-radius: 40px;
 }
 
+#ThemeDark {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgb(8, 0, 21), stop:1 rgb(21, 0, 44));
+    border-radius: 40px;
+}
+
 #ThemeBlue {
-    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(0, 4, 44, 255), stop:1 rgba(65, 77, 76, 255));
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(0, 4, 44, 255), stop:1 rgba(0, 128, 128, 213));
     border-radius: 40px;
 }
 
-#ThemeOverlayDark {
-    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(8, 0, 21, 255), stop:1 rgba(21, 0, 44, 255));
+#ThemePurpleSky {
+    background: qlineargradient(spread:reflect, x1:0, y1:0.812273, x2:0.739222, y2:0.306, stop:0 rgba(30, 8, 77, 255), stop:1 rgba(63, 29, 76, 255));
     border-radius: 40px;
 }
 
-#ThemeOverlayPurple {
-    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 #161733, stop:1 #332757);
+#ThemeCottonCandy {
+    background: qlineargradient(spread:reflect, x1:0, y1:1, x2:0, y2:0, stop:0.111111 rgba(105, 154, 202, 255), stop:1 rgba(156, 5, 167, 255));
     border-radius: 40px;
+}
+
+#ThemeAqua {
+    background: qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:1, stop:0 rgba(7, 255, 255, 255), stop:0.666667 rgba(15, 81, 152, 255), stop:0.955556 rgba(4, 65, 88, 255));
+    border-radius: 40px;
+}
+
+#ThemeNebula {
+    background: qlineargradient(spread:reflect, x1:0.239, y1:1, x2:0.523, y2:0.528, stop:0.138889 rgba(95, 67, 177, 255), stop:0.883333 rgba(129, 29, 129, 255));
+    border-radius: 40px;
+}
+
+#ThemeVoid {
+    background: qradialgradient(spread:pad, cx:0.338, cy:0.648591, radius:0.714, fx:0.644, fy:0.335409, stop:0.233333 rgba(24, 11, 24, 255), stop:1 rgba(28, 3, 54, 255));
+    border-radius: 40px;
+}
+
+#ThemeSunrise {
+    background: qlineargradient(spread:pad, x1:0.340222, y1:1, x2:0.467, y2:0.119318, stop:0 rgba(236, 185, 0, 255), stop:0.227778 rgba(141, 9, 99, 255), stop:0.488889 rgba(161, 44, 130, 255), stop:1 rgba(216, 141, 216, 255));
+    border-radius: 40px;
+}
+
+#ThemeVaporwave {
+    background: qradialgradient(spread:pad, cx:0, cy:1, radius:2, fx:0, fy:1, stop:0 rgba(0, 50, 97, 255), stop:1 rgba(145, 2, 143, 255));
+    border-radius: 40px;
+}
+
+#ThemeBlackAndWhite {
+    background: qlineargradient(spread:reflect, x1:0, y1:1, x2:1, y2:0, stop:0.45 rgb(0, 0, 0), stop:1 rgb(255, 255, 255));
+    border-radius: 40px;
+}
+
+#Overlay {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
+    border: 2px solid #1250fc;
+}
+
+#Overlay[side="center"] {
+    border-radius: 16px;
+}
+
+#Overlay[side="left"] {
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-left: 0;
+}
+
+#Overlay[side="right"] {
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    border-right: 0;
+}
+
+#Overlay[side="top"] {
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-top: 0;
+}
+
+#Overlay[side="bottom"] {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom: 0;
+}
+
+#OverlayExpandButton {
+    background: qlineargradient(spread:pad, x1:0.471591, y1:1, x2:0.915, y2:0, stop:0 rgba(22, 23, 51, 213), stop:1 rgba(51, 39, 87, 213));
+    border-radius: 16px;
+    border: 2px solid #1250fc;
+}
+
+#OverlayExpandButton[side="right"] {
+    padding-right: 13px;
+}
+
+#OverlayExpandButton[side="left"] {
+    padding-left: 15px;
+}
+
+#OverlayExpandButton[side="bottom"] {
+    padding-bottom: 13px;
+}
+
+#OverlayExpandButton[side="top"] {
+    padding-top: 14px;
+}
+
+#OverlayButton {
+    background: rgba(0, 0, 0, 0);
+    border: none;
+    border-radius: 8px;
+}
+
+#OverlayButton:hover {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#OverlayButton:pressed {
+    background: rgba(128, 128, 128, 0.6);
+}
+
+#OverlayButton[selected="True"] {
+    background: rgba(128, 128, 128, 0.2);
+}
+
+#OverlayButton[selected="True"]:hover {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#OverlayButton[selected="True"]:pressed {
+    background: rgba(128, 128, 128, 0.6);
 }

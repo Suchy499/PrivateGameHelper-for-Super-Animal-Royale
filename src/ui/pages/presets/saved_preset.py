@@ -18,10 +18,11 @@ class SavedPreset(QWidget):
         self._layout.setContentsMargins(7, 10, 7, 10)
         
         self.name_label = ClickableLabel(self, self.name)
+        self.name_label.setObjectName("SavedPresetName")
         if glb.ACTIVE_PRESET == self.id:
-            self.name_label.setObjectName("SavedPresetNameActive")
+            self.name_label.setProperty("selected", "True")
         else:
-            self.name_label.setObjectName("SavedPresetName")
+            self.name_label.setProperty("selected", "False")
         self.name_label.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.name_label.clicked.connect(self.set_active)
         

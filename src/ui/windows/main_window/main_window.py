@@ -1,5 +1,5 @@
 from core import *
-from styles import AppStyle
+from styles import Style
 from images import IMAGES
 from widgets import Sidebar, TitleBar, SizeGrip, Notification, UpdatePopup
 from ui.pages import Pages
@@ -22,7 +22,7 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QIcon(IMAGES[f"icon_{glb.SETTINGS.value("AppIcon", 0)}"]))
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint, True)
-        self.setStyleSheet(AppStyle.getValue(glb.SETTINGS.value("AppStyle", 0)))
+        self.setStyleSheet(Style.getValue(glb.SETTINGS.value("AppStyle", 0)))
         
         self.content = QWidget(self)
         self.content.setObjectName("MainWindowContent")
@@ -208,7 +208,7 @@ class MainWindow(QMainWindow):
                     self.overlay.show()
     
     def update_style(self) -> None:
-        self.setStyleSheet(AppStyle.getValue(glb.SETTINGS.value("AppStyle", 0)))
+        self.setStyleSheet(Style.getValue(glb.SETTINGS.value("AppStyle", 0)))
     
     def update_icon(self) -> None:
         self.setWindowIcon(QIcon(IMAGES[f"icon_{glb.SETTINGS.value("AppIcon", 0)}"]))
