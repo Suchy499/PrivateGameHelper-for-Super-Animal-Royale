@@ -7,3 +7,4 @@ pyperclip>=1.8.2
 screen-ocr[winrt]==0.5.0
 requests==2.32.3
 packaging==24.2
+pyinstaller==6.11.1
