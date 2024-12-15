@@ -7,10 +7,10 @@ class PageTeleport(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
-        self._layout = QHBoxLayout(self)
-        self._layout.setContentsMargins(9, 9, 9, 22)
-        self._layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        self._layout.setSpacing(10)
+        self.page_layout = QHBoxLayout(self)
+        self.page_layout.setContentsMargins(9, 9, 9, 22)
+        self.page_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.page_layout.setSpacing(10)
         
         self.map_container = QWidget(self)
         self.map_container.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
@@ -104,8 +104,8 @@ class PageTeleport(QWidget):
         self.players_container_layout.addWidget(self.horizontal_line)
         self.players_container_layout.addWidget(self.scroll_area)
 
-        self._layout.addWidget(self.map_container)
-        self._layout.addWidget(self.players_container)
+        self.page_layout.addWidget(self.map_container)
+        self.page_layout.addWidget(self.players_container)
         
     def resizeEvent(self, event):
         self.map_container.setMaximumWidth(self.width() // 2)

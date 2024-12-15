@@ -27,9 +27,9 @@ class MainWindow(QMainWindow):
         self.content = QWidget(self)
         self.content.setObjectName("MainWindowContent")
         self.setCentralWidget(self.content)
-        _layout = QGridLayout(self.content)
-        _layout.setContentsMargins(0, 0, 0, 0)
-        _layout.setSpacing(0)
+        self.window_layout = QGridLayout(self.content)
+        self.window_layout.setContentsMargins(0, 0, 0, 0)
+        self.window_layout.setSpacing(0)
         
         self.notif = Notification(self.content)
         self.update_popup = UpdatePopup(self.content)
@@ -145,9 +145,9 @@ class MainWindow(QMainWindow):
         ]
         
         self.sidebar.setup_buttons(_btn_list)
-        _layout.addWidget(self.title_bar, 0, 0, 1, -1)
-        _layout.addWidget(self.sidebar, 1, 0)
-        _layout.addWidget(self.pages, 1, 1)
+        self.window_layout.addWidget(self.title_bar, 0, 0, 1, -1)
+        self.window_layout.addWidget(self.sidebar, 1, 0)
+        self.window_layout.addWidget(self.pages, 1, 1)
         
         self.overlay = Overlay()
         self.overlay.show()

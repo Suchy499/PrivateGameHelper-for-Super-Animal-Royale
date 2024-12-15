@@ -5,8 +5,8 @@ class Keybinds(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
-        _layout = QVBoxLayout(self)
-        _layout.setContentsMargins(0, 0, 0, 0)
+        self.page_layout = QVBoxLayout(self)
+        self.page_layout.setContentsMargins(0, 0, 0, 0)
         
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setObjectName("ScrollArea")
@@ -17,7 +17,7 @@ class Keybinds(QWidget):
         self.content_area = QWidget(self)
         self.content_area.setObjectName("Content")
         self.scroll_area.setWidget(self.content_area)
-        _layout.addWidget(self.scroll_area)
+        self.page_layout.addWidget(self.scroll_area)
         
         self.content_layout = QVBoxLayout(self.content_area)
         self.content_layout.setAlignment(Qt.AlignmentFlag.AlignTop)

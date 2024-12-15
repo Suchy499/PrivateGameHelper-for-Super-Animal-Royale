@@ -5,8 +5,8 @@ class Settings(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
-        _layout = QVBoxLayout(self)
-        _layout.setContentsMargins(0, 0, 0, 0)
+        self.page_layout = QVBoxLayout(self)
+        self.page_layout.setContentsMargins(0, 0, 0, 0)
         
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setObjectName("ScrollArea")
@@ -17,11 +17,11 @@ class Settings(QWidget):
         self.content_area = QWidget(self)
         self.content_area.setObjectName("Content")
         self.scroll_area.setWidget(self.content_area)
-        _layout.addWidget(self.scroll_area)
+        self.page_layout.addWidget(self.scroll_area)
         
-        self._layout = QVBoxLayout(self.content_area)
-        self._layout.setContentsMargins(0, 0, 9, 0)
-        self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.content_layout = QVBoxLayout(self.content_area)
+        self.content_layout.setContentsMargins(0, 0, 9, 0)
+        self.content_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.line_height = 2
         
         self.general_label = QLabel(self.content_area, text="General")
@@ -94,17 +94,17 @@ class Settings(QWidget):
         self.start_button = Button(self, "Start")
         self.start_button.clicked.connect(start_dodgeball)
         
-        self._layout.addWidget(self.general_label)
-        self._layout.addWidget(self.general_container)
-        self._layout.addSpacing(8)
-        self._layout.addWidget(self.general_hline)
-        self._layout.addSpacing(10)
-        self._layout.addWidget(self.settings_label)
-        self._layout.addWidget(self.settings_container)
-        self._layout.addSpacing(8)
-        self._layout.addWidget(self.settings_hline)
-        self._layout.addSpacing(9)
-        self._layout.addWidget(self.start_button, alignment=Qt.AlignmentFlag.AlignRight)
+        self.content_layout.addWidget(self.general_label)
+        self.content_layout.addWidget(self.general_container)
+        self.content_layout.addSpacing(8)
+        self.content_layout.addWidget(self.general_hline)
+        self.content_layout.addSpacing(10)
+        self.content_layout.addWidget(self.settings_label)
+        self.content_layout.addWidget(self.settings_container)
+        self.content_layout.addSpacing(8)
+        self.content_layout.addWidget(self.settings_hline)
+        self.content_layout.addSpacing(9)
+        self.content_layout.addWidget(self.start_button, alignment=Qt.AlignmentFlag.AlignRight)
         
         glb.SIGNAL_MANAGER.hostIdChanged.connect(self.host_id_changed)
         glb.SIGNAL_MANAGER.dodgeballSettingChanged.connect(self.setting_changed)

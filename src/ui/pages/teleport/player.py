@@ -11,8 +11,8 @@ class Player(QWidget):
         
         self.player_item = playerItem
         
-        self._layout = QHBoxLayout(self)
-        self._layout.setContentsMargins(7, 10, 7, 10)
+        self.player_layout = QHBoxLayout(self)
+        self.player_layout.setContentsMargins(7, 10, 7, 10)
         
         self.name_label = ClickableLabel(self, self.player_item.name)
         self.name_label.setObjectName("PlayerName")
@@ -23,8 +23,8 @@ class Player(QWidget):
         self.name_label.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.name_label.clicked.connect(self.set_active)
         
-        self._layout.addWidget(self.name_label)
-        self._layout.addStretch()
+        self.player_layout.addWidget(self.name_label)
+        self.player_layout.addStretch()
     
     def set_active(self):
         glb.SELECTED_PLAYER_TELE = self.player_item

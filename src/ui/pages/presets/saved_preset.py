@@ -14,8 +14,8 @@ class SavedPreset(QWidget):
         self.name = self.preset["name"]
         self.last_edited = self.preset["last_edited"]
         
-        self._layout = QHBoxLayout(self)
-        self._layout.setContentsMargins(7, 10, 7, 10)
+        self.preset_layout = QHBoxLayout(self)
+        self.preset_layout.setContentsMargins(7, 10, 7, 10)
         
         self.name_label = ClickableLabel(self, self.name)
         self.name_label.setObjectName("SavedPresetName")
@@ -31,9 +31,9 @@ class SavedPreset(QWidget):
         self.last_edited_label.setObjectName("SavedPresetEdited")
         self.last_edited_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
-        self._layout.addWidget(self.name_label)
-        self._layout.addStretch()
-        self._layout.addWidget(self.last_edited_label)
+        self.preset_layout.addWidget(self.name_label)
+        self.preset_layout.addStretch()
+        self.preset_layout.addWidget(self.last_edited_label)
         
         self.update_timer = QTimer(self)
         self.update_timer.timeout.connect(self.update)

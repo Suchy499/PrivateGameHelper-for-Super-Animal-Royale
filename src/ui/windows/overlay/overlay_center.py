@@ -10,16 +10,16 @@ class OverlayCenter(QFrame):
         self.setProperty("side", "center")
         self.setVisible(False)
         
-        _layout = QVBoxLayout(self)
-        _layout.setContentsMargins(0, 0, 0, 0)
-        _layout.setSpacing(0)
+        self.overlay_layout = QVBoxLayout(self)
+        self.overlay_layout.setContentsMargins(0, 0, 0, 0)
+        self.overlay_layout.setSpacing(0)
         
         self.notif = Notification(self)
         self.update_popup = UpdatePopup(self)
         self.title_bar = OverlayTitleBar(self)
         self.pages = Pages(self)
-        _layout.addWidget(self.title_bar)
-        _layout.addWidget(self.pages)
+        self.overlay_layout.addWidget(self.title_bar)
+        self.overlay_layout.addWidget(self.pages)
         
         self.pages.currentChanged.connect(self.set_title)
         self.title_bar.close_button.clicked.connect(self.close_overlay)

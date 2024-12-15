@@ -21,9 +21,9 @@ class Overlay(QWidget):
         self.setWindowFlag(Qt.WindowType.SplashScreen, True)
         self.setStyleSheet(Style.getValue(glb.SETTINGS.value("OverlayStyle", 0)))
         
-        self.layout_ = QGridLayout(self)
-        self.layout_.setContentsMargins(0, 0, 0, 0)
-        self.layout_.setSpacing(0)
+        self.overlay_layout = QGridLayout(self)
+        self.overlay_layout.setContentsMargins(0, 0, 0, 0)
+        self.overlay_layout.setSpacing(0)
         
         self.top_overlay_container = QWidget(self)
         self.top_overlay_container_layout = QVBoxLayout(self.top_overlay_container)
@@ -67,11 +67,11 @@ class Overlay(QWidget):
         self.center_overlay = OverlayCenter(self)
         self.center_overlay_container_layout.addWidget(self.center_overlay)
         
-        self.layout_.addWidget(self.top_overlay_container, 0, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
-        self.layout_.addWidget(self.right_overlay_container, 1, 2, alignment=Qt.AlignmentFlag.AlignRight)
-        self.layout_.addWidget(self.bottom_overlay_container, 2, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignHCenter)
-        self.layout_.addWidget(self.left_overlay_container, 1, 0, alignment=Qt.AlignmentFlag.AlignLeft)
-        self.layout_.addWidget(self.center_overlay_container, 1, 1, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.overlay_layout.addWidget(self.top_overlay_container, 0, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
+        self.overlay_layout.addWidget(self.right_overlay_container, 1, 2, alignment=Qt.AlignmentFlag.AlignRight)
+        self.overlay_layout.addWidget(self.bottom_overlay_container, 2, 0, 1, 3, alignment=Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignHCenter)
+        self.overlay_layout.addWidget(self.left_overlay_container, 1, 0, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.overlay_layout.addWidget(self.center_overlay_container, 1, 1, alignment=Qt.AlignmentFlag.AlignCenter)
         
         self.resize_timer = QTimer(self)
         self.resize_timer.timeout.connect(self.updateRect)

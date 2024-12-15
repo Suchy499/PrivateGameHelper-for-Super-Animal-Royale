@@ -7,9 +7,9 @@ class Teams(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
-        _layout = QVBoxLayout(self)
-        _layout.setContentsMargins(0, 0, 9, 22)
-        _layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.page_layout = QVBoxLayout(self)
+        self.page_layout.setContentsMargins(0, 0, 9, 22)
+        self.page_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.line_height = 2
         
         self.header = QWidget(self)
@@ -72,9 +72,9 @@ class Teams(QWidget):
         self.content_area.setObjectName("Content")
         self.scroll_area.setWidget(self.content_area)
         
-        self.scroll_layout = QHBoxLayout(self.content_area)
-        self.scroll_layout.setContentsMargins(0, 0, 0, 0)
-        self.scroll_layout.setSpacing(30)
+        self.content_layout = QHBoxLayout(self.content_area)
+        self.content_layout.setContentsMargins(0, 0, 0, 0)
+        self.content_layout.setSpacing(30)
         
         self.team_a_players = QWidget(self.content_area)
         self.team_a_players_layout = QVBoxLayout(self.team_a_players)
@@ -88,14 +88,14 @@ class Teams(QWidget):
         self.team_b_players_layout = QVBoxLayout(self.team_b_players)
         self.team_b_players_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         
-        self.scroll_layout.addWidget(self.team_a_players)
-        self.scroll_layout.addWidget(self.spectators_players)
-        self.scroll_layout.addWidget(self.team_b_players)
+        self.content_layout.addWidget(self.team_a_players)
+        self.content_layout.addWidget(self.spectators_players)
+        self.content_layout.addWidget(self.team_b_players)
         
         self.set_columns_width()
         
-        _layout.addWidget(self.header)
-        _layout.addWidget(self.scroll_area)
+        self.page_layout.addWidget(self.header)
+        self.page_layout.addWidget(self.scroll_area)
     
         glb.SIGNAL_MANAGER.playersRefreshed.connect(self.load_players)
         glb.SIGNAL_MANAGER.playerChangedTeams.connect(self.load_players)
@@ -139,7 +139,7 @@ class Teams(QWidget):
     
     def set_columns_width(self) -> None:
         scroll_width = self.scroll_area.width()
-        spacing = self.scroll_layout.spacing()
+        spacing = self.content_layout.spacing()
         col_width = (scroll_width - spacing * 2) / 3
         self.team_a_players.setFixedWidth(col_width)
         self.spectators_players.setFixedWidth(col_width)

@@ -17,9 +17,9 @@ class UpdatePopup(QFrame):
         self._parent = parent
         self.setFixedSize(w, h)
         self.setObjectName("UpdatePopup")
-        _layout = QGridLayout(self)
-        _layout.setContentsMargins(0, 0, 0, 0)
-        _layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.popup_layout = QGridLayout(self)
+        self.popup_layout.setContentsMargins(0, 0, 0, 0)
+        self.popup_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.latest_version: str = self.get_latest_version()
         if not self.latest_version or Version(__version__) >= Version(self.latest_version):
             self.setVisible(False)
@@ -38,11 +38,11 @@ class UpdatePopup(QFrame):
         self.open_browser_button = Button(self, "Open in browser", w=125)
         self.open_browser_button.clicked.connect(self.open_browser)
         
-        _layout.addWidget(self.title_label, 0, 0, 1, 2, alignment=Qt.AlignmentFlag.AlignCenter)
-        _layout.addWidget(self.current_version_label, 1, 0, 1, 2, alignment=Qt.AlignmentFlag.AlignCenter)
-        _layout.addWidget(self.latest_version_label, 2, 0, 1, 2, alignment=Qt.AlignmentFlag.AlignCenter)
-        _layout.addWidget(self.dont_update_button, 3, 0, 1, 1, alignment=Qt.AlignmentFlag.AlignCenter)
-        _layout.addWidget(self.open_browser_button, 3, 1, 1, 1, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.popup_layout.addWidget(self.title_label, 0, 0, 1, 2, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.popup_layout.addWidget(self.current_version_label, 1, 0, 1, 2, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.popup_layout.addWidget(self.latest_version_label, 2, 0, 1, 2, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.popup_layout.addWidget(self.dont_update_button, 3, 0, 1, 1, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.popup_layout.addWidget(self.open_browser_button, 3, 1, 1, 1, alignment=Qt.AlignmentFlag.AlignCenter)
         
         self._parent.showEvent = self._showEvent
     

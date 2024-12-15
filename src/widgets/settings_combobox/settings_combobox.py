@@ -13,11 +13,11 @@ class SettingsComboBox(QWidget):
         self.setting = setting
         
         self.setFixedWidth(w)
-        _layout = QVBoxLayout(self)
-        _layout.setContentsMargins(0, 0, 0, 0)
+        self.settings_combobox_layout = QVBoxLayout(self)
+        self.settings_combobox_layout.setContentsMargins(0, 0, 0, 0)
         
-        label = QLabel(text, self)
-        label.setObjectName("ComboBoxLabel")
+        self.label = QLabel(text, self)
+        self.label.setObjectName("ComboBoxLabel")
         
         self.combobox = QComboBox(self)
         self.combobox.setFixedHeight(24)
@@ -44,8 +44,8 @@ class SettingsComboBox(QWidget):
         self.combobox.currentIndexChanged.connect(self.setting_selected)
         glb.SIGNAL_MANAGER.settingChanged.connect(self.change_setting)
         
-        _layout.addWidget(label)
-        _layout.addWidget(self.combobox)
+        self.settings_combobox_layout.addWidget(self.label)
+        self.settings_combobox_layout.addWidget(self.combobox)
     
     def addItems(self, texts: list[str]) -> None:
         self.combobox.addItems(texts)

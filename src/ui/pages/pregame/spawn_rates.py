@@ -5,8 +5,8 @@ class SpawnRates(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
-        _layout = QVBoxLayout(self)
-        _layout.setContentsMargins(0, 0, 0, 0)
+        self.page_layout = QVBoxLayout(self)
+        self.page_layout.setContentsMargins(0, 0, 0, 0)
         
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setObjectName("ScrollArea")
@@ -17,11 +17,11 @@ class SpawnRates(QWidget):
         self.content_area = QWidget(self)
         self.content_area.setObjectName("Content")
         self.scroll_area.setWidget(self.content_area)
-        _layout.addWidget(self.scroll_area)
+        self.page_layout.addWidget(self.scroll_area)
         
-        self._layout = QVBoxLayout(self.content_area)
-        self._layout.setContentsMargins(0, 0, 0, 0)
-        self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.content_layout = QVBoxLayout(self.content_area)
+        self.content_layout.setContentsMargins(0, 0, 0, 0)
+        self.content_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.line_height = 2
         
         self.spawn_rates_label = QLabel(self, text="Spawn Rates")
@@ -129,8 +129,8 @@ class SpawnRates(QWidget):
         self.spawn_rates_settings_layout.addWidget(self.cat_mine_slider, 4, 2)
         self.spawn_rates_settings_layout.addWidget(self.zipline_slider, 4, 3)
         
-        self._layout.addWidget(self.spawn_rates_label)
-        self._layout.addWidget(self.spawn_rates_settings)
+        self.content_layout.addWidget(self.spawn_rates_label)
+        self.content_layout.addWidget(self.spawn_rates_settings)
         
         glb.SIGNAL_MANAGER.presetSettingChanged.connect(self.setting_changed)
     

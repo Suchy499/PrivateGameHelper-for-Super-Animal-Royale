@@ -15,13 +15,13 @@ class OverlaySidebar(QFrame):
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         
         if self.orientation == Qt.Orientation.Vertical:
-            self._layout = QVBoxLayout(self)
-            self._layout.setContentsMargins(5, 8, 5, 8)
-            self._layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+            self.sidebar_layout = QVBoxLayout(self)
+            self.sidebar_layout.setContentsMargins(5, 8, 5, 8)
+            self.sidebar_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         else:
-            self._layout = QHBoxLayout(self)
-            self._layout.setContentsMargins(8, 5, 8, 5)
-            self._layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+            self.sidebar_layout = QHBoxLayout(self)
+            self.sidebar_layout.setContentsMargins(8, 5, 8, 5)
+            self.sidebar_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
         
         self.buttons = []
         
@@ -33,27 +33,27 @@ class OverlaySidebar(QFrame):
                 if btn["category"] != btn_list[index-1]["category"] and index > 0:
                     line = HLine(self, h=1) if self.orientation == Qt.Orientation.Vertical else VLine(self, w=1)
                     line.setObjectName("SidebarLine")
-                    self._layout.addWidget(line)
+                    self.sidebar_layout.addWidget(line)
                 button = Button(self, btn["icon"], "", btn["page"], f"OverlayButton", self.orientation)
                 button.setToolTip(btn["tooltip"])
                 if btn["active"]:
                     button.select("OverlayButton")
-                self._layout.addWidget(button)
+                self.sidebar_layout.addWidget(button)
                 self.buttons.append(button)
-        self._layout.addStretch()
+        self.sidebar_layout.addStretch()
         for index, btn in enumerate(btn_list):
             if not btn["show_top"]:
                 button = Button(self, btn["icon"], "", btn["page"], f"OverlayButton", self.orientation)
                 button.setToolTip(btn["tooltip"])
                 if btn["active"]:
                     button.select("OverlayButton")
-                self._layout.addWidget(button)
+                self.sidebar_layout.addWidget(button)
                 self.buttons.append(button)
                 try:
                     if btn["category"] != btn_list[index+1]["category"]:
                         line = HLine(self, h=1) if self.orientation == Qt.Orientation.Vertical else VLine(self, w=1)
                         line.setObjectName("SidebarLine")
-                        self._layout.addWidget(line)
+                        self.sidebar_layout.addWidget(line)
                 except IndexError:
                     pass
         

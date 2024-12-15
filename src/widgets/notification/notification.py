@@ -16,9 +16,9 @@ class Notification(QFrame):
         self._parent = parent
         self.setFixedSize(w, h)
         self.setObjectName("NotifWidget")
-        _layout = QHBoxLayout(self)
-        _layout.setContentsMargins(0, 0, 0, 0)
-        _layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.notification_layout = QHBoxLayout(self)
+        self.notification_layout.setContentsMargins(0, 0, 0, 0)
+        self.notification_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.opacity_effect = QGraphicsOpacityEffect(self)
         self.setGraphicsEffect(self.opacity_effect)
         self.opacity_effect.setOpacity(0)
@@ -52,9 +52,9 @@ class Notification(QFrame):
         self.animation = QPropertyAnimation(self.opacity_effect, b"opacity")
         self.animation.setDuration(200)
         
-        _layout.addWidget(self.icon)
-        _layout.addWidget(self.vline)
-        _layout.addWidget(self.notif_text)
+        self.notification_layout.addWidget(self.icon)
+        self.notification_layout.addWidget(self.vline)
+        self.notification_layout.addWidget(self.notif_text)
     
     def setText(self, text: str) -> None:
         return self.notif_text.setText(text)

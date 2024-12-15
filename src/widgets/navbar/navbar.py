@@ -8,10 +8,10 @@ class NavBar(QWidget):
     ):
         super().__init__(parent)
         
-        self._layout = QHBoxLayout(self)
-        self._layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        self._layout.setContentsMargins(0, 0, 0, 0)
-        self._layout.setSpacing(0)
+        self.navbar_layout = QHBoxLayout(self)
+        self.navbar_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.navbar_layout.setContentsMargins(0, 0, 0, 0)
+        self.navbar_layout.setSpacing(0)
         self.buttons = []
         
     def setup_buttons(self, btn_list: list[dict]) -> None:
@@ -19,9 +19,9 @@ class NavBar(QWidget):
                 button = Button(self, btn["text"], btn["page"])
                 if btn["active"]:
                     button.select()
-                self._layout.addWidget(button)
+                self.navbar_layout.addWidget(button)
                 self.buttons.append(button)
-        self._layout.addStretch()
+        self.navbar_layout.addStretch()
         
     def deselect_all(self) -> None:
         for btn in self.buttons:

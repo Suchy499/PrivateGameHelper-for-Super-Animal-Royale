@@ -31,9 +31,9 @@ class LabeledSlider(QWidget):
         self._width = width
         
         self.setFixedWidth(self._width)
-        self._layout = QGridLayout(self)
-        self._layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-        self._layout.setContentsMargins(0, 0, 20, 0)
+        self.labeled_slider_layout = QGridLayout(self)
+        self.labeled_slider_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.labeled_slider_layout.setContentsMargins(0, 0, 20, 0)
         
         self.label = QLabel(self, text=self.text)
         self.label.setAlignment(Qt.AlignmentFlag.AlignBottom)
@@ -62,10 +62,10 @@ class LabeledSlider(QWidget):
         if self.icon != "":
             self.icon_label.setPixmap(self.icon)
         
-        self._layout.addWidget(self.label, 0, 0)
-        self._layout.addWidget(self.icon_label, 0, 1)
-        self._layout.addWidget(self.slider, 1, 0)
-        self._layout.addWidget(self.slider_value_label, 1, 1)
+        self.labeled_slider_layout.addWidget(self.label, 0, 0)
+        self.labeled_slider_layout.addWidget(self.icon_label, 0, 1)
+        self.labeled_slider_layout.addWidget(self.slider, 1, 0)
+        self.labeled_slider_layout.addWidget(self.slider_value_label, 1, 1)
         
         self.valueChanged = self.slider.valueChanged
     

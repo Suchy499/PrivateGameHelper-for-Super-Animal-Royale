@@ -13,11 +13,11 @@ class MapComboBox(QWidget):
         self.mode = mode
         
         self.setFixedWidth(w)
-        _layout = QVBoxLayout(self)
-        _layout.setContentsMargins(0, 0, 0, 0)
+        self.map_combobox_layout = QVBoxLayout(self)
+        self.map_combobox_layout.setContentsMargins(0, 0, 0, 0)
         
-        label = QLabel(text, self)
-        label.setObjectName("ComboBoxLabel")
+        self.label = QLabel(text, self)
+        self.label.setObjectName("ComboBoxLabel")
         
         self.combobox = QComboBox(self)
         self.combobox.setFixedHeight(24)
@@ -41,8 +41,8 @@ class MapComboBox(QWidget):
         elif self.mode == "dodgeball":
             glb.SIGNAL_MANAGER.dodgeballMapSelected.connect(self.change_map)
         
-        _layout.addWidget(label)
-        _layout.addWidget(self.combobox)
+        self.map_combobox_layout.addWidget(self.label)
+        self.map_combobox_layout.addWidget(self.combobox)
     
     def addItems(self, texts: list[str]) -> None:
         self.combobox.addItems(texts)

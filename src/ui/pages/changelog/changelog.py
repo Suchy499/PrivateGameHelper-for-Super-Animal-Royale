@@ -8,9 +8,9 @@ class PageChangelog(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
-        _layout = QVBoxLayout(self)
-        _layout.setContentsMargins(9, 9, 9, 22)
-        _layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.page_layout = QVBoxLayout(self)
+        self.page_layout.setContentsMargins(9, 9, 9, 22)
+        self.page_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.line_height: int = 2
         
         self.changelog_label = QLabel("Changelog", self)
@@ -47,12 +47,12 @@ class PageChangelog(QWidget):
         self.content_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.scroll_area.setWidget(self.content_area)
         
-        _layout.addWidget(self.changelog_label)
-        _layout.addWidget(self.changelog_hline_top)
-        _layout.addWidget(self.scroll_area)
-        _layout.addWidget(self.changelog_hline_bottom)
-        _layout.addSpacing(9)
-        _layout.addWidget(self.bottom_row_container)
+        self.page_layout.addWidget(self.changelog_label)
+        self.page_layout.addWidget(self.changelog_hline_top)
+        self.page_layout.addWidget(self.scroll_area)
+        self.page_layout.addWidget(self.changelog_hline_bottom)
+        self.page_layout.addSpacing(9)
+        self.page_layout.addWidget(self.bottom_row_container)
         self.print_changelog()
     
     def get_response(self, api: str) -> dict:

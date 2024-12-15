@@ -17,9 +17,9 @@ class Sidebar(QFrame):
         self.setMinimumSize(self._min_width, 0)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         
-        self._layout = QVBoxLayout(self)
-        self._layout.setContentsMargins(5, 8, 5, 8)
-        self._layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.sidebar_layout = QVBoxLayout(self)
+        self.sidebar_layout.setContentsMargins(5, 8, 5, 8)
+        self.sidebar_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         
         self.hide_pixmap = QPixmap(IMAGES["left_arrow"]).scaledToWidth(13, Qt.TransformationMode.SmoothTransformation)
         self.show_pixmap = QPixmap(IMAGES["right_arrow"]).scaledToWidth(13, Qt.TransformationMode.SmoothTransformation)
@@ -35,8 +35,8 @@ class Sidebar(QFrame):
         self.hide_line = HLine(self, h=1)
         self.hide_line.setObjectName("SidebarLine")
         
-        self._layout.addWidget(self.expand_button)
-        self._layout.addWidget(self.hide_line)
+        self.sidebar_layout.addWidget(self.expand_button)
+        self.sidebar_layout.addWidget(self.hide_line)
         
         self.animation = QPropertyAnimation(self, b"maximumWidth")
     
@@ -61,25 +61,25 @@ class Sidebar(QFrame):
                 if btn["category"] != btn_list[index-1]["category"] and index > 0:
                     line = HLine(self, h=1)
                     line.setObjectName("SidebarLine")
-                    self._layout.addWidget(line)
+                    self.sidebar_layout.addWidget(line)
                 button = Button(self, btn["icon"], btn["text"], btn["page"], "SidebarButton")
                 if btn["active"]:
                     button.select("SidebarButton")
-                self._layout.addWidget(button)
+                self.sidebar_layout.addWidget(button)
                 self.buttons.append(button)
-        self._layout.addStretch()
+        self.sidebar_layout.addStretch()
         for index, btn in enumerate(btn_list):
             if not btn["show_top"]:
                 button = Button(self, btn["icon"], btn["text"], btn["page"], "SidebarButton")
                 if btn["active"]:
                     button.select("SidebarButton")
-                self._layout.addWidget(button)
+                self.sidebar_layout.addWidget(button)
                 self.buttons.append(button)
                 try:
                     if btn["category"] != btn_list[index+1]["category"]:
                         line = HLine(self, h=1)
                         line.setObjectName("SidebarLine")
-                        self._layout.addWidget(line)
+                        self.sidebar_layout.addWidget(line)
                 except IndexError:
                     pass
         

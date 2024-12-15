@@ -6,9 +6,9 @@ class General(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
-        self._layout = QVBoxLayout(self)
-        self._layout.setContentsMargins(0, 0, 0, 0)
-        self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.page_layout = QVBoxLayout(self)
+        self.page_layout.setContentsMargins(0, 0, 0, 0)
+        self.page_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.line_height = 2
         
         self.preset_label = QLabel(self, text="Preset")
@@ -81,12 +81,12 @@ class General(QWidget):
         self.start_button.clicked.connect(start_game)
         self.control_buttons_layout.addWidget(self.start_button)
         
-        self._layout.addWidget(self.preset_label)
-        self._layout.addWidget(self.preset_name_container)
-        self._layout.addSpacing(15)
-        self._layout.addWidget(self.preset_buttons)
-        self._layout.addWidget(self.preset_hline)
-        self._layout.addWidget(self.control_buttons)
+        self.page_layout.addWidget(self.preset_label)
+        self.page_layout.addWidget(self.preset_name_container)
+        self.page_layout.addSpacing(15)
+        self.page_layout.addWidget(self.preset_buttons)
+        self.page_layout.addWidget(self.preset_hline)
+        self.page_layout.addWidget(self.control_buttons)
         
         glb.SIGNAL_MANAGER.presetDeleted.connect(self.delete_settings)
         glb.SIGNAL_MANAGER.presetNameChanged.connect(self.name_changed)

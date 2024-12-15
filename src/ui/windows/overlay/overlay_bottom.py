@@ -35,10 +35,10 @@ class OverlayBottom(QWidget):
         self.overlay_content.setObjectName("Overlay")
         self.overlay_content.setProperty("side", "bottom")
         self.overlay_content.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        self.layout_ = QHBoxLayout(self.overlay_content)
-        self.layout_.setContentsMargins(0, 0, 0, 0)
+        self.overlay_layout = QHBoxLayout(self.overlay_content)
+        self.overlay_layout.setContentsMargins(0, 0, 0, 0)
         self.sidebar = OverlaySidebar(self, Qt.Orientation.Horizontal)
-        self.layout_.addWidget(self.sidebar)
+        self.overlay_layout.addWidget(self.sidebar)
         
         self.container_layout.addWidget(self.button_container, alignment=Qt.AlignmentFlag.AlignHCenter)
         self.container_layout.addWidget(self.overlay_content)

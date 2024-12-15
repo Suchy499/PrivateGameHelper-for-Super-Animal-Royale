@@ -6,8 +6,8 @@ class Weapons(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
-        _layout = QVBoxLayout(self)
-        _layout.setContentsMargins(0, 0, 0, 0)
+        self.page_layout = QVBoxLayout(self)
+        self.page_layout.setContentsMargins(0, 0, 0, 0)
         
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setObjectName("ScrollArea")
@@ -18,11 +18,11 @@ class Weapons(QWidget):
         self.content_area = QWidget(self)
         self.content_area.setObjectName("Content")
         self.scroll_area.setWidget(self.content_area)
-        _layout.addWidget(self.scroll_area)
+        self.page_layout.addWidget(self.scroll_area)
         
-        self._layout = QVBoxLayout(self.content_area)
-        self._layout.setContentsMargins(0, 0, 9, 0)
-        self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.content_layout = QVBoxLayout(self.content_area)
+        self.content_layout.setContentsMargins(0, 0, 9, 0)
+        self.content_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.line_height = 2
         
         self.weapons_label = QLabel(self.content_area, text="Weapons")
@@ -88,5 +88,5 @@ class Weapons(QWidget):
         self.weapons_container_layout.addWidget(self.sparrow_launcher_button, 4, 3)
         self.weapons_container_layout.addWidget(self.bcg_button, 4, 4)
         
-        self._layout.addWidget(self.weapons_label)
-        self._layout.addWidget(self.weapons_container)
+        self.content_layout.addWidget(self.weapons_label)
+        self.content_layout.addWidget(self.weapons_container)

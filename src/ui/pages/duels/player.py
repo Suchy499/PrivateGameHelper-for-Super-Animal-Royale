@@ -12,9 +12,9 @@ class Player(QWidget):
         self.player_item = playerItem
         self.index = glb.PLAYER_LIST.index(playerItem)
         
-        self._layout = QHBoxLayout(self)
-        self._layout.setContentsMargins(7, 10, 7, 10)
-        self._layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.player_layout = QHBoxLayout(self)
+        self.player_layout.setContentsMargins(7, 10, 7, 10)
+        self.player_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
         self.name_label = QLabel(self.player_item.name, self)
         self.name_label.setObjectName("PlayerNameTeams")
@@ -28,10 +28,10 @@ class Player(QWidget):
             self.left_button.setObjectName("TeamsButton")
             self.left_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
             self.left_button.clicked.connect(self.move_left)
-            self._layout.addWidget(self.left_button, alignment=Qt.AlignmentFlag.AlignLeft)
-        self._layout.addStretch()
-        self._layout.addWidget(self.name_label)
-        self._layout.addStretch()
+            self.player_layout.addWidget(self.left_button, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.player_layout.addStretch()
+        self.player_layout.addWidget(self.name_label)
+        self.player_layout.addStretch()
         if self.player_item.team == 0 or self.player_item.team == 1:
             self.right_icon = QPixmap(IMAGES["right_arrow"])
             self.right_button = QPushButton(self)
@@ -41,7 +41,7 @@ class Player(QWidget):
             self.right_button.setObjectName("TeamsButton")
             self.right_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
             self.right_button.clicked.connect(self.move_right)
-            self._layout.addWidget(self.right_button, alignment=Qt.AlignmentFlag.AlignRight)
+            self.player_layout.addWidget(self.right_button, alignment=Qt.AlignmentFlag.AlignRight)
         
     def move_left(self) -> None:
         glb.PLAYER_LIST[self.index].team -= 1

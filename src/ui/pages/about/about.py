@@ -7,8 +7,8 @@ class PageAbout(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
-        _layout = QVBoxLayout(self)
-        _layout.setContentsMargins(9, 9, 9, 22)
+        self.page_layout = QVBoxLayout(self)
+        self.page_layout.setContentsMargins(9, 9, 9, 22)
         self.line_height = 2
         self.icon_size = QSize(60, 60)
         self.button_size = QSize(self.icon_size.width()+20, self.icon_size.height()+20)
@@ -139,5 +139,5 @@ class PageAbout(QWidget):
         self.disclaimer_layout.addWidget(self.disclaimer_label)
         self.disclaimer_layout.addWidget(self.disclaimer_text)
         
-        _layout.addWidget(self.description_container)
-        _layout.addWidget(self.disclaimer_container)
+        self.page_layout.addWidget(self.description_container)
+        self.page_layout.addWidget(self.disclaimer_container)

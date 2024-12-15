@@ -5,10 +5,10 @@ class PageHome(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
-        _layout = QHBoxLayout(self)
-        _layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        _layout.setContentsMargins(9, 9, 9, 9)
-        _layout.setSpacing(10)
+        self.page_layout = QHBoxLayout(self)
+        self.page_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.page_layout.setContentsMargins(9, 9, 9, 9)
+        self.page_layout.setSpacing(10)
         
         self.logo_pixmap = QPixmap(IMAGES["logo"])
         self.logo_pixmap_initial = self.logo_pixmap.scaledToWidth(400, Qt.TransformationMode.SmoothTransformation)
@@ -16,7 +16,7 @@ class PageHome(QWidget):
         self.logo.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.logo.setPixmap(self.logo_pixmap_initial)
         
-        _layout.addWidget(self.logo)
+        self.page_layout.addWidget(self.logo)
         
     def scaledPixmap(self) -> QPixmap:
         scaled = self.logo_pixmap.scaled(

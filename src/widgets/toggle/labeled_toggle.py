@@ -12,9 +12,9 @@ class LabeledToggle(QWidget):
         default_state: bool = False
     ):
         super().__init__(parent)
-        layout = QHBoxLayout(self)
-        layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
-        layout.setContentsMargins(0, 0, 0, 0)
+        self.toggle_layout = QHBoxLayout(self)
+        self.toggle_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        self.toggle_layout.setContentsMargins(0, 0, 0, 0)
 
         self._width = width
         self._animation_curve = animation_curve
@@ -31,9 +31,9 @@ class LabeledToggle(QWidget):
         )
         
         self.label = QLabel(self, text=self._text)
-        layout.addWidget(self.toggle)
-        layout.addSpacing(10)
-        layout.addWidget(self.label)
+        self.toggle_layout.addWidget(self.toggle)
+        self.toggle_layout.addSpacing(10)
+        self.toggle_layout.addWidget(self.label)
         self.setChecked(self._default_state)
         self.stateChanged = self.toggle.stateChanged
         self.setObjectName("LabeledToggle")

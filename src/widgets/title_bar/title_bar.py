@@ -13,9 +13,9 @@ class TitleBar(QFrame):
         self.initial_pos = None
         self.main_window = get_main_window()
         
-        self._layout = QHBoxLayout(self)
-        self._layout.setContentsMargins(20, 0, 9, 0)
-        self._layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        self.titlebar_layout = QHBoxLayout(self)
+        self.titlebar_layout.setContentsMargins(20, 0, 9, 0)
+        self.titlebar_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
         
         self.title = QLabel(self, text=self.window().windowTitle())
         self.title.setObjectName("Title")
@@ -44,12 +44,12 @@ class TitleBar(QFrame):
         self.close_button.setIcon(self.close_pixmap)
         self.close_button.setFixedSize(self.close_pixmap.size())
         self.close_button.clicked.connect(QApplication.exit)
-        self._layout.addWidget(self.title)
-        self._layout.addStretch()
-        self._layout.addWidget(self.minimize_button)
-        self._layout.addWidget(self.maximize_button)
-        self._layout.addWidget(self.normal_button)
-        self._layout.addWidget(self.close_button)
+        self.titlebar_layout.addWidget(self.title)
+        self.titlebar_layout.addStretch()
+        self.titlebar_layout.addWidget(self.minimize_button)
+        self.titlebar_layout.addWidget(self.maximize_button)
+        self.titlebar_layout.addWidget(self.normal_button)
+        self.titlebar_layout.addWidget(self.close_button)
         
         self.window().windowTitleChanged.connect(lambda: self.title.setText(self.window().windowTitle()))
         

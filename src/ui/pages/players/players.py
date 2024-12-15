@@ -7,8 +7,8 @@ class PagePlayers(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
-        _layout = QVBoxLayout(self)
-        _layout.setContentsMargins(9, 9, 9, 22)
+        self.page_layout = QVBoxLayout(self)
+        self.page_layout.setContentsMargins(9, 9, 9, 22)
         
         self.header = QWidget(self)
         self.header_layout = QHBoxLayout(self.header)
@@ -119,9 +119,9 @@ class PagePlayers(QWidget):
             "In The Bwoking Dead, infects the selected player."
         )
         
-        _layout.addWidget(self.header)
-        _layout.addWidget(self.horizontal_line)
-        _layout.addWidget(self.scroll_area)
-        _layout.addWidget(self.horizontal_line2)
-        _layout.addWidget(self.buttons)
+        self.page_layout.addWidget(self.header)
+        self.page_layout.addWidget(self.horizontal_line)
+        self.page_layout.addWidget(self.scroll_area)
+        self.page_layout.addWidget(self.horizontal_line2)
+        self.page_layout.addWidget(self.buttons)
         

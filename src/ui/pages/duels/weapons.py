@@ -6,9 +6,9 @@ class Weapons(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
-        _layout = QVBoxLayout(self)
-        _layout.setContentsMargins(0, 0, 0, 0)
-        _layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.page_layout = QVBoxLayout(self)
+        self.page_layout.setContentsMargins(0, 0, 0, 0)
+        self.page_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         
         self.label = QLabel("Weapon Selection")
         self.label.setObjectName("ItemsHeaderName")
@@ -103,9 +103,9 @@ class Weapons(QWidget):
         self.content_area.setObjectName("Content")
         self.scroll_area.setWidget(self.content_area)
         
-        self.scroll_layout = QHBoxLayout(self.content_area)
-        self.scroll_layout.setContentsMargins(0, 0, 0, 0)
-        self.scroll_layout.setSpacing(50)
+        self.content_layout = QHBoxLayout(self.content_area)
+        self.content_layout.setContentsMargins(0, 0, 0, 0)
+        self.content_layout.setSpacing(50)
         
         self.team_a_players = QWidget(self.content_area)
         self.team_a_players_layout = QGridLayout(self.team_a_players)
@@ -117,8 +117,8 @@ class Weapons(QWidget):
         self.team_b_players_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.team_b_players_layout.setContentsMargins(9, 9, 19, 9)
         
-        self.scroll_layout.addWidget(self.team_a_players)
-        self.scroll_layout.addWidget(self.team_b_players)
+        self.content_layout.addWidget(self.team_a_players)
+        self.content_layout.addWidget(self.team_b_players)
         
         self.set_columns_width()
         
@@ -168,9 +168,9 @@ class Weapons(QWidget):
             WeaponSelect(self.content_area, QPixmap(IMAGES["bcg_color"]), 19, "b"),
         ]
         
-        _layout.addWidget(self.label)
-        _layout.addWidget(self.header)
-        _layout.addWidget(self.scroll_area)
+        self.page_layout.addWidget(self.label)
+        self.page_layout.addWidget(self.header)
+        self.page_layout.addWidget(self.scroll_area)
         for index, button in enumerate(_buttons_a):
             row = index // 4
             col = index % 4
@@ -199,7 +199,7 @@ class Weapons(QWidget):
     
     def set_columns_width(self) -> None:
         scroll_width = self.scroll_area.width()
-        spacing = self.scroll_layout.spacing()
+        spacing = self.content_layout.spacing()
         col_width = (scroll_width - spacing) / 2
         self.team_a_players.setFixedWidth(col_width)
         self.team_b_players.setFixedWidth(col_width)

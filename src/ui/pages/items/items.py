@@ -9,10 +9,10 @@ class PageItems(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
-        self._layout = QVBoxLayout(self)
-        self._layout.setContentsMargins(9, 9, 9, 22)
-        self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self._layout.setSpacing(15)
+        self.page_layout = QVBoxLayout(self)
+        self.page_layout.setContentsMargins(9, 9, 9, 22)
+        self.page_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.page_layout.setSpacing(15)
         self.setObjectName("Content")
         
         self.navbar = NavBar(self)
@@ -50,5 +50,5 @@ class PageItems(QWidget):
         ]
         
         self.navbar.setup_buttons(_btn_list)
-        self._layout.addWidget(self.navbar)
-        self._layout.addWidget(self.pages)
+        self.page_layout.addWidget(self.navbar)
+        self.page_layout.addWidget(self.pages)
