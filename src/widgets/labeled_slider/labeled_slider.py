@@ -1,6 +1,7 @@
 from core.qt_core import *
 from images import IMAGES
 from typing import Literal
+from enum import Enum
 
 class LabeledSlider(QWidget):
     def __init__(
@@ -13,8 +14,10 @@ class LabeledSlider(QWidget):
         default_value: float | int = 1.0, 
         text: str = "",
         text_type: Literal["float", "int"] = "float",
+        enum: Enum | None = None,
         icon: str = "",
-        width: int = 200
+        width: int = 200,
+        value_text_width: int = 30
     ):
         super().__init__(parent)
         self.orientation = orientation
@@ -24,6 +27,8 @@ class LabeledSlider(QWidget):
         self.default_value = default_value / self.step
         self.text = text
         self.type = text_type
+        self.enum = enum
+        self.value_text_width = value_text_width
         try:
             self.icon = QPixmap(IMAGES[icon]).scaledToWidth(20, Qt.TransformationMode.SmoothTransformation)
         except KeyError:
@@ -47,18 +52,24 @@ class LabeledSlider(QWidget):
         self.slider.setPageStep(2)
         self.slider.setTracking(True)
         self.slider.setValue(int(self.default_value))
-        self.slider.setFixedWidth(self._width-60)
+        self.slider.setFixedWidth(self._width-self.value_text_width*2)
         self.slider.valueChanged.connect(self._update_value)
         if self.type == "float":
             self.slider_value_label = QLabel(self, text=f"{(self.default_value * self.step):.1f}")
+            if self.enum:
+                raise AttributeError("Unable to create float type slider with an enum")
         else:
-            self.slider_value_label = QLabel(self, text=str(int(self.default_value * self.step)))
+            value: int = int(self.default_value * self.step)
+            text: str = str(value)
+            if self.enum:
+                text = self.enum(value).name.replace("_", " ").title()
+            self.slider_value_label = QLabel(self, text=text)
         self.slider_value_label.setObjectName("SliderValue")
         self.slider_value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.slider_value_label.setFixedWidth(30)
+        self.slider_value_label.setFixedWidth(self.value_text_width)
         self.icon_label = QLabel(self)
         self.icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.icon_label.setFixedWidth(30)
+        self.icon_label.setFixedWidth(self.value_text_width)
         if self.icon != "":
             self.icon_label.setPixmap(self.icon)
         
@@ -72,8 +83,14 @@ class LabeledSlider(QWidget):
     def _update_value(self) -> None:
         if self.type == "float":
             self.slider_value_label.setText(f"{(self.slider.value() * self.step):.1f}")
+            if self.enum:
+                raise AttributeError("Unable to create float type slider with an enum")
         else:
-            self.slider_value_label.setText(str(int(self.slider.value() * self.step)))
+            value: int = int(self.slider.value() * self.step)
+            text: str = str(value)
+            if self.enum:
+                text = self.enum(value).name.replace("_", " ").title()
+            self.slider_value_label.setText(text)
     
     def value(self) -> float:
         return round(self.slider.value() * self.step, 1)

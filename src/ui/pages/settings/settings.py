@@ -1,5 +1,5 @@
 from core import *
-from widgets import SettingsComboBox, HLine, KeybindEdit, LabeledToggle, FlowLayout
+from widgets import SettingsComboBox, HLine, KeybindEdit, LabeledToggle, FlowLayout, LabeledSlider
 from images import IMAGES
 
 class PageSettings(QWidget):
@@ -63,6 +63,7 @@ class PageSettings(QWidget):
         self.other_layout.setSpacing(40)
         
         self.enable_ocr = LabeledToggle(self, text="Enable OCR checks", default_state=True)
+        self.enable_ocr.setContentsMargins(0, 15, 0, 0)
         self.enable_ocr.stateChanged.connect(self.ocr_enabled)
         self.enable_ocr.setToolTip(
             "OCR checks if your chatbox or pause menu is open before sending commands.\n"
@@ -71,14 +72,30 @@ class PageSettings(QWidget):
         )
         
         self.use_clipboard = LabeledToggle(self, text="Use Clipboard", default_state=True)
+        self.use_clipboard.setContentsMargins(0, 15, 0, 0)
         self.use_clipboard.stateChanged.connect(self.clipboard_enabled)
         self.use_clipboard.setToolTip(
             "Use system clipboard to paste commands into SAR chat.\n"
             "Disabling this setting will significantly slow down the input process."
         )
         
+        self.command_input_speed = LabeledSlider(
+            self, 
+            min_value=1,
+            max_value=5,
+            step=1, 
+            default_value=3, 
+            text="Command Input Speed", 
+            text_type="int",
+            enum=CommandSpeed,
+            width=290,
+            value_text_width=70
+        )
+        self.command_input_speed.valueChanged.connect(self.command_speed_changed)
+        
         self.other_layout.addWidget(self.enable_ocr)
         self.other_layout.addWidget(self.use_clipboard)
+        self.other_layout.addWidget(self.command_input_speed)
         
         self.other_hline = HLine(self, h=self.line_height)
         self.other_hline.setObjectName("DivLine")
@@ -345,12 +362,14 @@ class PageSettings(QWidget):
         
         self.ocr_sync()
         self.clipboard_sync()
+        self.command_speed_sync()
         self.change_app_style()
         self.change_overlay_style()
         self.change_app_icon()
         
         glb.SIGNAL_MANAGER.settingChanged.connect(self.ocr_sync)
         glb.SIGNAL_MANAGER.settingChanged.connect(self.clipboard_sync)
+        glb.SIGNAL_MANAGER.settingChanged.connect(self.command_speed_sync)
         glb.SIGNAL_MANAGER.appStyleChanged.connect(self.change_app_style)
         glb.SIGNAL_MANAGER.overlayStyleChanged.connect(self.change_overlay_style)
         glb.SIGNAL_MANAGER.appIconChanged.connect(self.change_app_icon)
@@ -368,6 +387,14 @@ class PageSettings(QWidget):
         
     def clipboard_sync(self) -> None:
         self.use_clipboard.setChecked(bool(glb.SETTINGS.value("ClipboardEnabled", 1)))
+    
+    def command_speed_changed(self, speed: int) -> None:
+        glb.SETTINGS.setValue("CommandSpeed", speed)
+        glb.KEY_DELAY = 0.025 * (6 - speed)
+        glb.SIGNAL_MANAGER.settingChanged.emit()
+    
+    def command_speed_sync(self) -> None:
+        self.command_input_speed.setValue(glb.SETTINGS.value("CommandSpeed", 4))
     
     def select_app_style(self, index: int) -> None:
         glb.SETTINGS.setValue("AppStyle", index)

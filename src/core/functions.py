@@ -85,104 +85,59 @@ def read_registry_key(key: str) -> Any:
 def parse_hotkey(hotkey: str | None) -> int | str | None:
     if hotkey is None:
         return None
-    if "Minus" == hotkey:
-        return 12
-    if "Equals" == hotkey:
-        return 13
-    if "Backspace" == hotkey:
-        return 14
-    if "Tab" == hotkey:
-        return 15
-    if "LeftBracket" == hotkey:
-        return 26
-    if "RightBracket" == hotkey:
-        return 27
-    if "Return" == hotkey:
-        return 28
-    if "LeftControl" == hotkey:
-        return 29
-    if "Semicolon" == hotkey:
-        return 39
-    if "Quote" == hotkey:
-        return 40
-    if "BackQuote" == hotkey:
-        return 41
-    if "LeftShift" == hotkey:
-        return 42
-    if "Backslash" == hotkey:
-        return 43
-    if "Comma" == hotkey:
-        return 51
-    if "Period" == hotkey:
-        return 52
-    if "Slash" == hotkey:
-        return 53
-    if "RightShift" == hotkey:
-        return 54
-    if "KeypadMultiply" == hotkey:
-        return 55
-    if "LeftAlt" == hotkey:
-        return 56
-    if "Space" == hotkey:
-        return 57
-    if "CapsLock" == hotkey:
-        return 58
-    if "Numlock" == hotkey:
-        return 69
-    if "ScrollLock" == hotkey:
-        return 70
-    if "Keypad7" == hotkey:
-        return 71
-    if "Keypad8" == hotkey:
-        return 72
-    if "Keypad9" == hotkey:
-        return 73
-    if "KeypadMinus" == hotkey:
-        return 74
-    if "Keypad4" == hotkey:
-        return 75
-    if "Keypad5" == hotkey:
-        return 76
-    if "Keypad6" == hotkey:
-        return 77
-    if "KeypadPlus" == hotkey:
-        return 78
-    if "Keypad1" == hotkey:
-        return 79
-    if "Keypad2" == hotkey:
-        return 80
-    if "Keypad3" == hotkey:
-        return 81
-    if "Keypad0" == hotkey:
-        return 82
-    if "KeypadPeriod" == hotkey:
-        return 83
-    if "KeypadEnter" == hotkey:
-        return 156
-    if "RightControl" == hotkey:
-        return 157
-    if "KeypadDivide" == hotkey:
-        return 181
-    if "Home" == hotkey:
-        return 199
-    if "UpArrow" == hotkey:
-        return 200
-    if "PageUp" == hotkey:
-        return 201
-    if "LeftArrow" == hotkey:
-        return 203
-    if "RightArrow" == hotkey:
-        return 205
-    if "End" == hotkey:
-        return 207
-    if "DownArrow" == hotkey:
-        return 208
-    if "PageDown" == hotkey:
-        return 209
-    if "Insert" == hotkey:
-        return 210
-    if "Delete" == hotkey:
-        return 211
+    KEY_CODES = {
+        "Minus": 12,
+        "Equals": 13,
+        "Backspace": 14,
+        "Tab": 15,
+        "LeftBracket": 26,
+        "RightBracket": 27,
+        "Return": 28,
+        "LeftControl": 29,
+        "Semicolon": 39,
+        "Quote": 40,
+        "BackQuote": 41,
+        "LeftShift": 42,
+        "Backslash": 43,
+        "Comma": 51,
+        "Period": 52,
+        "Slash": 53,
+        "RightShift": 54,
+        "KeypadMultiply": 55,
+        "LeftAlt": 56,
+        "Space": 57,
+        "CapsLock": 58,
+        "Numlock": 69,
+        "ScrollLock": 70,
+        "Keypad7": 71,
+        "Keypad8": 72,
+        "Keypad9": 73,
+        "KeypadMinus": 74,
+        "Keypad4": 75,
+        "Keypad5": 76,
+        "Keypad6": 77,
+        "KeypadPlus": 78,
+        "Keypad1": 79,
+        "Keypad2": 80,
+        "Keypad3": 81,
+        "Keypad0": 82,
+        "KeypadPeriod": 83,
+        "KeypadEnter": 156,
+        "RightControl": 157,
+        "KeypadDivide": 181,
+        "Home": 199,
+        "UpArrow": 200,
+        "PageUp": 201,
+        "LeftArrow": 203,
+        "RightArrow": 205,
+        "End": 207,
+        "DownArrow": 208,
+        "PageDown": 209,
+        "Insert": 210,
+        "Delete": 211
+    }
+    if hotkey in KEY_CODES:
+        return KEY_CODES[hotkey]
     if "Alpha" in hotkey:
         return hotkey[-1]
     return hotkey.lower()
@@ -275,7 +230,7 @@ def close_chat(window: object | Literal["auto"] = "auto") -> None:
     bottom_position: int = window_top_left_y + window_height - bottom_offset
     
     bounding_box = (left_position, top_position, right_position, bottom_position)
-    time.sleep(glb.KEY_DELAY*2)
+    time.sleep(0.05)
     ocr_screen = glb.OCR_READER.read_screen(bounding_box)
     results = ocr_screen.as_string()
     if re.search("all|team|chat", results, re.IGNORECASE):
@@ -345,7 +300,7 @@ def close_pause_menu(window: object | Literal["auto"] = "auto") -> None:
     bottom_position: int = window_top_left_y + window_height - bottom_offset
     
     bounding_box = (left_position, top_position, right_position, bottom_position)
-    time.sleep(glb.KEY_DELAY*2)
+    time.sleep(0.05)
     ocr_screen = glb.OCR_READER.read_screen(bounding_box)
     results = ocr_screen.as_string()
     if re.search("paws|menu|game|not|paused", results, re.IGNORECASE):
@@ -381,14 +336,14 @@ def execute_queue() -> None:
     glb.WORK_THREAD.start()
 
 def clear_queue() -> None:
-    glb.WORK_THREAD.QUEUE = []
+    glb.WORK_THREAD.QUEUE.clear()
 
 # Buttons
 def get_match_id() -> None:
     window = open_window("Super Animal Royale")
     if not window:
         return
-    glb.WORK_THREAD.QUEUE = []
+    clear_queue()
     queue_append(lambda: close_chat(window))
     add_commands("matchid")
     execute_queue()
@@ -397,7 +352,7 @@ def start_game() -> None:
     window = open_window("Super Animal Royale")
     if not window:
         return
-    glb.WORK_THREAD.QUEUE = []
+    clear_queue()
     queue_append(lambda: close_chat(window))
     if glb.PREGAME_SETTINGS["settings"]["bots"]:
         add_commands("start")
@@ -410,7 +365,7 @@ def apply_settings() -> None:
     if not window:
         return
     
-    glb.WORK_THREAD.QUEUE = []
+    clear_queue()
     queue_append(lambda: close_chat(window))
     settings: dict = glb.PREGAME_SETTINGS["settings"]
     weights: dict = settings["gun_weights"]
@@ -459,7 +414,7 @@ def read_players() -> None:
     window = open_window("Super Animal Royale")
     if not window:
         return
-    glb.WORK_THREAD.QUEUE = []
+    clear_queue()
     add_commands("getplayers")
     execute_queue()
     glb.PLAYERS_TIMER.timeout.connect(save_players)
@@ -487,7 +442,7 @@ def send_player_command(command: str) -> None:
     window = open_window("Super Animal Royale")
     if not window:
         return
-    glb.WORK_THREAD.QUEUE = []
+    clear_queue()
     queue_append(lambda: close_chat(window))
     add_commands(f"{command} {glb.SELECTED_PLAYER.player_id}")
     execute_queue()
@@ -500,7 +455,7 @@ def teleport_player(x: int, y: int) -> None:
     window = open_window("Super Animal Royale")
     if not window:
         return
-    glb.WORK_THREAD.QUEUE = []
+    clear_queue()
     queue_append(lambda: close_chat(window))
     if glb.SELECTED_PLAYER_TELE == "ALL":
         add_commands(f"tele all {x} {y}")
@@ -517,7 +472,7 @@ def spawn_weapon(weapon_id: int) -> None:
     window = open_window("Super Animal Royale")
     if not window:
         return
-    glb.WORK_THREAD.QUEUE = []
+    clear_queue()
     queue_append(lambda: close_chat(window))
     add_commands(f"gun{weapon_id} {glb.SELECTED_RARITY}")
     execute_queue()
@@ -526,7 +481,7 @@ def spawn_ammo(amount: int, ammo_id: int) -> None:
     window = open_window("Super Animal Royale")
     if not window:
         return
-    glb.WORK_THREAD.QUEUE = []
+    clear_queue()
     queue_append(lambda: close_chat(window))
     add_commands(f"ammo{ammo_id} {amount}")
     execute_queue()
@@ -535,7 +490,7 @@ def spawn_healing(amount: int, healing_type: Literal["juice", "tape"]) -> None:
     window = open_window("Super Animal Royale")
     if not window:
         return
-    glb.WORK_THREAD.QUEUE = []
+    clear_queue()
     queue_append(lambda: close_chat(window))
     add_commands(f"{healing_type} {amount}")
     execute_queue()
@@ -544,7 +499,7 @@ def spawn_throwable(amount: int, throwable_type: Literal["banana", "nade", "zip"
     window = open_window("Super Animal Royale")
     if not window:
         return
-    glb.WORK_THREAD.QUEUE = []
+    clear_queue()
     queue_append(lambda: close_chat(window))
     add_commands(f"{throwable_type} {amount}")
     execute_queue()
@@ -553,7 +508,7 @@ def spawn_equipment(command: str) -> None:
     window = open_window("Super Animal Royale")
     if not window:
         return
-    glb.WORK_THREAD.QUEUE = []
+    clear_queue()
     queue_append(lambda: close_chat(window))
     add_commands(command)
     execute_queue()
@@ -608,10 +563,8 @@ def spawn_armor_duel(x: int, y: int, players: int) -> None:
 
 def spawn_weapon_duel(x: int, y: int, weapon_id: int, players: int) -> None:
     send_commands(f"tele {glb.HOST_ID} {x} {y}")
-    time.sleep(0.5)
     for _ in range(players):
        send_commands(f"gun{weapon_id} 3")
-    time.sleep(0.5)
 
 def append_weapons(weapons_list: list[int], players: int, team: Literal["a", "b"]) -> None:
     match team:
@@ -660,13 +613,13 @@ def wait_time() -> None:
     queue_append(lambda: time.sleep(1))
 
 def spawn_bananas(amount: int) -> None:
-    time.sleep(glb.KEY_DELAY*40)
+    time.sleep(1)
     send_commands(f"banana {amount}")
-    time.sleep(glb.KEY_DELAY*80)
+    time.sleep(2)
     press_hotkey(glb.THROWABLE_BIND)
     glb.BANANA_COUNT = 10
     send_commands("tele all 511 391")
-    time.sleep(glb.KEY_DELAY*10)
+    time.sleep(0.25)
 
 def lay_banana(sar_handle, host_id: int, x_player: int, y_player: int, direction: Literal["N", "S", "E", "W"] = "N") -> None:
     sar_window_rect = sar_handle.getClientFrame()
@@ -695,7 +648,7 @@ def lay_banana(sar_handle, host_id: int, x_player: int, y_player: int, direction
             x_player += player_offset
     
     send_commands(f"tele {host_id} {x_player} {y_player}")
-    time.sleep(glb.KEY_DELAY*8)
+    time.sleep(0.2)
     if glb.BANANA_COUNT <= 0:
         spawn_bananas(10)
         send_commands(f"tele {host_id} {x_player} {y_player}")
@@ -709,7 +662,7 @@ def start_duel() -> None:
     if not sar_handle:
         return
     
-    glb.WORK_THREAD.QUEUE = []
+    clear_queue()
     team_a, team_b, team_spec = get_teams()
     team_a_len, team_b_len = len(team_a), len(team_b)
     if team_a_len > 4:
@@ -745,7 +698,7 @@ def start_duel() -> None:
     )
     queue_append(lambda: ghost_spectators(team_spec))
     
-    queue_append(lambda: time.sleep(20))
+    queue_append(lambda: time.sleep(22.5))
     queue_append(lambda: open_window("Super Animal Royale"))
     queue_append(lambda: time.sleep(0.5))
     queue_append(lambda: close_chat(sar_handle))
@@ -777,9 +730,12 @@ def start_duel() -> None:
         for weapon_id, state in glb.DUELS_B_WEAPONS.items():
             if state:
                 team_b_weapons.append(weapon_id)
-        
+                
+        queue_append(lambda: time.sleep(0.5))
         append_weapons(team_a_weapons, team_a_len, "a")
+        queue_append(lambda: time.sleep(0.5))
         append_weapons(team_b_weapons, team_b_len, "b")
+        queue_append(lambda: time.sleep(0.5))
     
     if glb.DUELS_SETTINGS["boundaries"]:
         glb.BANANA_COUNT = 0
@@ -923,9 +879,9 @@ def start_duel() -> None:
 # Dodgeball
 def mouse_click(x: int, y: int) -> None:
     pyautogui.moveTo(x, y)
-    time.sleep(glb.KEY_DELAY*8)
+    time.sleep(0.2)
     pyautogui.click()
-    time.sleep(glb.KEY_DELAY*4)
+    time.sleep(0.1)
 
 def spawn_nade(x: int, y: int) -> None:
     add_commands(f"tele {glb.HOST_ID} {x} {y}")
@@ -955,7 +911,7 @@ def lay_zip(sar_handle, x_player: int, y_player: int, x_mouse: int, y_mouse: int
     click_y: int = window_top_left_y + y_mouse
     
     sar_handle.activate()
-    time.sleep(glb.KEY_DELAY*16)
+    time.sleep(0.5)
     send_commands(f"tele {glb.HOST_ID} {x_player} {y_player}")
     press_hotkey(glb.THROWABLE_BIND)
     mouse_click(click_x, click_y)
@@ -974,7 +930,7 @@ def break_boxes(sar_handle, x_player: int, y_player: int, x_mouse: int, y_mouse:
     click_y: int = window_top_left_y + y_mouse
     
     sar_handle.activate()
-    time.sleep(glb.KEY_DELAY*16)
+    time.sleep(0.5)
     send_commands(f"tele {glb.HOST_ID} {x_player} {y_player}")
     press_hotkey(glb.MELEE_BIND)
     mouse_click(click_x, click_y)
@@ -994,7 +950,7 @@ def start_dodgeball() -> None:
     if not sar_handle:
         return
     
-    glb.WORK_THREAD.QUEUE = []
+    clear_queue()
     glb.DODGEBALL_STARTED = True
     team_a, team_b, team_spec = get_teams()
     
@@ -1023,7 +979,7 @@ def start_dodgeball() -> None:
     )
     
     queue_append(lambda: ghost_spectators(team_spec))
-    queue_append(lambda: time.sleep(20))
+    queue_append(lambda: time.sleep(22.5))
     queue_append(lambda: open_window("Super Animal Royale"))
     queue_append(lambda: time.sleep(0.5))
     queue_append(lambda: close_chat(sar_handle))

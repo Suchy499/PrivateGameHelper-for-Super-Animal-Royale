@@ -1,8 +1,9 @@
 from core.qt_core import *
 from dataclasses import dataclass
 import time
-from typing import Callable, Any, Optional
+from typing import Optional
 import win32gui
+from enum import Enum
 
 class WorkThread(QThread):
     QUEUE: list = []
@@ -72,3 +73,10 @@ class PlayerItem:
     player_id: int
     name: str
     team: int = 1
+    
+class CommandSpeed(Enum):
+    VERY_SLOW = 1
+    SLOW = 2
+    NORMAL = 3
+    FAST = 4
+    VERY_FAST = 5
