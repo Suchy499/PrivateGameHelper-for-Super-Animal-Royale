@@ -563,6 +563,8 @@ def spawn_armor_duel(x: int, y: int, players: int) -> None:
 
 def spawn_weapon_duel(x: int, y: int, weapon_id: int, players: int) -> None:
     send_commands(f"tele {glb.HOST_ID} {x} {y}")
+    if (x, y) == (735, 1305) or (x, y) == (3875, 1515):
+        time.sleep(0.5)
     for _ in range(players):
        send_commands(f"gun{weapon_id} 3")
 
@@ -596,6 +598,7 @@ def ghost_spectators(spec_list: list[int]) -> None:
 
 def teleport_players(x: int, y: int, team: list[int]) -> None:
     for player in team:
+        time.sleep(0.4)
         send_commands(f"tele {player} {x} {y}")
 
 def wait_time() -> None:

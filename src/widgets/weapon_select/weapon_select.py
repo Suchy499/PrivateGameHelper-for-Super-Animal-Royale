@@ -31,6 +31,8 @@ class WeaponSelect(QPushButton):
         self.setObjectName("WeaponButton")
         self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.clicked.connect(self.on_click)
+        if self.window().metaObject().className() == "Overlay":
+            self.clicked.connect(lambda: open_window("Super Animal Royale"))
         glb.SIGNAL_MANAGER.weaponSelected.connect(self.change_state)
         glb.SIGNAL_MANAGER.weaponSelectedAll.connect(self.selected_all)
     

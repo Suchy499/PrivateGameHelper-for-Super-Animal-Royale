@@ -5,9 +5,9 @@ import subprocess
 def setup() -> None:
     path = os.path.abspath(os.path.dirname(__file__))
     venv_path = os.path.join(path, ".venv")
-    pip_path = os.path.join(venv_path, r"Scripts\pip.exe")
+    pip_path = os.path.join(venv_path, "Scripts", "pip.exe")
     requirements_path = os.path.join(path, "requirements.txt")
-    pyinstaller_path = os.path.join(venv_path, r"Scripts\pyinstaller.exe")
+    pyinstaller_path = os.path.join(venv_path, "Scripts", "pyinstaller.exe")
     
     os.chdir(path)
 

@@ -29,6 +29,9 @@ class RarityButton(QPushButton):
         self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.clicked.connect(self.select)
         
+        if self.window().metaObject().className() == "Overlay":
+            self.clicked.connect(lambda: open_window("Super Animal Royale"))
+        
         glb.SIGNAL_MANAGER.raritySelected.connect(self.on_rarity_selected)
         
         match self.rarity:

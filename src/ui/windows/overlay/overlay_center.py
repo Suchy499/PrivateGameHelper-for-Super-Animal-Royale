@@ -35,6 +35,7 @@ class OverlayCenter(QFrame):
     
     def close_overlay(self) -> None:
         self.setVisible(False)
+        open_window("Super Animal Royale")
         glb.SIGNAL_MANAGER.overlayClosed.emit()
     
     def keyPressEvent(self, arg__1):

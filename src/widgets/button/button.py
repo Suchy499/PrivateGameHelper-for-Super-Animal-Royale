@@ -32,6 +32,9 @@ class Button(QPushButton):
         if self.command is not None:
             self.clicked.connect(lambda: send_other_command(self.command))
             
+        if self.window().metaObject().className() == "Overlay":
+            self.clicked.connect(lambda: open_window("Super Animal Royale"))
+            
     def keyPressEvent(self, arg__1):
         return
 

@@ -1,4 +1,4 @@
-from core.qt_core import *
+from core import *
 from .button import Button
 from widgets.hline import HLine
 from images import IMAGES

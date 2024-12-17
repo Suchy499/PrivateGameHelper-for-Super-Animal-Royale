@@ -1,4 +1,4 @@
-from core.qt_core import *
+from core import *
 from images import IMAGES
 from widgets import OverlaySidebar
 
@@ -48,6 +48,7 @@ class OverlayRight(QWidget):
         self.animation.setDuration(1500)
         
     def toggle_animation(self) -> None:
+        open_window("Super Animal Royale")
         self.animation.stop()
         if self.container.x() == 0:
             self.animation.setEndValue(QPoint(self.overlay_content.width(), 0))

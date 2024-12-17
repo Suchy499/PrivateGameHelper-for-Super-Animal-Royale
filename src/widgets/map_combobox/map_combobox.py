@@ -68,3 +68,8 @@ class MapComboBox(QWidget):
 
     def keyReleaseEvent(self, e):
         return
+    
+    def showEvent(self, event):
+        if self.window().metaObject().className() == "Overlay":
+            self.combobox.currentTextChanged.connect(lambda: open_window("Super Animal Royale"))
+        return super().showEvent(event)

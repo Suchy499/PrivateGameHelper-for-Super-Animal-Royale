@@ -1,4 +1,4 @@
-from core.qt_core import *
+from core import *
 from images import IMAGES
 from typing import Literal
 from enum import Enum
@@ -79,6 +79,7 @@ class LabeledSlider(QWidget):
         self.labeled_slider_layout.addWidget(self.slider_value_label, 1, 1)
         
         self.valueChanged = self.slider.valueChanged
+        self.slider.mouseReleaseEvent = self.sliderMouseReleaseEvent
     
     def _update_value(self) -> None:
         if self.type == "float":
@@ -109,3 +110,13 @@ class LabeledSlider(QWidget):
 
     def keyReleaseEvent(self, e):
         return
+    
+    def mousePressEvent(self, event):
+        if self.window().metaObject().className() == "Overlay":
+            open_window("Super Animal Royale")
+        return super().mousePressEvent(event)
+    
+    def sliderMouseReleaseEvent(self, event):
+        if self.window().metaObject().className() == "Overlay":
+            open_window("Super Animal Royale")
+        QSlider.mouseReleaseEvent(self.slider, event)

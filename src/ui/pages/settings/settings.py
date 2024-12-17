@@ -1,5 +1,5 @@
 from core import *
-from widgets import SettingsComboBox, HLine, KeybindEdit, LabeledToggle, FlowLayout, LabeledSlider
+from widgets import SettingsComboBox, HLine, KeybindEdit, LabeledToggle, FlowLayout, LabeledSlider, Button
 from images import IMAGES
 
 class PageSettings(QWidget):
@@ -33,6 +33,16 @@ class PageSettings(QWidget):
         self.display_mode.setContentsMargins(10, 0, 0, 15)
         self.overlay_position = SettingsComboBox(self, "Overlay Position", "OverlayPosition")
         self.overlay_position.setContentsMargins(10, 0, 0, 15)
+        
+        if self.window().metaObject().className() == "Overlay":
+            self.close_container = QWidget(self)
+            self.close_layout = QHBoxLayout(self.close_container)
+            self.close_layout.setContentsMargins(10, 0, 0, 15)
+            self.close_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            self.close_pixmap = QPixmap(IMAGES["close"]).scaledToHeight(13, Qt.TransformationMode.SmoothTransformation)
+            self.close_button = Button(self, "  Close app", self.close_pixmap, w=120)
+            self.close_button.clicked.connect(QApplication.exit)
+            self.close_layout.addWidget(self.close_button)
         
         self.display_hline = HLine(self, h=self.line_height)
         self.display_hline.setObjectName("DivLine")
@@ -341,6 +351,8 @@ class PageSettings(QWidget):
         self.content_layout.addWidget(self.display_label)
         self.content_layout.addWidget(self.display_mode)
         self.content_layout.addWidget(self.overlay_position)
+        if self.window().metaObject().className() == "Overlay":
+            self.content_layout.addWidget(self.close_container)
         self.content_layout.addWidget(self.display_hline)
         self.content_layout.addSpacing(10)
         self.content_layout.addWidget(self.keybinds_label)
@@ -399,6 +411,8 @@ class PageSettings(QWidget):
     def select_app_style(self, index: int) -> None:
         glb.SETTINGS.setValue("AppStyle", index)
         glb.SIGNAL_MANAGER.appStyleChanged.emit()
+        if self.window().metaObject().className() == "Overlay":
+            open_window("Super Animal Royale")
     
     def change_app_style(self) -> None:
         match glb.SETTINGS.value("AppStyle", 0):
@@ -428,6 +442,8 @@ class PageSettings(QWidget):
     def select_overlay_style(self, index: int) -> None:
         glb.SETTINGS.setValue("OverlayStyle", index)
         glb.SIGNAL_MANAGER.overlayStyleChanged.emit()
+        if self.window().metaObject().className() == "Overlay":
+            open_window("Super Animal Royale")
     
     def change_overlay_style(self) -> None:
         match glb.SETTINGS.value("OverlayStyle", 0):
@@ -457,6 +473,8 @@ class PageSettings(QWidget):
     def select_app_icon(self, index: int) -> None:
         glb.SETTINGS.setValue("AppIcon", index)
         glb.SIGNAL_MANAGER.appIconChanged.emit()
+        if self.window().metaObject().className() == "Overlay":
+            open_window("Super Animal Royale")
     
     def change_app_icon(self) -> None:
         self.icons[glb.SETTINGS.value("AppIcon", 0)].setChecked(True)

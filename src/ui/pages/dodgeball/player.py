@@ -46,7 +46,11 @@ class Player(QWidget):
     def move_left(self) -> None:
         glb.PLAYER_LIST[self.index].team -= 1
         glb.SIGNAL_MANAGER.playerChangedTeams.emit()
+        if self.window().metaObject().className() == "Overlay":
+            open_window("Super Animal Royale")
     
     def move_right(self) -> None:
         glb.PLAYER_LIST[self.index].team += 1
         glb.SIGNAL_MANAGER.playerChangedTeams.emit()
+        if self.window().metaObject().className() == "Overlay":
+            open_window("Super Animal Royale")

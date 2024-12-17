@@ -1,5 +1,7 @@
 from core import *
-from widgets import LabeledSlider
+from widgets import LabeledSlider, ClickableLabel
+from images import IMAGES
+import random
 
 class SpawnRates(QWidget):
     def __init__(self, parent):
@@ -8,29 +10,44 @@ class SpawnRates(QWidget):
         self.page_layout = QVBoxLayout(self)
         self.page_layout.setContentsMargins(0, 0, 0, 0)
         
+        self.header_container = QWidget(self)
+        self.header_layout = QHBoxLayout(self.header_container)
+        self.header_layout.setContentsMargins(9, 0, 0, 15)
+        self.header_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        
+        self.spawn_rates_label = QLabel(self, text="Spawn Rates")
+        self.spawn_rates_label.setContentsMargins(0, 0, 0, 0)
+        self.spawn_rates_label.setObjectName("PresetsHeaderName")
+        
+        self.randomize_pixmap = QPixmap(IMAGES["dice"]).scaledToWidth(20, Qt.TransformationMode.SmoothTransformation)
+        self.randomize_all = ClickableLabel(self)
+        self.randomize_all.setToolTip("Randomize")
+        self.randomize_all.setPixmap(self.randomize_pixmap)
+        self.randomize_all.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.randomize_all.setContentsMargins(0, 0, 0, 0)
+        self.randomize_all.setFixedSize(self.randomize_pixmap.width() + 9, self.randomize_pixmap.height() + 9)
+        self.randomize_all.setObjectName("PlayersHeaderRefresh")
+        self.randomize_all.clicked.connect(self.randomize_settings)
+        
+        self.header_layout.addWidget(self.spawn_rates_label)
+        self.header_layout.addSpacerItem(QSpacerItem(813, 1))
+        self.header_layout.addWidget(self.randomize_all)
+        
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setObjectName("ScrollArea")
         self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         self.scroll_area.setFrameShape(QFrame.Shape.NoFrame)
         self.scroll_area.setWidgetResizable(True)
-        self.content_area = QWidget(self)
-        self.content_area.setObjectName("Content")
-        self.scroll_area.setWidget(self.content_area)
-        self.page_layout.addWidget(self.scroll_area)
-        
-        self.content_layout = QVBoxLayout(self.content_area)
-        self.content_layout.setContentsMargins(0, 0, 0, 0)
-        self.content_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+    
         self.line_height = 2
-        
-        self.spawn_rates_label = QLabel(self, text="Spawn Rates")
-        self.spawn_rates_label.setContentsMargins(0, 0, 0, 15)
-        self.spawn_rates_label.setObjectName("PregameHeaderName")
+
         self.spawn_rates_settings = QWidget(self)
         self.spawn_rates_settings_layout = QGridLayout(self.spawn_rates_settings)
-        self.spawn_rates_settings_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.spawn_rates_settings_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.spawn_rates_settings_layout.setVerticalSpacing(25)
+        self.spawn_rates_settings.setObjectName("Content")
+        self.scroll_area.setWidget(self.spawn_rates_settings)
         
         self.pistol_slider = LabeledSlider(self, Qt.Orientation.Horizontal, 0, 5, 0.1, 1, "Pistol", icon="pistol")
         self.pistol_slider.valueChanged.connect(lambda: self.set_setting("gunpistol", self.pistol_slider.value()))
@@ -129,8 +146,8 @@ class SpawnRates(QWidget):
         self.spawn_rates_settings_layout.addWidget(self.cat_mine_slider, 4, 2)
         self.spawn_rates_settings_layout.addWidget(self.zipline_slider, 4, 3)
         
-        self.content_layout.addWidget(self.spawn_rates_label)
-        self.content_layout.addWidget(self.spawn_rates_settings)
+        self.page_layout.addWidget(self.header_container)
+        self.page_layout.addWidget(self.scroll_area)
         
         glb.SIGNAL_MANAGER.presetSettingChanged.connect(self.setting_changed)
     
@@ -189,3 +206,8 @@ class SpawnRates(QWidget):
         self.skunk_bomb_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["grenadeskunk"])
         self.cat_mine_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["grenadecatmine"])
         self.zipline_slider.setValue(glb.PREGAME_SETTINGS["settings"]["gun_weights"]["grenadezipline"])
+        
+    def randomize_settings(self) -> None:
+        for key in glb.PREGAME_SETTINGS["settings"]["gun_weights"].keys():
+            glb.PREGAME_SETTINGS["settings"]["gun_weights"][key] = round(random.uniform(0, 5), 1)
+        glb.SIGNAL_MANAGER.presetSettingChanged.emit()

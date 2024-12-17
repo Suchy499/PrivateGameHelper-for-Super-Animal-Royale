@@ -27,6 +27,8 @@ class Toggle(QCheckBox):
         self.animation.valueChanged.connect(self.move_circle)
         self.stateChanged.connect(self.setup_animation)
         self.setChecked(self._default_state)
+        if self.window().metaObject().className() == "Overlay":
+            self.clicked.connect(lambda: open_window("Super Animal Royale"))
         
         glb.SIGNAL_MANAGER.appStyleChanged.connect(self.style_changed)
         glb.SIGNAL_MANAGER.overlayStyleChanged.connect(self.style_changed)

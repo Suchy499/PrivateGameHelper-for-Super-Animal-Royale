@@ -219,6 +219,10 @@ class Overlay(QWidget):
     def keyReleaseEvent(self, e):
         return
     
+    def mousePressEvent(self, event):
+        open_window("Super Animal Royale")
+        return super().mousePressEvent(event)
+    
     def select_position(self):
         match glb.SETTINGS.value("OverlayPosition", 0):
             case 0:

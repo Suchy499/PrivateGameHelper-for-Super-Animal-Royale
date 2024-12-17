@@ -67,6 +67,7 @@ class SignalManager(QObject):
     appStyleChanged = Signal()
     overlayStyleChanged = Signal()
     appIconChanged = Signal()
+    coordinatesChanged = Signal(str)
 
 @dataclass
 class PlayerItem:

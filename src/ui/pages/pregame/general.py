@@ -44,7 +44,7 @@ class General(QWidget):
         self.preset_buttons_layout.addWidget(self.new_button)
         
         self.edit_icon = QPixmap(IMAGES["pencil"]).scaledToHeight(13, Qt.TransformationMode.SmoothTransformation)
-        self.edit_button = Button(self.preset_buttons, " Edit", self.edit_icon)
+        self.edit_button = Button(self.preset_buttons, " Save", self.edit_icon)
         self.edit_button.clicked.connect(edit_preset)
         self.edit_button.setVisible(False)
         self.preset_buttons_layout.addWidget(self.edit_button)

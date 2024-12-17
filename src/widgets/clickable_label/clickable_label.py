@@ -1,4 +1,4 @@
-from core.qt_core import *
+from core import *
 
 class ClickableLabel(QLabel):
     clicked = Signal()
@@ -13,6 +13,8 @@ class ClickableLabel(QLabel):
         self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
     
     def mousePressEvent(self, ev):
+        if self.window().metaObject().className() == "Overlay":
+            open_window("Super Animal Royale")
         self.clicked.emit()
     
     def keyPressEvent(self, arg__1):

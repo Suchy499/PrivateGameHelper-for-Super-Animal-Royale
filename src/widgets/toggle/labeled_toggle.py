@@ -1,4 +1,4 @@
-from core.qt_core import *
+from core import *
 from .toggle import Toggle
 
 class LabeledToggle(QWidget):
@@ -56,3 +56,8 @@ class LabeledToggle(QWidget):
     def setToolTip(self, arg__1):
         self.toggle.setToolTip(arg__1)
         return super().setToolTip(arg__1)
+    
+    def mousePressEvent(self, event):
+        if self.window().metaObject().className() == "Overlay":
+            open_window("Super Animal Royale")
+        return super().mousePressEvent(event)

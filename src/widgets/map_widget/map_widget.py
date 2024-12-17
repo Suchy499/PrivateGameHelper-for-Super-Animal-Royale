@@ -50,6 +50,8 @@ class MapWidget(QLabel):
             case Qt.MouseButton.RightButton:
                 pyperclip.copy(f"{x} {y}")
                 send_notification("Coordinates copied to clipboard")
+                if self.window().metaObject().className() == "Overlay":
+                    open_window("Super Animal Royale")
             case _:
                 pass
         return super().mouseReleaseEvent(ev)
