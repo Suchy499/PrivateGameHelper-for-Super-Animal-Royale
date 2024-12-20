@@ -5,6 +5,9 @@ import requests
 import webbrowser
 from packaging.version import Version
 from typing import Optional
+import os
+import subprocess
+import sys
 
 class UpdatePopup(QFrame):
     def __init__(
@@ -33,16 +36,16 @@ class UpdatePopup(QFrame):
         self.latest_version_label = QLabel(f"Latest version: {self.latest_version if self.latest_version else __version__}", self)
         self.latest_version_label.setObjectName("HostIDLabel")
         
-        self.dont_update_button = Button(self, "Don't update", w=125, btn_style="ButtonDelete")
-        self.dont_update_button.clicked.connect(lambda: self.setVisible(False))
-        self.open_browser_button = Button(self, "Open in browser", w=125)
-        self.open_browser_button.clicked.connect(self.open_browser)
+        self.remind_button = Button(self, "Remind me later", w=125, btn_style="ButtonDelete")
+        self.remind_button.clicked.connect(lambda: self.setVisible(False))
+        self.update_button = Button(self, "Update", w=125)
+        self.update_button.clicked.connect(self.update_pgh)
         
         self.popup_layout.addWidget(self.title_label, 0, 0, 1, 2, alignment=Qt.AlignmentFlag.AlignCenter)
         self.popup_layout.addWidget(self.current_version_label, 1, 0, 1, 2, alignment=Qt.AlignmentFlag.AlignCenter)
         self.popup_layout.addWidget(self.latest_version_label, 2, 0, 1, 2, alignment=Qt.AlignmentFlag.AlignCenter)
-        self.popup_layout.addWidget(self.dont_update_button, 3, 0, 1, 1, alignment=Qt.AlignmentFlag.AlignCenter)
-        self.popup_layout.addWidget(self.open_browser_button, 3, 1, 1, 1, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.popup_layout.addWidget(self.remind_button, 3, 0, 1, 1, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.popup_layout.addWidget(self.update_button, 3, 1, 1, 1, alignment=Qt.AlignmentFlag.AlignCenter)
         
         self._parent.showEvent = self._showEvent
     
@@ -67,7 +70,12 @@ class UpdatePopup(QFrame):
         self.latest_version = self.get_latest_version()
         self.latest_version_label.setText(f"Latest version: {self.latest_version if self.latest_version else __version__}")
     
-    def open_browser(self) -> None:
+    def update_pgh(self) -> None:
+        root_dir = os.path.dirname(sys.executable)
+        if "updater.exe" in os.listdir(root_dir):
+            subprocess.Popen([os.path.join(root_dir, "updater.exe")], creationflags=subprocess.CREATE_NEW_CONSOLE)
+            QApplication.exit()
+            return
         webbrowser.open("https://github.com/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/latest")
         self.setVisible(False)
     

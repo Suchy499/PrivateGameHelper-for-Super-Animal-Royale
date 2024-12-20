@@ -96,19 +96,19 @@ class RarityButton(QPushButton):
             self.setObjectName("RarityButtonSelected")
             match self.rarity:
                 case "Common":
-                    self._bg_color = "#43494b"
+                    self._bg_color = "#595959"
                     self._border_color = "#292d2f"
                 case "Uncommon":
-                    self._bg_color = "#569900"
+                    self._bg_color = "#6bbf00"
                     self._border_color = "#366400"
                 case "Rare":
-                    self._bg_color = "#0092c6"
+                    self._bg_color = "#00b5f2"
                     self._border_color = "#005f83"
                 case "Epic":
-                    self._bg_color = "#7416a5"
+                    self._bg_color = "#8733c6"
                     self._border_color = "#4b0a6c"
                 case "Legendary":
-                    self._bg_color = "#b98200"
+                    self._bg_color = "#dfb707"
                     self._border_color = "#7a5400"
             self._color = "white"
         else:

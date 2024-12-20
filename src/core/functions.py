@@ -69,17 +69,20 @@ def delete_preset() -> None:
 
 # SAR Keybinds
 def read_registry_key(key: str) -> Any:
-    a_reg = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
-    a_key = winreg.OpenKey(a_reg, r"SOFTWARE\Pixile Inc\Super Animal Royale")
-    for i in range(1024):
-        try:
-            value_name, value_data, data_type = winreg.EnumValue(a_key, i)
-            if value_name == key:
-                if data_type == 3:
-                    return str(value_data)[2:-5]
-                return value_data
-        except WindowsError:
-            break
+    try:
+        a_reg = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+        a_key = winreg.OpenKey(a_reg, r"SOFTWARE\Pixile Inc\Super Animal Royale")
+        for i in range(1024):
+            try:
+                value_name, value_data, data_type = winreg.EnumValue(a_key, i)
+                if value_name == key:
+                    if data_type == 3:
+                        return str(value_data)[2:-5]
+                    return value_data
+            except WindowsError:
+                break
+    except FileNotFoundError:
+        return None
     return None
 
 def parse_hotkey(hotkey: str | None) -> int | str | None:
@@ -415,6 +418,7 @@ def read_players() -> None:
     if not window:
         return
     clear_queue()
+    queue_append(lambda: close_chat(window))
     add_commands("getplayers")
     execute_queue()
     glb.PLAYERS_TIMER.timeout.connect(save_players)

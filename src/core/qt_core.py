@@ -24,7 +24,7 @@ from PySide6.QtWidgets import (
     QRadioButton,
     QSystemTrayIcon,
     QMenu,
-    QSpacerItem
+    QSpacerItem,
 )
 from PySide6.QtCore import (
     Qt, 

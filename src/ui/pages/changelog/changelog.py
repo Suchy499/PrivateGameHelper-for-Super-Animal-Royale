@@ -54,6 +54,8 @@ class PageChangelog(QWidget):
         self.page_layout.addSpacing(9)
         self.page_layout.addWidget(self.bottom_row_container)
         self.print_changelog()
+        
+        glb.SETTINGS.setValue("CurrentVersion", __version__)
     
     def get_response(self, api: str) -> dict:
         response = requests.get(api)

@@ -4,7 +4,8 @@
     border: 2px solid #332757;
 }
 
-#TitleBar {
+#TitleBar,
+#OverlayTitleBar {
     background: rgba(0, 0, 0, 20);
 }
 

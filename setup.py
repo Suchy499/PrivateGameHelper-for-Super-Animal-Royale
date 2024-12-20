@@ -1,6 +1,7 @@
 import os.path
 import venv
 import subprocess
+import shutil
 
 def setup() -> None:
     path = os.path.abspath(os.path.dirname(__file__))
@@ -20,14 +21,30 @@ def setup() -> None:
         "--distpath",
         f"{path}",
         "--noconfirm",
-        f"{os.path.join(path, "Private Game Helper.spec")}"],
+        f"{os.path.join(path, "Private Game Helper.spec")}"]
     )
     pyinstaller_output.wait()
     os.system("color")
     if pyinstaller_output.returncode:
         input("\033[91mERROR: Could not compile the app. Press any key to exit...\033[0m")
-    else:
-        input(f"\33[32mSUCCESS: App compiled to {os.path.join(path, "Private Game Helper")}. Press any key to exit...\033[0m")
+        return
+    
+    updater_output = subprocess.Popen([
+        pyinstaller_path,
+        "--distpath",
+        f"{path}",
+        "--noconfirm",
+        f"{os.path.join(path, "updater.spec")}"]
+    )
+    updater_output.wait()
+    
+    shutil.move(os.path.join(path, "updater.exe"), os.path.join(path, "Private Game Helper", "updater.exe"))
+    
+    if updater_output.returncode:
+        input("\033[91mERROR: Could not compile the app. Press any key to exit...\033[0m")
+        return
 
+    input(f"\33[32mSUCCESS: App compiled to {os.path.join(path, "Private Game Helper")}. Press any key to exit...\033[0m")
+    
 if __name__ == "__main__":
     setup()
