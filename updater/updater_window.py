@@ -271,7 +271,7 @@ class UpdateThread(QThread):
         
     def get_latest_version(self) -> int | str:
         try:
-            latest_release = requests.get("https://api.github.com/repos/Suchy499/PrivateGameHelper-Test/releases/latest").json()
+            latest_release = requests.get("https://api.github.com/repos/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/releases/latest").json()
             if "message" in latest_release:
                 raise requests.exceptions.RequestException("API rate limit reached.")
         except requests.exceptions.ConnectionError:
@@ -321,7 +321,7 @@ class UpdateThread(QThread):
         self.update_bar(10)
         try:
             assets = get_assets(
-                GitHubRepo("Suchy499", "PrivateGameHelper-Test"),
+                GitHubRepo("Suchy499", "PrivateGameHelper-for-Super-Animal-Royale"),
                 tag_name=self.latest_version,
                 assets_mask=re.compile(r"private-game-helper-v(?:\d+\.)*\d+-windows-x86-64-portable\.zip"),
             )
