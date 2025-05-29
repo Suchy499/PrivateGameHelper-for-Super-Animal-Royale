@@ -11,6 +11,7 @@ import pyautogui
 import random
 import winreg
 import re
+import string
 from pynput.mouse import Button
 from functools import partial
 from typing import Literal, Callable, Any
@@ -25,14 +26,25 @@ def get_main_overlay() -> QWidget:
     for window in QApplication.allWidgets():
         if window.inherits("QFrame") and window.metaObject().className() == "OverlayCenter":
             return window
-            
+
 # Presets
 def read_presets() -> list[dict]:
-    with open(os.path.join(os.path.dirname(__file__), "presets.json")) as f:
-        return json.load(f)
+    data_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper")
+    if not os.path.exists(data_path):
+        os.mkdir(data_path)
+    try:
+        with open(os.path.join(data_path, "presets.json"), "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        with open(os.path.join(data_path, "presets.json"), "w") as f:
+            f.write("[]")
+            return []
 
 def save_presets(data: list[dict]) -> None:
-    with open(os.path.join(os.path.dirname(__file__), "presets.json"), "w") as f:
+    data_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper")
+    if not os.path.exists(data_path):
+        os.mkdir(data_path)
+    with open(os.path.join(data_path, "presets.json"), "w") as f:
         json.dump(data, f, indent=4)
 
 def edit_preset() -> None:
@@ -66,6 +78,64 @@ def delete_preset() -> None:
     save_presets(presets_data)
     glb.SIGNAL_MANAGER.presetDeleted.emit()
     glb.ACTIVE_PRESET = None
+
+# Tournaments
+def generate_id(size: int = 10) -> str:
+    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=size))
+
+def create_tournament() -> str:
+    data_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments")
+    if not os.path.exists(data_path):
+        os.makedirs(data_path)
+    
+    tournament_id = f"{generate_id()}-{generate_id()}-{generate_id()}"
+    tournament_path = os.path.join(data_path, tournament_id)
+    
+    while os.path.exists(tournament_path): # generate new ID if the tournament ID already exists
+        tournament_id = f"{generate_id()}-{generate_id()}-{generate_id()}"
+        tournament_path = os.path.join(data_path, tournament_id)
+    
+    os.mkdir(tournament_path)
+    create_metadata(tournament_id)
+    create_scoring(tournament_id)
+    
+    glb.SIGNAL_MANAGER.tournamentCreated.emit(tournament_id)
+    return tournament_id
+
+def create_metadata(tournament_id: str) -> None:
+    data_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments")
+    tournament_path = os.path.join(data_path, tournament_id)
+    default_data = {
+        "name": "Untitled",
+        "mode": "Solo",
+        "starts_at": None,
+        "discord": True
+    }
+    with open(os.path.join(tournament_path, "metadata.json"), "w") as f:
+        json.dump(default_data, f, indent=4)
+
+def create_scoring(tournament_id: str) -> None:
+    data_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments")
+    tournament_path = os.path.join(data_path, tournament_id)
+    default_data = {
+        "static_kill_points": True,
+        "kill_points": 0,
+        "kill_leader_game": 0,
+        "kill_leader_tournament": 0,
+        "kill_leader_tiebreaker": 0,
+        "kill_cap": 0,
+        "tiebreaker": 0,
+        "placement_ranges": [
+            {
+                "from": 1,
+                "to": 1,
+                "points": 0,
+                "placement_kill_points": 0
+            }
+        ]
+    }
+    with open(os.path.join(tournament_path, "scoring.json"), "w") as f:
+        json.dump(default_data, f, indent=4)
 
 # SAR Keybinds
 def read_registry_key(key: str) -> Any:
@@ -1442,11 +1512,7 @@ def update_hotkeys() -> None:
     
 # Notifications
 def send_notification(text: str, notif_type: Literal["NotifInfo", "NotifWarning", "NotifSuccess", "NotifFail"] = "NotifInfo") -> None:
-    main_window = get_main_window().notif
-    overlay = get_main_overlay().notif
-    
-    main_window.send_notification("MainWindow",text, notif_type)
-    overlay.send_notification("Overlay", text, notif_type)
+    glb.SIGNAL_MANAGER.notificationSent.emit(text, notif_type)
 
 def update_latest_version() -> str | None:
     main_window = get_main_window().update_popup

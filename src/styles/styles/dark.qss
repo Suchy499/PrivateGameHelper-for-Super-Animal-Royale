@@ -100,3 +100,35 @@
     background: rgba(255, 255, 255, 0.15);
     border: 2px solid rgb(102, 0, 0);
 }
+
+QCalendarWidget QWidget {
+    alternate-background-color: rgb(153, 0, 0);
+}
+
+#qt_calendar_navigationbar {
+    background-color: rgb(153, 0, 0);
+    border: 2px solid rgb(102, 0, 0);
+	border-bottom: 0px;
+}
+
+QCalendarWidget QToolButton QMenu {
+    background-color: rgb(50, 38, 65);
+    border: 2px solid rgb(102, 0, 0);
+    color: white;
+    font-weight: bold;
+    font: Rubik;
+}
+
+#qt_calendar_calendarview {
+    outline: 0px;
+    border: 2px solid rgb(102, 0, 0);
+	border-top: 0px;
+}
+
+QCalendarWidget QAbstractItemView {
+    background-color: rgb(50, 38, 65);
+}
+
+#GraphWidget {
+    border: 3px solid rgb(102, 0, 0);
+}

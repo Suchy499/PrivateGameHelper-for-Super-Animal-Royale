@@ -23,6 +23,7 @@ class OverlayCenter(QFrame):
         
         self.pages.currentChanged.connect(self.set_title)
         self.title_bar.close_button.clicked.connect(self.close_overlay)
+        glb.SIGNAL_MANAGER.notificationSent.connect(self.notif.send_notification)
         
     def resizeEvent(self, event):
         self.notif.updatePosition()

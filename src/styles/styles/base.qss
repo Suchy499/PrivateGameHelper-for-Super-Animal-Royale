@@ -513,7 +513,7 @@ QToolTip {
 }
 
 #MapSelectionView {
-    background:rgb(69, 64, 96);
+    background: rgb(69, 64, 96);
     border: 2px solid rgb(38, 63, 112);
 	border-radius: 8px;
 	padding-left: 10px;
@@ -739,4 +739,203 @@ QCheckBox::indicator {
 
 #OverlayButton[selected="True"]:pressed {
     background: rgba(128, 128, 128, 0.6);
+}
+
+QCalendarWidget QWidget {
+    alternate-background-color: rgb(56, 91, 161);
+}
+
+#qt_calendar_navigationbar {
+    background-color: rgb(56, 91, 161);
+	border: 2px solid rgb(38, 63, 112);
+	border-bottom: 0px;
+}
+
+#qt_calendar_prevmonth,
+#qt_calendar_nextmonth {
+    border: none;
+    qproperty-icon: none;
+    background-color: transparent;
+    min-width: 13px;
+    max-width: 13px;
+    min-height: 13px;
+    max-height: 13px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#qt_calendar_prevmonth {
+    qproperty-icon: url(:/images/left_arrow.png);
+    margin-left: 5px;
+}
+
+#qt_calendar_nextmonth {
+    qproperty-icon: url(:/images/right_arrow.png);
+    margin-right: 5px;
+}
+
+#qt_calendar_yearbutton {
+    color: white;
+	margin:5px;
+    border-radius: 5px;
+	font-size: 13px;
+    font: Rubik;
+    font-weight: bold;
+	padding: 0px 10px;
+}
+
+ #qt_calendar_monthbutton {
+	width: 110px;
+    color: white;
+	font-size: 13px;
+    font: Rubik;
+    font-weight: bold;
+	margin: 5px 0px;
+    border-radius: 5px;
+	padding: 0px 2px;
+    image: none;
+}
+
+#qt_calendar_yearedit {
+    width: 53px;
+    color: white;
+    background: transparent;
+	font-size: 13px;
+    font: Rubik;
+    font-weight: bold;
+}
+
+#qt_calendar_monthedit {
+    width: 53px;
+}
+
+#qt_calendar_yearedit::up-button { 
+    image: url(:/images/right_arrow.png);
+    subcontrol-position: right;
+}
+
+#qt_calendar_yearedit::down-button { 
+    image: url(:/images/left_arrow.png);
+    subcontrol-position: left; 
+}
+
+#qt_calendar_yearedit::down-button, 
+#qt_calendar_yearedit::up-button {
+	width: 10px;
+    padding: 0px 5px;
+	border-radius: 3px;
+}
+
+#qt_calendar_prevmonth:hover, 
+#qt_calendar_nextmonth:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#qt_calendar_prevmonth:pressed, 
+#qt_calendar_nextmonth:pressed {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+#qt_calendar_yearbutton:hover, 
+#qt_calendar_monthbutton:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#qt_calendar_yearbutton:pressed, 
+#qt_calendar_monthbutton:pressed {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+#qt_calendar_yearedit::down-button:hover, 
+#qt_calendar_yearedit::up-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#qt_calendar_yearedit::down-button:pressed, 
+#qt_calendar_yearedit::up-button:pressed {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+QCalendarWidget QToolButton QMenu {
+    background-color: rgb(69, 64, 96);
+	border: 2px solid rgb(38, 63, 112);
+    color: white;
+    font-weight: bold;
+    font: Rubik;
+}
+
+QCalendarWidget QToolButton QMenu::item:selected:enabled {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+}
+
+QCalendarWidget QToolButton::menu-indicator {
+    image: none;
+}
+
+#qt_calendar_calendarview {
+    outline: 0px;
+	border: 2px solid rgb(38, 63, 112);
+	border-top: 0px;
+}
+
+#qt_calendar_calendarview::item {
+    width: 20px;
+    color: white;
+    outline: 0px;
+}
+
+#qt_calendar_calendarview::item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+#qt_calendar_calendarview::item:selected {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+QCalendarWidget QAbstractItemView {
+	background-color: rgb(69, 64, 96);
+}
+
+#RoundsButton {
+    background: rgba(0, 0, 0, 0);
+    image-position: left;
+    font-family: Rubik;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    border: none;
+    border-radius: 8px;
+}
+
+#RoundsButton:hover {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#RoundsButton:pressed {
+    background: rgba(128, 128, 128, 0.6);
+}
+
+#RoundsButton[selected="True"] {
+    background: rgba(128, 128, 128, 0.2);
+}
+
+#RoundsButton[selected="True"]:hover {
+    background: rgba(128, 128, 128, 0.4);
+}
+
+#RoundsButton[selected="True"]:pressed {
+    background: rgba(128, 128, 128, 0.6);
+}
+
+#LeaderboardLabel {
+    font-family: Rubik;
+    font-weight: bold;
+    font-size: 24px;
+    color: white;
+    padding: 6px;
+}
+
+#GraphWidget {
+    border: 3px solid rgb(38, 63, 112);
 }

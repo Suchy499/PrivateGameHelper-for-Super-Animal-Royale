@@ -1,4 +1,5 @@
 from .sidebar import Sidebar, OverlaySidebar
+from .rounds_sidebar import RoundsSidebar
 from .hline import HLine
 from .vline import VLine
 from .toggle import Toggle, LabeledToggle
@@ -22,3 +23,5 @@ from .notification import Notification
 from .update_popup import UpdatePopup
 from .settings_combobox import SettingsComboBox
 from .flow_layout import FlowLayout
+from .tournament_combobox import TournamentComboBox
+from .popup import Popup

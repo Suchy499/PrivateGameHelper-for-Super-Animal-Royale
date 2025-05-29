@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         
         self.setObjectName("MainWindow")
-        self.setMinimumSize(1265, 620)
+        self.setMinimumSize(1320, 700)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.setWindowTitle("Private Game Helper")
         self.setWindowIcon(QIcon(IMAGES[f"icon_{glb.SETTINGS.value("AppIcon", 0)}"]))
@@ -119,6 +119,22 @@ class MainWindow(QMainWindow):
                 "active": False,
             },
             {
+                "icon": IMAGES["trophy"],
+                "text": "Tournaments",
+                "category": "events",
+                "show_top": True,
+                "page": self.pages.tournaments_page,
+                "active": False,
+            },
+            {
+                "icon": IMAGES["discord"],
+                "text": "Discord",
+                "category": "events",
+                "show_top": True,
+                "page": self.pages.discord_page,
+                "active": False,
+            },
+            {
                 "icon": IMAGES["changelog"],
                 "text": "Changelog",
                 "category": "info",
@@ -165,6 +181,7 @@ class MainWindow(QMainWindow):
         glb.SIGNAL_MANAGER.settingChanged.connect(self.change_display_mode)
         glb.SIGNAL_MANAGER.appStyleChanged.connect(self.update_style)
         glb.SIGNAL_MANAGER.appIconChanged.connect(self.update_icon)
+        glb.SIGNAL_MANAGER.notificationSent.connect(self.notif.send_notification)
         
     def changeEvent(self, event):
         if event.type() == QEvent.Type.WindowStateChange:

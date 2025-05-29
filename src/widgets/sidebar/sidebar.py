@@ -6,7 +6,7 @@ from images import IMAGES
 class Sidebar(QFrame):
     def __init__(
         self,
-        parent: QWidget | None = None
+        parent: QWidget | None = None,
     ):
         super().__init__(parent)
         
@@ -31,13 +31,13 @@ class Sidebar(QFrame):
         self.expand_button.setIcon(self.hide_pixmap)
         self.expand_button.setIconSize(self.hide_pixmap.size())
         self.expand_button.clicked.connect(self.toggle_animation)
-        
+    
         self.hide_line = HLine(self, h=1)
         self.hide_line.setObjectName("SidebarLine")
         
         self.sidebar_layout.addWidget(self.expand_button)
         self.sidebar_layout.addWidget(self.hide_line)
-        
+    
         self.animation = QPropertyAnimation(self, b"maximumWidth")
     
     def toggle_animation(self) -> None:

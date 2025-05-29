@@ -151,6 +151,22 @@ class Overlay(QWidget):
                 "active": False,
             },
             {
+                "icon": IMAGES["trophy"],
+                "tooltip": "Tournaments",
+                "category": "events",
+                "show_top": True,
+                "page": self.center_overlay.pages.tournaments_page,
+                "active": False,
+            },
+            {
+                "icon": IMAGES["discord"],
+                "tooltip": "Discord",
+                "category": "events",
+                "show_top": True,
+                "page": self.center_overlay.pages.discord_page,
+                "active": False,
+            },
+            {
                 "icon": IMAGES["changelog"],
                 "tooltip": "Changelog",
                 "category": "info",

@@ -27,7 +27,11 @@ class PageAbout(QWidget):
         self.title = QLabel("Private Game Helper", self)
         self.title.setObjectName("TitleLabel")
         
-        self.made_by = QLabel("Made by Suchy499", self)
+        self.made_by = QLabel(
+            "Made by Suchy499\n"
+            "Banner and application icons by Super_Dasher", 
+            self
+        )
         self.made_by.setObjectName("HostIDLabel")
         
         self.title_layout.addWidget(self.title)
@@ -128,7 +132,7 @@ class PageAbout(QWidget):
         self.disclaimer_label.setObjectName("ItemsHeaderName")
         
         self.disclaimer_text = QLabel(
-            "Assets used in this project come from the Official Super Animal Royale Wiki.\n"
+            "Materials from the Super Animal Royale Wiki are under CC BY-NC-SA 3.0 license\n"
             "Super Animal Royale is a trademark owned by Pixile Studios. This project is not associated with Pixile Studios in any form."
         )
         self.disclaimer_text.setObjectName("HostIDLabel")

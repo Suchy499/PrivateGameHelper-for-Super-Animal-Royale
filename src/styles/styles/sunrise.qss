@@ -140,3 +140,55 @@
     background: rgba(0, 0, 0, 0.15);
     border: 2px solid rgb(213, 128, 213);
 }
+
+QCalendarWidget QWidget {
+    alternate-background-color: rgb(255, 153, 255);
+}
+
+#qt_calendar_navigationbar {
+    background-color: rgb(255, 153, 255);
+    border: 2px solid rgb(213, 128, 213);
+	border-bottom: 0px;
+}
+
+QCalendarWidget QToolButton QMenu {
+    background-color: rgb(160, 77, 146);
+    border: 2px solid rgb(213, 128, 213);
+    color: white;
+    font-weight: bold;
+    font: Rubik;
+}
+
+#qt_calendar_calendarview {
+    outline: 0px;
+    border: 2px solid rgb(213, 128, 213);
+	border-top: 0px;
+}
+
+QCalendarWidget QAbstractItemView {
+    background-color: rgb(160, 77, 146);
+}
+
+#RoundsButton:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+#RoundsButton:pressed {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+#RoundsButton[selected="True"] {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#RoundsButton[selected="True"]:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+#RoundsButton[selected="True"]:pressed {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+#GraphWidget {
+    border: 3px solid rgb(213, 128, 213);
+}

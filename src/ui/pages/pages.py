@@ -8,6 +8,8 @@ from .items import PageItems
 from .commands import PageCommands
 from .duels import PageDuels
 from .dodgeball import PageDodgeball
+from .tournaments import PageTournaments
+from .discord import PageDiscord
 from .changelog import PageChangelog
 from .about import PageAbout
 from .settings import PageSettings
@@ -26,6 +28,8 @@ class Pages(QStackedWidget):
         self.commands_page = PageCommands(self)
         self.duels_page = PageDuels(self)
         self.dodgeball_page = PageDodgeball(self)
+        self.tournaments_page = PageTournaments(self)
+        self.discord_page = PageDiscord(self)
         self.changelog_page = PageChangelog(self)
         self.about_page = PageAbout(self)
         self.settings_page = PageSettings(self)
@@ -39,6 +43,8 @@ class Pages(QStackedWidget):
         self.addWidget(self.commands_page)
         self.addWidget(self.duels_page)
         self.addWidget(self.dodgeball_page)
+        self.addWidget(self.tournaments_page)
+        self.addWidget(self.discord_page)
         self.addWidget(self.changelog_page)
         self.addWidget(self.about_page)
         self.addWidget(self.settings_page)

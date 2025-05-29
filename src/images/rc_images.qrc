@@ -1,5 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 	<qresource>
+		<file>images/add.png</file>
 		<file>images/ak.png</file>
 		<file>images/ak_color.png</file>
 		<file>images/all.png</file>
@@ -12,6 +13,7 @@
 		<file>images/armor1.png</file>
 		<file>images/armor2.png</file>
 		<file>images/armor3.png</file>
+		<file>images/back_arrow.png</file>
 		<file>images/banana.png</file>
 		<file>images/banana_color.png</file>
 		<file>images/banana_forker.png</file>
@@ -23,6 +25,7 @@
 		<file>images/cat_mine.png</file>
 		<file>images/changelog.png</file>
 		<file>images/claw_boots.png</file>
+		<file>images/clipboard.png</file>
 		<file>images/close.png</file>
 		<file>images/commands.png</file>
 		<file>images/cupgrade.png</file>
@@ -83,6 +86,9 @@
 		<file>images/players.png</file>
 		<file>images/pregame.png</file>
 		<file>images/presets.png</file>
+		<file>images/ranking_drop.png</file>
+		<file>images/ranking_gain.png</file>
+		<file>images/ranking_no_change.png</file>
 		<file>images/refresh.png</file>
 		<file>images/right_arrow.png</file>
 		<file>images/sar_map.png</file>
@@ -110,10 +116,15 @@
 		<file>images/tommy_gun_color.png</file>
 		<file>images/top_arrow.png</file>
 		<file>images/trash.png</file>
+		<file>images/trophy.png</file>
 		<file>images/twitch.png</file>
 		<file>images/twitter.png</file>
 		<file>images/updater.png</file>
 		<file>images/warning.png</file>
+		<file>images/webhook_setup_0.png</file>
+		<file>images/webhook_setup_1.png</file>
+		<file>images/webhook_setup_2.png</file>
+		<file>images/webhook_setup_3.png</file>
 		<file>images/zipline.png</file>
 		<file>images/zipline_color.png</file>
 	</qresource>

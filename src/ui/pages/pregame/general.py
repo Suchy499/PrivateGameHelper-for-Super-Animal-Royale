@@ -1,6 +1,6 @@
 from core import *
 from images import IMAGES
-from widgets import HLine, Button
+from widgets import HLine, Button, Popup
 
 class General(QWidget):
     def __init__(self, parent):
@@ -51,7 +51,6 @@ class General(QWidget):
         
         self.delete_icon = QPixmap(IMAGES["trash"]).scaledToHeight(13, Qt.TransformationMode.SmoothTransformation)
         self.delete_button = Button(self.preset_buttons, " Delete", self.delete_icon, btn_style="ButtonDelete")
-        self.delete_button.clicked.connect(delete_preset)
         self.delete_button.setVisible(False)
         self.preset_buttons_layout.addWidget(self.delete_button)
         
@@ -88,6 +87,23 @@ class General(QWidget):
         self.page_layout.addWidget(self.preset_hline)
         self.page_layout.addWidget(self.control_buttons)
         
+        self.confirm_popup = Popup(
+            self, 
+            "Confirm", 
+            "Are you sure you want to\ndelete this preset?",
+            300,
+            150,
+            Button(None, "Cancel", btn_style="ButtonDelete"),
+            Button(None, "Delete", btn_style="ButtonDefault")
+        )
+        
+        self.confirm_popup.buttons[0].clicked.connect(self.confirm_popup.hide)
+        self.confirm_popup.buttons[1].clicked.connect(delete_preset)
+
+        self.confirm_popup.hide()
+        
+        self.delete_button.clicked.connect(self.open_popup)
+        
         glb.SIGNAL_MANAGER.presetDeleted.connect(self.delete_settings)
         glb.SIGNAL_MANAGER.presetNameChanged.connect(self.name_changed)
         glb.SIGNAL_MANAGER.presetEdited.connect(self.edit_settings)
@@ -116,6 +132,7 @@ class General(QWidget):
         self.name_edit.setText("")
         self.edit_button.setVisible(False)
         self.delete_button.setVisible(False)
+        self.confirm_popup.hide()
         send_notification("Preset has been deleted", "NotifWarning")
     
     def name_edited(self, new_name: str) -> None:
@@ -128,3 +145,11 @@ class General(QWidget):
     def restore_defaults(self) -> None:
         send_notification("Settings restored to default")
         
+    def open_popup(self) -> None:
+        self.confirm_popup.setGeometry(
+            (self.width()-self.confirm_popup.width())/2,
+            (self.height()-self.confirm_popup.height())/2,
+            self.confirm_popup.width(),
+            self.confirm_popup.height()
+        )
+        self.confirm_popup.show()

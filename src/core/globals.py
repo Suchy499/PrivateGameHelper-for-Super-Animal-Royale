@@ -188,3 +188,4 @@ DODGEBALL_SETTINGS: dict = {
     "damage": 1.0
 }
 PLAYER_LIST: list[PlayerItem] = []
+WEBHOOKS: list[str] = []

@@ -68,12 +68,38 @@ class SignalManager(QObject):
     overlayStyleChanged = Signal()
     appIconChanged = Signal()
     coordinatesChanged = Signal(str)
+    tournamentCreated = Signal(str)
+    tournamentDeleted = Signal(str)
+    tournamentNameChanged = Signal(str)
+    tournamentModeChanged = Signal(str)
+    tournamentDateTimeChanged = Signal(int)
+    tournamentUpdated = Signal(str)
+    tournamentOpened = Signal(str)
+    tournamentClosed = Signal()
+    killPointsToggled = Signal(bool, str)
+    roundSaved = Signal(str, int)
+    roundDeleted = Signal(str)
+    notificationSent = Signal(str, str)
+    leaderboardUpdated = Signal(str)
+    graphsUpdated = Signal(str)
+    webhooksSaved = Signal()
+    scoresUpdated = Signal(str)
 
 @dataclass
 class PlayerItem:
     player_id: int
     name: str
     team: int = 1
+    
+@dataclass
+class Player:
+    player_id: int
+    name: str
+    playfab_id: str
+    squad_id: int
+    team_id: int
+    kills: int
+    placement: int
     
 class CommandSpeed(Enum):
     VERY_SLOW = 1

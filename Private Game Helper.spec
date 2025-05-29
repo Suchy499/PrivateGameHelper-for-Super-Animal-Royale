@@ -5,7 +5,7 @@ a = Analysis(
     ['.\\src\\__main__.py'],
     pathex=['.\\.venv\\Lib\\site-packages'],
     binaries=[],
-    datas=[('.\\src\\core\\presets.json', 'core'), ('.\\src\\images\\rc_images.qrc', 'images'), ('.\\src\\styles\\styles', 'styles\\styles')],
+    datas=[('.\\src\\images\\rc_images.qrc', 'images'), ('.\\src\\styles\\styles', 'styles\\styles')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

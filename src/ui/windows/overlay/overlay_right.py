@@ -6,7 +6,7 @@ class OverlayRight(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         
-        self.setFixedSize(90, 500)
+        self.setFixedSize(90, 600)
         
         self.container = QWidget(self)
         self.container.setFixedSize(self.size())

@@ -1,0 +1,1 @@
+from .tournaments import PageTournaments
