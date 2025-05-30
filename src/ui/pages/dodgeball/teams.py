@@ -123,16 +123,15 @@ class Teams(QWidget):
         self.reset_players()
         self.saved_players = []
         for player_item in glb.PLAYER_LIST:
-            if glb.HOST_ID != player_item.player_id:
-                player_object = Player(player_item, self)
-                match player_item.team:
-                    case 0:
-                        self.team_a_players_layout.addWidget(player_object)
-                    case 1:
-                        self.spectators_players_layout.addWidget(player_object)
-                    case 2:
-                        self.team_b_players_layout.addWidget(player_object)
-                self.saved_players.append(player_object)
+            player_object = Player(player_item, self)
+            match player_item.team:
+                case 0:
+                    self.team_a_players_layout.addWidget(player_object)
+                case 1:
+                    self.spectators_players_layout.addWidget(player_object)
+                case 2:
+                    self.team_b_players_layout.addWidget(player_object)
+            self.saved_players.append(player_object)
     
     def resizeEvent(self, event):
         self.set_columns_width()

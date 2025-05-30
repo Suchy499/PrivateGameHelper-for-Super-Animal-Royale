@@ -1,5 +1,6 @@
 from core import *
 from images import IMAGES
+from widgets import ClickableLabel
 
 class Player(QWidget):
     def __init__(
@@ -16,8 +17,9 @@ class Player(QWidget):
         self.player_layout.setContentsMargins(7, 10, 7, 10)
         self.player_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
-        self.name_label = QLabel(self.player_item.name, self)
+        self.name_label = ClickableLabel(self, self.player_item.name)
         self.name_label.setObjectName("PlayerNameTeams")
+        self.name_label.clicked.connect(self.change_host)
         
         if self.player_item.team == 2 or self.player_item.team == 1:
             self.left_icon = QPixmap(IMAGES["left_arrow"])
@@ -42,6 +44,26 @@ class Player(QWidget):
             self.right_button.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
             self.right_button.clicked.connect(self.move_right)
             self.player_layout.addWidget(self.right_button, alignment=Qt.AlignmentFlag.AlignRight)
+        
+        if glb.HOST_ID == self.player_item.player_id:
+            self.name_label.setProperty("selected", "True")
+        else:
+            self.name_label.setProperty("selected", "False")
+            
+        glb.SIGNAL_MANAGER.hostIdChanged.connect(self.host_changed)
+        
+    def change_host(self) -> None:
+        glb.HOST_ID = self.player_item.player_id
+        glb.SIGNAL_MANAGER.hostIdChanged.emit(self.player_item.player_id)
+        if self.window().metaObject().className() == "Overlay":
+            open_window("Super Animal Royale")
+    
+    def host_changed(self, host_id: int) -> None:
+        if glb.HOST_ID == self.player_item.player_id:
+            self.name_label.setProperty("selected", "True")
+        else:
+            self.name_label.setProperty("selected", "False")
+        self.setStyleSheet(self.styleSheet())
         
     def move_left(self) -> None:
         glb.PLAYER_LIST[self.index].team -= 1
