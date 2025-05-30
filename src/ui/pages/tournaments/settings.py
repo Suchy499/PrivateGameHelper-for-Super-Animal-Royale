@@ -173,10 +173,13 @@ class Settings(QWidget):
             self.datetime_edit.setDateTime(QDateTime.currentDateTime())
         else:
             self.datetime_edit.setDateTime(QDateTime.fromSecsSinceEpoch(tournament_metadata["starts_at"]))
-        if tournament_metadata["discord"]:
+        try:
+            if tournament_metadata["discord"]:
+                self.discord_integration_toggle.setChecked(True)
+            else:
+                self.discord_integration_toggle.setChecked(False)
+        except KeyError:
             self.discord_integration_toggle.setChecked(True)
-        else:
-            self.discord_integration_toggle.setChecked(False)
     
     def delete_tournament(self) -> None:
         tournament_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments", self.tournament_id)

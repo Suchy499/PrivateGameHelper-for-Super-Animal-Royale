@@ -242,8 +242,11 @@ class PageDiscord(QWidget):
         with open(metadata_path, "r") as f:
             metadata = json.load(f)
         
-        if not metadata["discord"]:
-            return
+        try:
+            if not metadata["discord"]:
+                return
+        except KeyError:
+            pass
         
         self.create_tables(tournament_id)
         leaderboard_files = self.get_tables(tournament_id)
