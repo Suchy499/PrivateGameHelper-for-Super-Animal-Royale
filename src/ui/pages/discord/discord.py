@@ -237,6 +237,14 @@ class PageDiscord(QWidget):
         tournament_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments", tournament_id)
         tournament_messages_path = os.path.join(tournament_path, "discord_messages.json")
         
+        metadata_path = os.path.join(tournament_path, "metadata.json")
+        
+        with open(metadata_path, "r") as f:
+            metadata = json.load(f)
+        
+        if not metadata["discord"]:
+            return
+        
         self.create_tables(tournament_id)
         leaderboard_files = self.get_tables(tournament_id)
         graphs_files = self.get_graphs(tournament_id)

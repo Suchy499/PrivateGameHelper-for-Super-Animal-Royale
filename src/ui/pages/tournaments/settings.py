@@ -1,6 +1,6 @@
 from core import *
 from images import IMAGES
-from widgets import Button, TournamentComboBox, ClickableLabel, Popup
+from widgets import Button, TournamentComboBox, ClickableLabel, Popup, LabeledToggle
 import json
 import shutil
 from zipfile import ZipFile
@@ -79,6 +79,8 @@ class Settings(QWidget):
         self.datetime_container_layout.addWidget(self.datetime_edit)
         self.datetime_container_layout.addWidget(self.copy_to_clipboard)
         
+        self.discord_integration_toggle = LabeledToggle(self, text="Discord Integration", default_state=True)
+        
         self.settings_buttons = QWidget(self)
         self.settings_buttons_layout = QHBoxLayout(self.settings_buttons)
         self.settings_buttons_layout.setContentsMargins(0, 0, 0, 9)
@@ -109,7 +111,9 @@ class Settings(QWidget):
         self.page_layout.addWidget(self.mode_combobox)
         self.page_layout.addWidget(self.datetime_label)
         self.page_layout.addWidget(self.datetime_container)
-        self.page_layout.addSpacing(15)
+        self.page_layout.addSpacing(10)
+        self.page_layout.addWidget(self.discord_integration_toggle)
+        self.page_layout.addSpacing(10)
         self.page_layout.addWidget(self.settings_buttons)
         self.page_layout.addWidget(self.export_button)
         
@@ -144,7 +148,8 @@ class Settings(QWidget):
             tournament_metadata = {
                 "name": self.name_edit.text(),
                 "mode": self.mode_combobox.currentText(),
-                "starts_at": self.datetime_edit.dateTime().toSecsSinceEpoch()
+                "starts_at": self.datetime_edit.dateTime().toSecsSinceEpoch(),
+                "discord": self.discord_integration_toggle.isChecked()
             }
             with open(os.path.join(tournament_path, "metadata.json"), "w") as f:
                 json.dump(tournament_metadata, f, indent=4)
@@ -168,6 +173,10 @@ class Settings(QWidget):
             self.datetime_edit.setDateTime(QDateTime.currentDateTime())
         else:
             self.datetime_edit.setDateTime(QDateTime.fromSecsSinceEpoch(tournament_metadata["starts_at"]))
+        if tournament_metadata["discord"]:
+            self.discord_integration_toggle.setChecked(True)
+        else:
+            self.discord_integration_toggle.setChecked(False)
     
     def delete_tournament(self) -> None:
         tournament_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments", self.tournament_id)
