@@ -56,11 +56,15 @@ The documentation has been migrated to the [GitHub Wiki](https://github.com/Such
 
 ## Changelog
 
-### v2.1.0
+### v2.1.1
 
-- Changed the location where user data is stored (now stored at: /Documents/Private Game Helper/)
-- Added a tournament calculator with discord integration
-- Added confirmation popups when deleting presets
+- You can now change the host for custom game modes by clicking on the player's name in the team picker
+- Added a toggle for tournament discord integration
+- Optimized the graph creation process
+- Removed players with 0 rounds played from graphs and leaderboards
+- Added secondary sorting in case a tiebreaker is needed
+- You can now select which players get awarded kill leader points in case of a tie
+- BUGFIX: Fixed a bug where leaderboard was not displayed properly if there was only one round played
 
 ## Feature checklist
 
