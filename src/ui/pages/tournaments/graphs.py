@@ -19,6 +19,8 @@ class Canvas(FigureCanvas):
         super().__init__(fig)
     
     def save_chart(self) -> None:
+        if not self.window().metaObject().className() == "MainWindow":
+            return
         graphs_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments", self.tournament_id, "Graphs")
         if not os.path.isdir(graphs_path):
             os.makedirs(graphs_path)
