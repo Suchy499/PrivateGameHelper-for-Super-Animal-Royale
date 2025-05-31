@@ -20,7 +20,7 @@ Private Game Helper is a tool designed to streamline the process of hosting and 
 - [Usage](#usage)
 - [Notes](#notes)
 - [Changelog](#changelog)
-  - [v2.1.0](#v210)
+  - [v2.1.1](#v211)
 - [Feature checklist](#feature-checklist)
 - [Disclaimer](#disclaimer)
 
