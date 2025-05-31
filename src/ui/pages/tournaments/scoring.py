@@ -1,5 +1,5 @@
 from core import *
-from widgets import VLine, Toggle, Button
+from widgets import VLine, Toggle, Button, SettingsComboBox
 from images import IMAGES
 
 class Scoring(QWidget):
@@ -105,6 +105,14 @@ class Scoring(QWidget):
         self.kill_cap_spinbox.setMinimum(0)
         self.kill_cap_spinbox.setMaximum(999)
         
+        self.kill_leader_tiebreaker = SettingsComboBox(self, "Kill Leader Tiebreaker", w=220)
+        self.kill_leader_tiebreaker.addItems(["All", "Highest Placed", "Lowest Placed"])
+        self.kill_leader_tiebreaker.setToolTip("Changes which players get awarded points for most kills in case of a tie")
+        
+        self.tiebreaker = SettingsComboBox(self, "Tiebreaker", w=220)
+        self.tiebreaker.addItems(["Kills", "Average Kills", "Average Placement"])
+        self.tiebreaker.setToolTip("Changes the value according to which players are ordered in the leaderboard in case of a tie")
+        
         self.left_widget_layout.addWidget(self.static_kill_points_label)
         self.left_widget_layout.addWidget(self.static_kill_points_toggle)
         self.left_widget_layout.addWidget(self.kill_points_label)
@@ -115,6 +123,10 @@ class Scoring(QWidget):
         self.left_widget_layout.addWidget(self.kill_leader_tournament_spinbox)
         self.left_widget_layout.addWidget(self.kill_cap_label)
         self.left_widget_layout.addWidget(self.kill_cap_spinbox)
+        self.left_widget_layout.addSpacing(10)
+        self.left_widget_layout.addWidget(self.kill_leader_tiebreaker)
+        self.left_widget_layout.addSpacing(10)
+        self.left_widget_layout.addWidget(self.tiebreaker)
         
         # RIGHT WIDGET
         
@@ -239,6 +251,16 @@ class Scoring(QWidget):
             self.placement_labels.placement_kill_points_label.setVisible(True)
             for placement_range in self.placement_array:
                 placement_range.placement_kill_points_spinbox.setVisible(True)
+        
+        try:
+            self.kill_leader_tiebreaker.combobox.setCurrentIndex(tournament_scoring["kill_leader_tiebreaker"])
+        except KeyError:
+            self.kill_leader_tiebreaker.combobox.setCurrentIndex(0)
+            
+        try:
+            self.tiebreaker.combobox.setCurrentIndex(tournament_scoring["tiebreaker"])
+        except KeyError:
+            self.tiebreaker.combobox.setCurrentIndex(0)
     
     def save_scoring(self) -> None:
         try:
@@ -257,7 +279,9 @@ class Scoring(QWidget):
                 "kill_points": self.kill_points_spinbox.value(),
                 "kill_leader_game": self.kill_leader_game_spinbox.value(),
                 "kill_leader_tournament": self.kill_leader_tournament_spinbox.value(),
+                "kill_leader_tiebreaker": self.kill_leader_tiebreaker.combobox.currentIndex(),
                 "kill_cap": self.kill_cap_spinbox.value(),
+                "tiebreaker": self.tiebreaker.combobox.currentIndex(),
                 "placement_ranges": placement_ranges
             }
             with open(os.path.join(tournament_path, "scoring.json"), "w") as f:

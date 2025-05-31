@@ -100,11 +100,29 @@ class Leaderboard(QWidget):
                 return json.load(f)
         except:
             return
+        
+    def get_scoring(self) -> dict:
+        try:
+            scoring_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments", self.tournament_id, "scoring.json")
+            with open(scoring_path, "r") as f:
+                return json.load(f)
+        except:
+            return
 
     def calculate_leaderboard(self) -> list[dict]:
         participants = self.get_participants()
+        scoring = self.get_scoring()
+        
         if not participants:
             return
+        
+        if not scoring:
+            return
+        
+        try:
+            secondary_sorting_condition = scoring["tiebreaker"]
+        except KeyError:
+            secondary_sorting_condition = 0
         
         rounds = participants["rounds"]
         players = participants["players"]
@@ -131,7 +149,13 @@ class Leaderboard(QWidget):
         
         for i, round_id in enumerate(rounds):
             if len(rounds) >= 2 and i == len(rounds) - 1:
-                leaderboard_prev = sorted(leaderboard, key=lambda player: player["score"], reverse=True)
+                match secondary_sorting_condition:
+                    case 0:
+                        leaderboard_prev = sorted(leaderboard, key=lambda player: (player["score"], player["kills"]), reverse=True)
+                    case 1:
+                        leaderboard_prev = sorted(leaderboard, key=lambda player: (player["score"], (player["kills"]/player["games_played"]) if player["games_played"] > 0 else 0), reverse=True)
+                    case 2:
+                        leaderboard_prev = sorted(leaderboard, key=lambda player: (player["score"], -(player["total_placement"]/player["games_played"]) if player["games_played"] > 0 else 0), reverse=True)
                 
                 for j, player in enumerate(leaderboard_prev):
                     leaderboard[player["id"]]["ranking"] = j + 1
@@ -151,7 +175,13 @@ class Leaderboard(QWidget):
                     leaderboard[k]["score"] += played_round["score"]
             
             if len(rounds) >= 2 and i == len(rounds) - 1:
-                leaderboard.sort(key=lambda player: player["score"], reverse=True)
+                match secondary_sorting_condition:
+                    case 0:
+                        leaderboard.sort(key=lambda player: (player["score"], player["kills"]), reverse=True)
+                    case 1:
+                        leaderboard.sort(key=lambda player: (player["score"], (player["kills"]/player["games_played"]) if player["games_played"] > 0 else 0), reverse=True)
+                    case 2:
+                        leaderboard.sort(key=lambda player: (player["score"], -(player["total_placement"]/player["games_played"]) if player["games_played"] > 0 else 0), reverse=True)
                 
                 for l, player in enumerate(leaderboard):
                     if player["ranking"] > l + 1:
@@ -167,7 +197,13 @@ class Leaderboard(QWidget):
                         player["average_placement"] = round(player["total_placement"] / player["games_played"], 1)
                         
             elif len(rounds) == 1:
-                leaderboard.sort(key=lambda player: player["score"], reverse=True)
+                match secondary_sorting_condition:
+                    case 0:
+                        leaderboard.sort(key=lambda player: (player["score"], player["kills"]), reverse=True)
+                    case 1:
+                        leaderboard.sort(key=lambda player: (player["score"], (player["kills"]/player["games_played"]) if player["games_played"] > 0 else 0), reverse=True)
+                    case 2:
+                        leaderboard.sort(key=lambda player: (player["score"], -(player["total_placement"]/player["games_played"]) if player["games_played"] > 0 else 0), reverse=True)
                 
                 for m, player in enumerate(leaderboard):
                     player["ranking"] = m + 1

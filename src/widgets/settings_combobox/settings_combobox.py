@@ -6,7 +6,7 @@ class SettingsComboBox(QWidget):
         self,
         parent: QWidget | None = None,
         text: str = "",
-        setting: Literal["DisplayMode", "OverlayPosition"] = "DisplayMode",
+        setting: Literal["DisplayMode", "OverlayPosition"] | None = None,
         w: int = 210
     ):
         super().__init__(parent)
@@ -35,14 +35,15 @@ class SettingsComboBox(QWidget):
                 border: none;
             }}
         """)
-        match self.setting:
-            case "DisplayMode":
-                self.combobox.addItems(["App + Overlay", "App only", "Overlay only"])
-            case "OverlayPosition":
-                self.combobox.addItems(["Right", "Left", "Bottom", "Top"])
-        self.change_setting()
-        self.combobox.currentIndexChanged.connect(self.setting_selected)
-        glb.SIGNAL_MANAGER.settingChanged.connect(self.change_setting)
+        if self.setting:
+            match self.setting:
+                case "DisplayMode":
+                    self.combobox.addItems(["App + Overlay", "App only", "Overlay only"])
+                case "OverlayPosition":
+                    self.combobox.addItems(["Right", "Left", "Bottom", "Top"])
+            self.change_setting()
+            self.combobox.currentIndexChanged.connect(self.setting_selected)
+            glb.SIGNAL_MANAGER.settingChanged.connect(self.change_setting)
         
         self.settings_combobox_layout.addWidget(self.label)
         self.settings_combobox_layout.addWidget(self.combobox)

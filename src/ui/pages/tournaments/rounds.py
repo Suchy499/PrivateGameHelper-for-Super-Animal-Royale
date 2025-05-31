@@ -321,6 +321,11 @@ class NewRound(QWidget):
         
         player_list = self.player_list
         
+        try:
+            kill_leader_condition = scoring["kill_leader_tiebreaker"]
+        except KeyError:
+            kill_leader_condition = 0
+        
         if metadata["mode"] != "Solo":
             squad_dict = {}
             
@@ -347,7 +352,17 @@ class NewRound(QWidget):
                 team.placement = ranking + 1
         
         max_kills = max([player.kills for player in player_list])
-        kill_leaders = frozenset([player.playfab_id for player in player_list if player.kills == max_kills])
+        kill_leaders = [player for player in player_list if player.kills == max_kills]
+        
+        match kill_leader_condition:
+            case 0:
+                kill_leaders = [player.playfab_id for player in kill_leaders]
+            case 1:
+                kill_leaders.sort(key=lambda player: player.placement)
+                kill_leaders = [kill_leaders[0].playfab_id]
+            case 2:
+                kill_leaders.sort(key=lambda player: player.placement, reverse=True)
+                kill_leaders = [kill_leaders[0].playfab_id]
         
         for player in player_list:
             kill_points = 0
@@ -763,9 +778,24 @@ class SavedRound(QWidget):
         
         if not leaderboard:
             return
+        
+        try:
+            kill_leader_condition = scoring["kill_leader_tiebreaker"]
+        except KeyError:
+            kill_leader_condition = 0
 
         max_kills = max([player["kills"] for player in leaderboard])
-        kill_leaders = frozenset([player["playfab_id"] for player in leaderboard if player["kills"] == max_kills])
+        kill_leaders = [player for player in leaderboard if player["kills"] == max_kills]
+        
+        match kill_leader_condition:
+            case 0:
+                kill_leaders = [player["playfab_id"] for player in kill_leaders]
+            case 1:
+                kill_leaders.sort(key=lambda player: player["placement"])
+                kill_leaders = [kill_leaders[0]["playfab_id"]]
+            case 2:
+                kill_leaders.sort(key=lambda player: player["placement"], reverse=True)
+                kill_leaders = [kill_leaders[0]["playfab_id"]]
         
         for player in leaderboard:
             kill_points = 0
