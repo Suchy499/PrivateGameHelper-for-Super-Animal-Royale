@@ -110,7 +110,7 @@ class Scoring(QWidget):
         self.kill_leader_tiebreaker.setToolTip("Changes which players get awarded points for most kills in case of a tie")
         
         self.tiebreaker = SettingsComboBox(self, "Tiebreaker", w=220)
-        self.tiebreaker.addItems(["Kills", "Average Kills", "Average Placement"])
+        self.tiebreaker.addItems(["Kills", "Average Kills", "Average Placement", "Wins"])
         self.tiebreaker.setToolTip("Changes the value according to which players are ordered in the leaderboard in case of a tie")
         
         self.left_widget_layout.addWidget(self.static_kill_points_label)

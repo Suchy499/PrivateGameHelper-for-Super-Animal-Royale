@@ -156,6 +156,8 @@ class Leaderboard(QWidget):
                         leaderboard_prev = sorted(leaderboard, key=lambda player: (player["score"], (player["kills"]/player["games_played"]) if player["games_played"] > 0 else 0), reverse=True)
                     case 2:
                         leaderboard_prev = sorted(leaderboard, key=lambda player: (player["score"], -(player["total_placement"]/player["games_played"]) if player["games_played"] > 0 else 0), reverse=True)
+                    case 3:
+                        leaderboard_prev = sorted(leaderboard, key=lambda player: (player["score"], player["wins"]), reverse=True)
                 
                 for j, player in enumerate(leaderboard_prev):
                     leaderboard[player["id"]]["ranking"] = j + 1
@@ -182,7 +184,9 @@ class Leaderboard(QWidget):
                         leaderboard.sort(key=lambda player: (player["score"], (player["kills"]/player["games_played"]) if player["games_played"] > 0 else 0), reverse=True)
                     case 2:
                         leaderboard.sort(key=lambda player: (player["score"], -(player["total_placement"]/player["games_played"]) if player["games_played"] > 0 else 0), reverse=True)
-                
+                    case 3:
+                        leaderboard.sort(key=lambda player: (player["score"], player["wins"]), reverse=True)
+                        
                 for l, player in enumerate(leaderboard):
                     if player["ranking"] > l + 1:
                         player["ranking_change"] = -1
@@ -204,6 +208,8 @@ class Leaderboard(QWidget):
                         leaderboard.sort(key=lambda player: (player["score"], (player["kills"]/player["games_played"]) if player["games_played"] > 0 else 0), reverse=True)
                     case 2:
                         leaderboard.sort(key=lambda player: (player["score"], -(player["total_placement"]/player["games_played"]) if player["games_played"] > 0 else 0), reverse=True)
+                    case 3:
+                        leaderboard.sort(key=lambda player: (player["score"], player["wins"]), reverse=True)
                 
                 for m, player in enumerate(leaderboard):
                     player["ranking"] = m + 1
