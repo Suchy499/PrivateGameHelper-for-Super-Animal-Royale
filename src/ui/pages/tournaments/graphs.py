@@ -164,6 +164,9 @@ class Graphs(QWidget):
             players: list[PlayerTuple] = []
 
             for participant in participants:
+                if len(participant["rounds_played"]) == 0:
+                    continue
+                
                 if type(participant["name"]) == list:
                     name = ", ".join(participant["name"])
                 else:

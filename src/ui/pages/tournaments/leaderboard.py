@@ -166,6 +166,8 @@ class Leaderboard(QWidget):
                         player["average_kills"] = round(player["kills"] / player["games_played"], 1)
                         player["average_placement"] = round(player["total_placement"] / player["games_played"], 1)
         
+        leaderboard = [player for player in leaderboard if player["games_played"] > 0]
+        
         return leaderboard
         
     def display_leaderboard(self, leaderboard: list[dict]) -> None:
