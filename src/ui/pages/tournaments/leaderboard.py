@@ -165,6 +165,16 @@ class Leaderboard(QWidget):
                     if player["games_played"] > 0:
                         player["average_kills"] = round(player["kills"] / player["games_played"], 1)
                         player["average_placement"] = round(player["total_placement"] / player["games_played"], 1)
+                        
+            elif len(rounds) == 1:
+                leaderboard.sort(key=lambda player: player["score"], reverse=True)
+                
+                for m, player in enumerate(leaderboard):
+                    player["ranking"] = m + 1
+                    
+                    if player["games_played"] > 0:
+                        player["average_kills"] = round(player["kills"] / player["games_played"], 1)
+                        player["average_placement"] = round(player["total_placement"] / player["games_played"], 1)
         
         leaderboard = [player for player in leaderboard if player["games_played"] > 0]
         
