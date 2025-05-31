@@ -7,8 +7,8 @@ from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import os
 import json
-import csv
 from pyfonts import load_font
+from collections import namedtuple
 
 class Canvas(FigureCanvas):
     def __init__(self, tournament_id: str, chart_name: str):
@@ -140,39 +140,52 @@ class Graphs(QWidget):
     def plot_charts(self, tournament_id: str) -> None:
         if tournament_id != self.tournament_id:
             return
+        
         metadata = self.get_metadata()
         tournament_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments", self.tournament_id)
-        leaderboard_path = os.path.join(tournament_path, "leaderboard.csv")
-        if not os.path.exists(leaderboard_path):
+        participants_path = os.path.join(tournament_path, "participants.json")
+        
+        if not os.path.exists(participants_path):
             return
-        with open(leaderboard_path, "r", encoding="UTF-8", newline="") as f:
-            leaderboard_csv_reader = csv.reader(f)
-
-            players = []
-            scores = []
-            kills_list: list[tuple] = []
-
-            for row in leaderboard_csv_reader:
-                if row[0] == "ranking":
-                    continue
-                if len(row[1]) > 10:
-                    name = f"{row[1][:8]}.."
-                else:
-                    name = row[1]
-                players.append(name)
-                scores.append(round(float(row[8]), 1))
-                kills_list.append((name, int(row[4])))
+        
+        with open(participants_path, "r", encoding="UTF-8", newline="") as f:
+            data = json.load(f)
             
-            kills_list.sort(key=lambda player: player[1], reverse=True)
+            try:
+                if not data["rounds"] or not data["players"]:
+                    return
+            except:
+                return
+            
+            participants = data["players"]
+
+            PlayerTuple = namedtuple("PlayerTuple", ["name", "kills", "score", "placements"])
+            
+            players: list[PlayerTuple] = []
+
+            for participant in participants:
+                if type(participant["name"]) == list:
+                    name = ", ".join(participant["name"])
+                else:
+                    name = participant["name"]
+                    
+                if len(name) > 10:
+                    name = f"{name[:8]}.."
+
+                player_kills = 0
+                player_score = 0
+                player_placements = []
+                
+                for played_round in participant["rounds_played"]:
+                    player_kills += played_round["kills"]
+                    player_score += played_round["score"]
+                    player_placements.append(played_round["placement"])
+                
+                players.append(PlayerTuple(name, player_kills, player_score, player_placements))
         
         rubik_font_bold = load_font(
             font_url="https://github.com/Suchy499/PrivateGameHelper-for-Super-Animal-Royale/blob/main/src/styles/fonts/Rubik-Bold.ttf?raw=true"
         )
-        
-        try:
-            kill_list_players, kill_list_values = zip(*kills_list)
-        except ValueError:
-            return
         
         plt.style.use('https://github.com/dhaitz/matplotlib-stylesheets/raw/master/pitayasmoothie-dark.mplstyle')
         plt.rcParams["text.color"] = "white"
@@ -197,88 +210,41 @@ class Graphs(QWidget):
         self.graph_label.setText("SCORE")
         
         x = range(len(players))
+        
+        players.sort(key=lambda player: player.score, reverse=True)
+        
+        player_names, _, player_scores, _ = zip(*players)
+        
         self.canvas_dict["score"].axes.spines["left"].set_color("white")
         self.canvas_dict["score"].axes.spines["left"].set_linewidth(1)
         self.canvas_dict["score"].axes.spines["bottom"].set_color("white")
         self.canvas_dict["score"].axes.spines["bottom"].set_linewidth(1)
-        self.canvas_dict["score"].axes.bar(players, scores)
-        self.canvas_dict["score"].axes.set_xticks(x, players, rotation=45, fontsize=8, ha="right", rotation_mode="anchor")
+        self.canvas_dict["score"].axes.bar(player_names, player_scores)
+        self.canvas_dict["score"].axes.set_xticks(x, player_names, rotation=45, fontsize=8, ha="right", rotation_mode="anchor")
         self.canvas_dict["score"].axes.set_xmargin(0.01)
         self.canvas_dict["score"].axes.set_title(metadata["name"], font=rubik_font_bold, fontsize=20)
         self.canvas_dict["score"].axes.set_ylabel("Score", font=rubik_font_bold, fontsize=20)
         self.canvas_dict["score"].save_chart()
         
-        x = range(len(kills_list))
+        players.sort(key=lambda player: player.kills, reverse=True)
+        
+        player_names, player_kills, _, _ = zip(*players)
+        
         self.canvas_dict["kills"].axes.spines["left"].set_color("white")
         self.canvas_dict["kills"].axes.spines["left"].set_linewidth(1)
         self.canvas_dict["kills"].axes.spines["bottom"].set_color("white")
         self.canvas_dict["kills"].axes.spines["bottom"].set_linewidth(1)
-        self.canvas_dict["kills"].axes.bar(kill_list_players, kill_list_values)
-        self.canvas_dict["kills"].axes.set_xticks(x, kill_list_players, rotation=45, fontsize=8, ha="right", rotation_mode="anchor")
+        self.canvas_dict["kills"].axes.bar(player_names, player_kills)
+        self.canvas_dict["kills"].axes.set_xticks(x, player_names, rotation=45, fontsize=8, ha="right", rotation_mode="anchor")
         self.canvas_dict["kills"].axes.set_xmargin(0.01)
         self.canvas_dict["kills"].axes.set_title(metadata["name"], font=rubik_font_bold, fontsize=20)
         self.canvas_dict["kills"].axes.set_ylabel("Kills", font=rubik_font_bold, fontsize=20)
         self.canvas_dict["kills"].save_chart()
         
-        player_data: dict[dict] = {}
-        for round_file in self.get_rounds():
-            with open(round_file, "r", encoding="UTF-8", newline="") as f:
-                csv_reader = csv.reader(f)
-                player_list: list[list] = []
-                for row in csv_reader:
-                    if row[0] == "player_id":
-                        continue
-                    player_list.append(row)
-                
-                if metadata["mode"] != "Solo":
-                    squad_dict = {}
-                    for row in player_list:
-                        player_id, name, playfab_id, squad_id, team_id, kills, placement = int(row[0]), row[1], row[2], int(row[3]), int(row[4]), int(row[5]), int(row[6])
-                        
-                        if squad_id not in squad_dict:
-                            squad_dict[squad_id] = {
-                                "playfab_id": set(),
-                                "name": [],
-                                "placement": placement
-                            }
-                            
-                        squad_dict[squad_id]["playfab_id"].add(playfab_id)
-                        squad_dict[squad_id]["name"].append(name)
-                    player_list = list(squad_dict.values())
-                    player_list.sort(key=lambda team: team["placement"])
-                    for ranking, team in enumerate(player_list):
-                        team["placement"] = ranking + 1
-                    
-                for row in player_list:
-                    if metadata["mode"] == "Solo":
-                        player_id, name, playfab_id, squad_id, team_id, kills, placement = int(row[0]), row[1], row[2], int(row[3]), int(row[4]), int(row[5]), int(row[6])
-                    else:
-                        playfab_id, name, placement = frozenset(row["playfab_id"]), ";".join(row["name"]), row["placement"]
-                    
-                    if metadata["mode"] != "Solo":
-                        for playfab_id_set in player_data.keys():
-                            if playfab_id.issubset(playfab_id_set):
-                                playfab_id = playfab_id_set
-                                break
-                    
-                    if playfab_id not in player_data:
-                        if len(name) > 10:
-                            display_name = f"{name[:8]}.."
-                        else:
-                            display_name = name
-                        player_data[playfab_id] = {
-                            "name": display_name,
-                            "placements": []
-                        }
-                    
-                    player_data[playfab_id]["placements"].append(placement)
-        player_list = list(player_data.values())
-        player_list.sort(key=lambda player: sum(player["placements"])/len(player["placements"]))
-        player_names: list[str] = []
-        player_placements: list[list] = []
-        for player in player_list:
-            player_names.append(player["name"])
-            player_placements.append(player["placements"])
+        
+        players.sort(key=lambda player: sum(player.placements)/len(player.placements))
+        
+        player_names, player_kills, _, player_placements  = zip(*players)
         
         self.canvas_dict["average_placement"].axes.boxplot(
             player_placements, 
@@ -302,7 +268,9 @@ class Graphs(QWidget):
     def update_charts(self, tournament_id: str) -> None:
         if tournament_id != self.tournament_id:
             return
+        
         self.plot_charts(tournament_id)
+        
         if self.window().metaObject().className() == "MainWindow":
             glb.SIGNAL_MANAGER.graphsUpdated.emit(tournament_id)
 
