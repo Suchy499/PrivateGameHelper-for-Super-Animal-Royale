@@ -14,3 +14,9 @@
     border-radius: 16px;
     border: 2px solid #1250fc;
 }
+
+#ConsoleWidget {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 16px;
+    border: 2px solid #332757;
+}

@@ -154,5 +154,6 @@ class PageTeleport(QWidget):
         try:
             x, y = self.coordinates_edit.text().split(" ")
             teleport_player(int(x), int(y))
-        except ValueError:
+        except ValueError as e:
             send_notification("Invalid coordinates", "NotifFail")
+            print(e)

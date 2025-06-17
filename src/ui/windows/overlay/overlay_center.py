@@ -1,6 +1,7 @@
 from core import *
 from ui.pages import Pages
-from widgets import Notification, UpdatePopup, OverlayTitleBar
+from widgets import Notification, UpdatePopup, OverlayTitleBar, DebugConsole
+import sys
 
 class OverlayCenter(QFrame):
     def __init__(self, parent):
@@ -25,9 +26,14 @@ class OverlayCenter(QFrame):
         self.title_bar.close_button.clicked.connect(self.close_overlay)
         glb.SIGNAL_MANAGER.notificationSent.connect(self.notif.send_notification)
         
+        self.debug_console = DebugConsole(self)
+        self.debug_console.setGeometry(10, 10, self.width()-20, self.height()-20)
+        self.debug_console.setVisible(False)
+        
     def resizeEvent(self, event):
         self.notif.updatePosition()
         self.update_popup.updatePosition()
+        self.debug_console.setGeometry(10, 10, self.width()-20, self.height()-20)
         return super().resizeEvent(event)
 
     def set_title(self, index: int) -> None:
@@ -44,3 +50,6 @@ class OverlayCenter(QFrame):
 
     def keyReleaseEvent(self, e):
         return
+    
+    def open_console(self) -> None:
+        self.debug_console.setVisible(not self.debug_console.isVisible())

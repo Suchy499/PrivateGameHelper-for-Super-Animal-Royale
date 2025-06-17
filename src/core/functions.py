@@ -506,7 +506,8 @@ def save_players() -> None:
             name = player.split("\t")[1]
             glb.PLAYER_LIST.append(PlayerItem(player_id, name))
         glb.SIGNAL_MANAGER.playersRefreshed.emit()
-    except ValueError:
+    except ValueError as e:
+        print(e)
         send_notification("Something went wrong. Try again", "NotifFail")
 
 def send_player_command(command: str) -> None:

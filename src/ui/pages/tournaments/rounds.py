@@ -193,16 +193,18 @@ class NewRound(QWidget):
             tournament_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments", tournament_id)
             with open(os.path.join(tournament_path, "scoring.json"), "r") as f:
                 return json.load(f)
-        except:
+        except Exception as e:
             send_notification("Could not load scoring.", "NotifFail")
+            print(e)
             
     def get_metadata(self) -> dict:
         try:
             tournament_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments", self.tournament_id)
             with open(os.path.join(tournament_path, "metadata.json"), "r") as f:
                 return json.load(f)
-        except:
+        except Exception as e:
             send_notification("Could not load metadata.", "NotifFail")
+            print(e)
     
     def get_players_list(self) -> list[Player]:
         try:
@@ -221,11 +223,13 @@ class NewRound(QWidget):
                 if placement > 0:
                     player_list.append(Player(player_id, name, playfab_id, squad_id, team_id, kills, placement))
             return sorted(player_list, key=lambda player: player.placement)
-        except ValueError:
+        except ValueError as e:
             send_notification("Invalid player list. Try again", "NotifFail")
+            print(e)
             return []
-        except IndexError:
+        except IndexError as e:
             send_notification("Invalid player list. Try again", "NotifFail")
+            print(e)
             return []
     
     def save_round_file(self, player_list: list[Player]) -> int:
@@ -618,16 +622,18 @@ class SavedRound(QWidget):
             tournament_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments", tournament_id)
             with open(os.path.join(tournament_path, "scoring.json"), "r") as f:
                 return json.load(f)
-        except:
+        except Exception as e:
             send_notification("Could not load scoring.", "NotifFail")
+            print(e)
             
     def get_metadata(self) -> dict:
         try:
             tournament_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments", self.tournament_id)
             with open(os.path.join(tournament_path, "metadata.json"), "r") as f:
                 return json.load(f)
-        except:
+        except Exception as e:
             send_notification("Could not load metadata.", "NotifFail")
+            print(e)
             
     def clear_round(self) -> None:
         while self.stats_layout.count():
@@ -833,8 +839,9 @@ class SavedRound(QWidget):
         try:
             round_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments", self.tournament_id, "Rounds", f"{self.round_id}.csv")
             os.remove(round_path)
-        except FileNotFoundError:
+        except FileNotFoundError as e:
             send_notification("Could not delete round.", "NotifFail")
+            print(e)
         
         scores_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments", self.tournament_id, "participants.json")
         

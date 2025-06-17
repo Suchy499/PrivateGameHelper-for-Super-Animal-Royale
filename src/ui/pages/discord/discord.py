@@ -159,8 +159,9 @@ class PageDiscord(QWidget):
             with open(os.path.join(pgh_documents_path, "discord.json"), "w") as f:
                 json.dump(webhooks, f, indent=4)
             send_notification("Discord webhooks connected!", "NotifSuccess")
-        except:
+        except Exception as e:
             send_notification("Could not save webhooks", "NotifFail")
+            print(e)
         
         glb.SIGNAL_MANAGER.webhooksSaved.emit()
     
@@ -371,8 +372,9 @@ class PageDiscord(QWidget):
             tournament_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments", tournament_id)
             with open(os.path.join(tournament_path, "metadata.json"), "r") as f:
                 return json.load(f)
-        except:
+        except Exception as e:
             send_notification("Could not load metadata.", "NotifFail")
+            print(e)
     
     def create_tables(self, tournament_id: str) -> None:
         tournament_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments", tournament_id)

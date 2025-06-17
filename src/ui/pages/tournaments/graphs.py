@@ -136,8 +136,9 @@ class Graphs(QWidget):
             tournament_path = os.path.join(os.environ["USERPROFILE"], "Documents", "Private Game Helper", "Tournaments", self.tournament_id)
             with open(os.path.join(tournament_path, "metadata.json"), "r") as f:
                 return json.load(f)
-        except:
+        except Exception as e:
             send_notification("Could not load metadata.", "NotifFail")
+            print(e)
     
     def plot_charts(self, tournament_id: str) -> None:
         if tournament_id != self.tournament_id:

@@ -1,9 +1,10 @@
 from core import *
 from styles import Style
 from images import IMAGES
-from widgets import Sidebar, TitleBar, SizeGrip, Notification, UpdatePopup
+from widgets import Sidebar, TitleBar, SizeGrip, Notification, UpdatePopup, DebugConsole
 from ui.pages import Pages
 from ui.windows.overlay import Overlay
+import sys
 
 try:
     from ctypes import windll
@@ -183,6 +184,16 @@ class MainWindow(QMainWindow):
         glb.SIGNAL_MANAGER.appIconChanged.connect(self.update_icon)
         glb.SIGNAL_MANAGER.notificationSent.connect(self.notif.send_notification)
         
+        self.debug_console = DebugConsole(self, sys.stdout)
+        self.debug_console.setGeometry(10, 10, self.width()-20, self.height()-20)
+        self.debug_console.setVisible(False)
+        sys.stdout = self.debug_console
+        sys.stderr = self.debug_console
+        
+        self.console_shortcut = QShortcut(QKeySequence("`"), self, self.open_console)
+        
+        keyboard.add_hotkey("`", self.overlay.center_overlay.open_console)
+        
     def changeEvent(self, event):
         if event.type() == QEvent.Type.WindowStateChange:
             self.title_bar.window_state_changed(self.windowState())
@@ -202,6 +213,7 @@ class MainWindow(QMainWindow):
         self.top_right_grip.setGeometry(self.width() - 10, -5, 15, 15)
         self.bottom_left_grip.setGeometry(-5, self.height() - 10, 15, 15)
         self.bottom_right_grip.setGeometry(self.width() - 10, self.height() - 10, 15, 15)
+        self.debug_console.setGeometry(10, 10, self.width()-20, self.height()-20)
         self.notif.updatePosition()
         self.update_popup.updatePosition()
     
@@ -240,3 +252,6 @@ class MainWindow(QMainWindow):
             case 2:
                 self.show()
                 self.setWindowState(Qt.WindowState.WindowActive)
+    
+    def open_console(self) -> None:
+        self.debug_console.setVisible(not self.debug_console.isVisible())

@@ -220,3 +220,9 @@ QCalendarWidget QAbstractItemView {
 #GraphWidget {
     border: 3px solid rgb(102, 0, 77);
 }
+
+#ConsoleWidget {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 16px;
+    border: 2px solid rgba(105, 154, 202, 255);
+}

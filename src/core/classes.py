@@ -84,6 +84,7 @@ class SignalManager(QObject):
     graphsUpdated = Signal(str)
     webhooksSaved = Signal()
     scoresUpdated = Signal(str)
+    consoleUpdated = Signal(str)
 
 @dataclass
 class PlayerItem:

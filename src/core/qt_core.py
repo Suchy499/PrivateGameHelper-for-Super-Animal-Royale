@@ -59,4 +59,5 @@ from PySide6.QtGui import (
     QKeySequence,
     QKeyEvent,
     QFontDatabase,
+    QShortcut
 )

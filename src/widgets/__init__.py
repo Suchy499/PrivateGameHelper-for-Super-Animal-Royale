@@ -25,3 +25,4 @@ from .settings_combobox import SettingsComboBox
 from .flow_layout import FlowLayout
 from .tournament_combobox import TournamentComboBox
 from .popup import Popup
+from .debug_console import DebugConsole

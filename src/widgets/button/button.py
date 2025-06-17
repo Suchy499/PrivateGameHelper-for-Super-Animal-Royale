@@ -10,6 +10,7 @@ class Button(QPushButton):
         w: int = 100,
         h: int = 30,
         btn_style: Literal["ButtonDefault", "ButtonDelete"] = "ButtonDefault",
+        size_policy: Literal["Fixed", "Expanding"] = "Fixed",
         command: str | None = None
     ):
         super().__init__(parent)
@@ -19,8 +20,10 @@ class Button(QPushButton):
         self.btn_icon = btn_icon
         self.btn_text = btn_text
         self.command = command
+        self.size_policy = size_policy
         
-        self.setFixedSize(self.w, self.h)
+        if size_policy == "Fixed":
+            self.setFixedSize(self.w, self.h)
         self.setObjectName("Button")
         self.setProperty("style", btn_style)
         self.setText(self.btn_text)

@@ -940,3 +940,17 @@ QCalendarWidget QAbstractItemView {
 #GraphWidget {
     border: 3px solid rgb(38, 63, 112);
 }
+
+#ConsoleWidget {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 16px;
+    border: 2px solid #332757;
+}
+
+#ConsoleOutput {
+    font-family: Rubik;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    text-align: bottom;
+}
